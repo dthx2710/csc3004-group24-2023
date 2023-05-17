@@ -1,0 +1,21 @@
+{
+  "name": "csc3004-group-24-2023",
+  "version": "1.0.0",
+  "description": "CSC3004 Project Repository",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "init": "cd image-service && npm run init",
+    "up": "docker-compose up -d && cd image-service && npm run activate && npm run start",
+    "build": "docker-compose build --no-cache"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dthx2710/csc3004-group-24-2023.git"
+  },
+  "author": "Group24",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dthx2710/csc3004-group-24-2023/issues"
+  },
+  "homepage": "https://github.com/dthx2710/csc3004-group-24-2023#readme"
+}
