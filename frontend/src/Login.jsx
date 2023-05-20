@@ -17,6 +17,26 @@ const LogoAvatar = styled(Avatar)(({ theme }) => ({
 export default function Login() {
     // const navigate = useNavigate();
 
+    const [username, setUsername] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    const [error, setError] = React.useState({ username: false, password: false });
+
+    const handleLogin = (event) => {
+        event.preventDefault();
+        setError({ username: !username, password: !password });
+    };
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        if (name === 'username') {
+            setUsername(value);
+            setError((prev) => ({ ...prev, username: !value }));
+        } else if (name === 'password') {
+            setPassword(value);
+            setError((prev) => ({ ...prev, password: !value }));
+        }
+    };
+
     return (
         <>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: '5px' }}>
@@ -38,7 +58,7 @@ export default function Login() {
                         <Typography component="h1" variant="h1" color="#df0023">
                             SingPoll
                         </Typography>
-                        <Box component="form" noValidate sx={{ mt: 1 }}>
+                        <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleLogin}>
                             <TextField
                                 margin="normal"
                                 required
@@ -47,6 +67,15 @@ export default function Login() {
                                 label="Username"
                                 name="username"
                                 autoComplete="username"
+                                value={username}
+                                onChange={handleChange}
+                                error={error.username}
+                                helperText={error.username && "Username is required"}
+                                sx={{
+                                    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: '#df0023',
+                                    },
+                                }}
                                 autoFocus
                             />
                             <TextField
@@ -58,6 +87,15 @@ export default function Login() {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
+                                value={password}
+                                onChange={handleChange}
+                                error={error.password}
+                                helperText={error.password && "Password is required"}
+                                sx={{
+                                    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: '#df0023',
+                                    },
+                                }}
                             />
                             <Button
                                 type="submit"
