@@ -5,7 +5,7 @@ import HomePage from './HomePage';
 import Layout from './Layout';
 
 const App = () => {
-  const username = 'User'; // Update this based on your authentication system
+  const username = 'TestUser'; // Update this based on your authentication system
 
   return (
     <Router>
