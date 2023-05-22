@@ -1,13 +1,25 @@
-import { useState } from 'react'
-import './App.css'
-import Login from './Login'
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import LoginPage from './Login';
+import HomePage from './HomePage';
+import Layout from './Layout';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const username = 'User'; // Update this based on your authentication system
 
   return (
-    <Login />
-  )
-}
+    <Router>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/home" element={
+          <Layout username={username}>
+            <HomePage />
+            {/* other routes */}
+          </Layout>
+        } />
+      </Routes>
+    </Router>
+  );
+};
 
-export default App
+export default App;

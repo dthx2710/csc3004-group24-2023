@@ -8,23 +8,35 @@ import Avatar from '@mui/material/Avatar';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import LoginLogo from '../src/assets/singapore-lion-logo.png';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Alert from '@mui/material/Alert';
 
 const LogoAvatar = styled(Avatar)(({ theme }) => ({
     margin: theme.spacing(1),
 }));
 
 export default function Login() {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [error, setError] = React.useState({ username: false, password: false });
+    const [loginError, setLoginError] = React.useState(false);
 
     const handleLogin = (event) => {
         event.preventDefault();
-        setError({ username: !username, password: !password });
-    };
+      
+        // hardcoded username and password
+        const hardcodedUsername = "admin";
+        const hardcodedPassword = "password";
+      
+        if (username === hardcodedUsername && password === hardcodedPassword) {
+          // navigate to HomePage
+          navigate("/home");
+        } else {
+          setLoginError(true);  // Set login error to true
+        }
+      };
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -39,16 +51,12 @@ export default function Login() {
 
     return (
         <>
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: '5px' }}>
-                <Button variant="contained" color="error">Admin Login</Button>
-            </Box>
-            
             <div className="center-content">
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
                     <Box
                         sx={{
-                            marginTop: 1,
+                            marginTop: 13,
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
@@ -106,6 +114,7 @@ export default function Login() {
                             >
                                 Sign In
                             </Button>
+                            {loginError && <Alert severity="error">Invalid username or password!</Alert>}
                         </Box>
                     </Box>
                 </Container>
