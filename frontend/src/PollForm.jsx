@@ -1,8 +1,8 @@
 import React from 'react';
 import { Box, Container, Typography, TextField, FormControl, InputLabel, MenuItem, Select, Button, Stack, FormGroup, FormControlLabel, Switch } from '@mui/material';
-import AdapterDayjs from '@mui/lab/AdapterDayjs';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DateTimePicker from '@mui/lab/DateTimePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import CreateIcon from '@mui/icons-material/Create';
 
@@ -188,7 +188,7 @@ export default function PollForm() {
                         </Typography>
 
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DateTimePicker label="Enter start date and time" />
+                            <DatePicker />
                         </LocalizationProvider>
 
                         <Typography variant="h6" component="h2" gutterBottom style={{ color: 'black'}} marginTop={3}>
@@ -196,7 +196,7 @@ export default function PollForm() {
                         </Typography>
 
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DateTimePicker label="Enter end date and time" />
+                            <DatePicker />
                         </LocalizationProvider>
 
                         <FormGroup>
