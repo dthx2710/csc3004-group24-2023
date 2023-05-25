@@ -15,7 +15,7 @@ const LogoAvatar = styled(Avatar)(({ theme }) => ({
     margin: theme.spacing(1),
 }));
 
-export default function Login() {
+export default function Login({ onLogin }) {
     const navigate = useNavigate();
 
     const [username, setUsername] = React.useState('');
@@ -25,16 +25,24 @@ export default function Login() {
 
     const handleLogin = (event) => {
         event.preventDefault();
-      
+        
         // hardcoded username and password
-        const hardcodedUsername = "admin";
+        const hardcodedUsername1 = "admin";
+        const hardcodedUsername2 = "user";
         const hardcodedPassword = "password";
       
-        if (username === hardcodedUsername && password === hardcodedPassword) {
-          // navigate to HomePage
-          navigate("/home");
+        if ((username === hardcodedUsername1 || hardcodedUsername2) && password === hardcodedPassword) {
+            // store username
+            onLogin(username);
+            // navigate to HomePage
+            if (username === hardcodedUsername1) {
+                navigate("/adminhome");
+            }
+            else {
+                navigate("/userhome");
+            }
         } else {
-          setLoginError(true);  // Set login error to true
+            setLoginError(true);  // Set login error to true
         }
       };
 

@@ -1,7 +1,8 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 import { styled } from '@mui/system';
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import NavbarLogo from '../src/assets/singapore-lion-logo-white.png';
 
 const RootDiv = styled('div')({
@@ -19,16 +20,25 @@ const TitleTypography = styled(Typography)({
 });
 
 const Navbar = ({ username }) => {
+  const navigate = useNavigate();
+
   return (
     <RootDiv>
       <AppBar position="static" color="secondary">
         <Toolbar>
           <MenuButtonTypography variant="h6">
             <img src={NavbarLogo} alt="Singapore Lion Logo" style={{ width: 50, height: 50, marginRight: '10px' }} />
-            <Link to="/home" style={{ textDecoration: 'none', color: 'inherit' }}>SingPoll</Link>
+            <Link to="/userhome" style={{ textDecoration: 'none', color: 'inherit' }}>SingPoll</Link>
           </MenuButtonTypography>
           <TitleTypography variant="h6">
             {username}
+          </TitleTypography>
+          <TitleTypography 
+            onClick={() => navigate("/")}
+            color="inherit"
+            variant="h6"
+            sx={{ ml: 5, cursor: 'pointer' }}>
+            Logout
           </TitleTypography>
         </Toolbar>
       </AppBar>

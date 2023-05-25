@@ -14,9 +14,9 @@ export default function HomePage() {
         <Container maxWidth="md">
           <Box sx={{ mt: 4, mb: 2 }}>
               <Typography variant="h4" component="h1" gutterBottom style={{ color: 'black'}}>
-              Available Polls
+                Available Polls
               </Typography>
-              <PollList polls={polls} />
+            <PollList polls={polls} />
           </Box>
         </Container>
     </div>

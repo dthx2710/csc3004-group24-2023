@@ -1,20 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LoginPage from './Login';
-import HomePage from './HomePage';
+import UserHomePage from './UserHomePage';
+import AdminHomePage from './AdminHomePage';
 import Layout from './Layout';
 import Form from './Form';
 
 const App = () => {
-  const username = 'TestUser'; // Update this based on your authentication system
+  //const username = 'TestUser'; // Update this based on your authentication system
+
+  const [username, setUsername] = useState(null);
+
+  const handleLogin = (user) => {
+    setUsername(user);
+  };
 
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/home" element={
+        <Route path="/" element={
+          <LoginPage onLogin={handleLogin} />
+        } />
+        <Route path="/userhome" element={
           <Layout username={username}>
-            <HomePage />
+            <UserHomePage />
+          </Layout>
+        } />
+        <Route path="/adminhome" element={
+          <Layout username={username}>
+            <AdminHomePage />
           </Layout>
         } />
         <Route path="/form" element={
