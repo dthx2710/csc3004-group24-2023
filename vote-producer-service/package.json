@@ -1,0 +1,19 @@
+{
+    "name": "vote-producer-service",
+    "version": "1.0.0",
+    "description": "Service for vote producer",
+    "main": "vote_producer.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "node vote_producer.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "@grpc/grpc-js": "^1.8.12",
+      "@grpc/proto-loader": "^0.7.5",
+      "dotenv": "^16.0.3",
+      "grpc": "^1.24.11"
+    }
+  }
+  
