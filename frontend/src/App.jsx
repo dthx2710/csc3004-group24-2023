@@ -4,7 +4,8 @@ import LoginPage from './Login';
 import UserHomePage from './UserHomePage';
 import AdminHomePage from './AdminHomePage';
 import Layout from './Layout';
-import Form from './Form';
+import PollForm from './PollForm';
+import PollVoteForm from './PollVoteForm';
 
 const App = () => {
   //const username = 'TestUser'; // Update this based on your authentication system
@@ -31,9 +32,14 @@ const App = () => {
             <AdminHomePage />
           </Layout>
         } />
-        <Route path="/form" element={
+        <Route path="/pollform" element={
           <Layout username={username}>
-            <Form />
+            <PollForm />
+          </Layout>
+        } />
+        <Route path="/pollvoteform" element={
+          <Layout username={username}>
+            <PollVoteForm />
           </Layout>
         } />
       </Routes>

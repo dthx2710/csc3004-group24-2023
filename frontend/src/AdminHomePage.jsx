@@ -4,7 +4,7 @@ import { Box, Container, Typography, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import PollList from './PollList';
 
-export default function HomePage() {
+export default function AdminHomePage() {
   const navigate = useNavigate();
 
   const polls = [
@@ -26,7 +26,7 @@ export default function HomePage() {
                   sx={{ '&:hover': { backgroundColor: '#aa2e25' }}}
                   variant="contained" 
                   startIcon={<AddIcon />}
-                  onClick={() => navigate("/form")}>
+                  onClick={() => navigate("/pollform")}>
                   Add Poll Form
               </Button>
             </Box>

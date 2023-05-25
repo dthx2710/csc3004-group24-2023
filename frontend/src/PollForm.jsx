@@ -17,7 +17,7 @@ const commonStyles = {
     paddingBottom: 5
 };
 
-export default function Form() {
+export default function PollForm() {
     const [electoralDivision, setElectoralDivision] = React.useState('');
     const [constituency, setConstituency] = React.useState('');
     const [candidates, setCandidates] = React.useState(['', '']);
@@ -199,7 +199,6 @@ export default function Form() {
                             <DateTimePicker label="Enter end date and time" />
                         </LocalizationProvider>
 
-                        
                         <FormGroup>
                             <FormControlLabel 
                                 required 
@@ -213,7 +212,6 @@ export default function Form() {
                                 }} />
                         </FormGroup>
                         
-
                         <Stack direction="row" marginTop={10}>
                             <Button 
                                 color="secondary"
@@ -223,7 +221,6 @@ export default function Form() {
                                 Create Poll Form
                             </Button>
                         </Stack>
-
                     </Box>
                 </Box>
             </Container>

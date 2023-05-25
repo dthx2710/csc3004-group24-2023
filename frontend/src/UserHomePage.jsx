@@ -2,9 +2,9 @@ import React from 'react';
 import { Box, Container, Typography } from '@mui/material';
 import PollList from './PollList';
 
-export default function HomePage() {
+export default function UserHomePage() {
   const polls = [
-    { title: 'Poll 1', description: 'Description for poll 1', isCompulsory: false },
+    { title: 'Ang Mo Kio GRC - GE2020', description: 'Description for poll 1', isCompulsory: false },
     { title: 'Poll 2', description: 'Description for poll 2', isCompulsory: true },
     // other polls...
   ];
