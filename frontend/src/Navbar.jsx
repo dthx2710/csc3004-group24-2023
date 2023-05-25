@@ -1,6 +1,7 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography } from '@mui/material';
 import { styled } from '@mui/system';
+import { Link } from 'react-router-dom';
 import NavbarLogo from '../src/assets/singapore-lion-logo-white.png';
 
 const RootDiv = styled('div')({
@@ -24,7 +25,7 @@ const Navbar = ({ username }) => {
         <Toolbar>
           <MenuButtonTypography variant="h6">
             <img src={NavbarLogo} alt="Singapore Lion Logo" style={{ width: 50, height: 50, marginRight: '10px' }} />
-            SingPoll
+            <Link to="/home" style={{ textDecoration: 'none', color: 'inherit' }}>SingPoll</Link>
           </MenuButtonTypography>
           <TitleTypography variant="h6">
             {username}
