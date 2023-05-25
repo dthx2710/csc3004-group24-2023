@@ -1,21 +1,35 @@
 import React from 'react';
-import { Box, Container, Typography, TextField, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Box, Container, Typography, TextField, FormControl, InputLabel, MenuItem, Select, Button, Stack, FormGroup, FormControlLabel, Switch } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import CreateIcon from '@mui/icons-material/Create';
 
 const commonStyles = {
     bgcolor: '#f2f2f2',
     m: 1,
-    borderTop: 5,
-    height: '100vh',
+    borderTop: 6,
     borderRadius: '20px',
     paddingLeft: 7,
     paddingRight: 7,
     paddingTop: 5,
     paddingBottom: 5
-  };
+};
+
+const theme = createTheme({
+    palette: {
+        secondary: {
+            main: '#f44336', // set custom color
+        },
+    },
+});
 
 export default function Form() {
     const [electoralDivision, setElectoralDivision] = React.useState('');
     const [constituency, setConstituency] = React.useState('');
+    const [candidates, setCandidates] = React.useState(['', '']);
 
     const handleElectoralDivisionChange = (event) => {
         setElectoralDivision(event.target.value);
@@ -70,6 +84,22 @@ export default function Form() {
         }
     };
 
+    const handleCandidateChange = (event, index) => {
+        const newCandidates = [...candidates];
+        newCandidates[index] = event.target.value;
+        setCandidates(newCandidates);
+    };
+
+    const addCandidate = () => {
+        setCandidates([...candidates, '']);
+    };
+
+    const removeCandidate = (index) => {
+        const newCandidates = [...candidates];
+        newCandidates.splice(index, 1);
+        setCandidates(newCandidates);
+    };
+
     return (
         <div style={{backgroundColor: 'white'}}>
             <Container maxWidth="md">
@@ -100,7 +130,7 @@ export default function Form() {
                         </Typography>
 
                         <FormControl variant="filled" sx={{ minWidth: 380 }}>
-                            <InputLabel id="electoral-division-label">Select Electoral Division</InputLabel>
+                            <InputLabel id="electoral-division-label" required>Select Electoral Division</InputLabel>
                             <Select
                                 labelId="electoral-division-label"
                                 id="electoral-division-select"
@@ -116,8 +146,8 @@ export default function Form() {
                             Constituency
                         </Typography>
 
-                        <FormControl key={electoralDivision} variant="filled" sx={{ minWidth: 350 }}>
-                            <InputLabel id="constituency-label">Select Constituency</InputLabel>
+                        <FormControl key={electoralDivision} variant="filled" sx={{ minWidth: 380 }}>
+                            <InputLabel id="constituency-label" required>Select Constituency</InputLabel>
                             <Select
                                 labelId="constituency-label"
                                 id="constituency-select"
@@ -127,6 +157,79 @@ export default function Form() {
                                 {getConstituencyOptions()}
                             </Select>
                         </FormControl>
+
+                        <Typography variant="h6" component="h2" gutterBottom style={{ color: 'black'}} marginTop={3}>
+                            Candidates
+                        </Typography>
+
+                        {candidates.map((candidate, index) => (
+                            <Box key={index} sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
+                                <TextField
+                                    required
+                                    id={`candidate-${index}`}
+                                    label={`Enter candidate ${index + 1} name here`}
+                                    variant="filled"
+                                    fullWidth
+                                    value={candidate}
+                                    onChange={(event) => handleCandidateChange(event, index)}
+                                />
+                                {index > 1 && (
+                                    <Button variant="text" color="secondary" onClick={() => removeCandidate(index)} style={{marginLeft: '10px'}}>
+                                        Remove
+                                    </Button>
+                                )}
+                            </Box>
+                        ))}
+
+                        <Stack direction="row" marginTop={2}>
+                            <Button 
+                                sx={{ backgroundColor: '#f44336', '&:hover': { backgroundColor: '#aa2e25' }}}
+                                variant="contained" 
+                                endIcon={<PersonAddIcon />} 
+                                onClick={addCandidate}>
+                                Add Candidate
+                            </Button>
+                        </Stack>
+
+                        <Typography variant="h6" component="h2" gutterBottom style={{ color: 'black'}} marginTop={3}>
+                            Start Poll
+                        </Typography>
+
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DateTimePicker label="Enter start date and time" />
+                        </LocalizationProvider>
+
+                        <Typography variant="h6" component="h2" gutterBottom style={{ color: 'black'}} marginTop={3}>
+                            End Poll
+                        </Typography>
+
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DateTimePicker label="Enter end date and time" />
+                        </LocalizationProvider>
+
+                        <ThemeProvider theme={theme}>
+                            <FormGroup>
+                                <FormControlLabel 
+                                    required 
+                                    control={
+                                        <Switch defaultChecked color="secondary" />
+                                    }
+                                    label="Compulsory"
+                                    sx={{ 
+                                        color: 'black',
+                                        mt: 3
+                                    }} />
+                            </FormGroup>
+                        </ThemeProvider>
+
+                        <Stack direction="row" marginTop={10}>
+                            <Button 
+                                sx={{ backgroundColor: '#f44336', '&:hover': { backgroundColor: '#aa2e25' }}}
+                                variant="contained" 
+                                startIcon={<CreateIcon />}>
+                                Create Poll Form
+                            </Button>
+                        </Stack>
 
                     </Box>
                 </Box>
