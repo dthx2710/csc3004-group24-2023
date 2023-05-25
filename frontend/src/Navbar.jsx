@@ -28,7 +28,11 @@ const Navbar = ({ username }) => {
         <Toolbar>
           <MenuButtonTypography variant="h6">
             <img src={NavbarLogo} alt="Singapore Lion Logo" style={{ width: 50, height: 50, marginRight: '10px' }} />
-            <Link to="/userhome" style={{ textDecoration: 'none', color: 'inherit' }}>SingPoll</Link>
+            {username === 'admin' ? 
+                <Link to="/adminhome" style={{ textDecoration: 'none', color: 'inherit' }}>SingPoll</Link>
+                :
+                <Link to="/userhome" style={{ textDecoration: 'none', color: 'inherit' }}>SingPoll</Link>
+            }
           </MenuButtonTypography>
           <TitleTypography variant="h6">
             {username}
