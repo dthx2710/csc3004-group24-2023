@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, Container, Typography, TextField, FormControl, InputLabel, MenuItem, Select, Button, Stack, FormGroup, FormControlLabel, Switch } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
@@ -17,14 +16,6 @@ const commonStyles = {
     paddingTop: 5,
     paddingBottom: 5
 };
-
-const theme = createTheme({
-    palette: {
-        secondary: {
-            main: '#f44336', // set custom color
-        },
-    },
-});
 
 export default function Form() {
     const [electoralDivision, setElectoralDivision] = React.useState('');
@@ -183,7 +174,8 @@ export default function Form() {
 
                         <Stack direction="row" marginTop={2}>
                             <Button 
-                                sx={{ backgroundColor: '#f44336', '&:hover': { backgroundColor: '#aa2e25' }}}
+                                color="secondary"
+                                sx={{ '&:hover': { backgroundColor: '#aa2e25' }}}
                                 variant="contained" 
                                 endIcon={<PersonAddIcon />} 
                                 onClick={addCandidate}>
@@ -207,24 +199,25 @@ export default function Form() {
                             <DateTimePicker label="Enter end date and time" />
                         </LocalizationProvider>
 
-                        <ThemeProvider theme={theme}>
-                            <FormGroup>
-                                <FormControlLabel 
-                                    required 
-                                    control={
-                                        <Switch defaultChecked color="secondary" />
-                                    }
-                                    label="Compulsory"
-                                    sx={{ 
-                                        color: 'black',
-                                        mt: 3
-                                    }} />
-                            </FormGroup>
-                        </ThemeProvider>
+                        
+                        <FormGroup>
+                            <FormControlLabel 
+                                required 
+                                control={
+                                    <Switch defaultChecked color="secondary" />
+                                }
+                                label="Compulsory"
+                                sx={{ 
+                                    color: 'black',
+                                    mt: 3
+                                }} />
+                        </FormGroup>
+                        
 
                         <Stack direction="row" marginTop={10}>
                             <Button 
-                                sx={{ backgroundColor: '#f44336', '&:hover': { backgroundColor: '#aa2e25' }}}
+                                color="secondary"
+                                sx={{ '&:hover': { backgroundColor: '#aa2e25' }}}
                                 variant="contained" 
                                 startIcon={<CreateIcon />}>
                                 Create Poll Form
