@@ -13,8 +13,8 @@ export default function UserHomePage() {
 
   const filteredPolls = polls.filter(poll => poll.status === pollStatus);
 
-  const selectedButtonStyle = { backgroundColor: '#3f51b5', color: 'white' };
-  const unselectedButtonStyle = { backgroundColor: '#ABB0B8' };
+  const selectedButtonStyle = { backgroundColor: '#df0023', color: 'white' };
+  const unselectedButtonStyle = { backgroundColor: '#59515E' };
 
   return (
     <div style={{backgroundColor: 'white'}}>
