@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Box, Typography, Radio, RadioGroup, FormControlLabel, Stack, Button } from '@mui/material';
+import { useParams } from 'react-router-dom';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 
 const commonStyles = {
@@ -15,7 +16,8 @@ const commonStyles = {
 
 export default function PollVoteForm() {
     const [value, setValue] = React.useState('female');
-
+    const { title, description } = useParams();
+    
     const handleChange = (event) => {
         setValue(event.target.value);
     };
@@ -25,11 +27,11 @@ export default function PollVoteForm() {
             <Container maxWidth="md">
                 <Box sx={{ mt: 4, mb: 2 }}>
                     <Typography variant="h4" component="h1" gutterBottom style={{ color: 'black'}} align="center" fontWeight={600}>
-                        Ang Mo Kio GRC - GE2020
+                        {title}
                     </Typography>
 
                     <Typography component="h1" gutterBottom style={{ color: 'black'}} align="center" fontSize={18}>
-                        Description and Guidelines will be written here for the voter's reference.
+                        {description}
                     </Typography>
 
                     <Box sx={{ ...commonStyles, borderColor: '#f44336'}}>

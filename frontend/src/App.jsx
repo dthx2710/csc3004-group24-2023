@@ -37,7 +37,7 @@ const App = () => {
             <PollForm />
           </Layout>
         } />
-        <Route path="/pollvoteform" element={
+        <Route path="/pollvoteform/:title/:description" element={
           <Layout username={username}>
             <PollVoteForm />
           </Layout>
