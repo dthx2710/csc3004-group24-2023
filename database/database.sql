@@ -28,7 +28,9 @@ CREATE TABLE public.general_election (
     id uuid NOT NULL,
     username character varying(100) NOT NULL,
     constituency character varying(100) NOT NULL,
-    party_and_candidate_name character varying(100) NOT NULL
+    party_and_candidate_name character varying(100) NOT NULL,
+    user_type character varying(50) NOT NULL
+
 );
 
 
