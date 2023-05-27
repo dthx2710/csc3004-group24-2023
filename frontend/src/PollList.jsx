@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import WarningIcon from '@mui/icons-material/Warning';
 import Poll from './Poll';
 
-export default function PollList({ polls }) {
+export default function PollList({ polls, isAdmin }) {
   return (
     <Grid container spacing={2}>
       {polls.map((poll, index) => (
@@ -16,7 +16,7 @@ export default function PollList({ polls }) {
                   <WarningIcon color="error" style={{ marginRight: '10px' }} />
                 </Tooltip>
               )}
-              <Poll poll={poll} />
+              <Poll poll={poll} isAdmin={isAdmin} />
             </div>
           </Link>
         </Grid>

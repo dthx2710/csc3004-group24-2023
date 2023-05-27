@@ -10,7 +10,9 @@ export default function AdminHomePage() {
 
   const polls = [
     { title: 'Ang Mo Kio GRC - GE2020', description: 'Description for poll 1', isCompulsory: false, status: 'ongoing' },
-    { title: 'Poll 2', description: 'Description for poll 2', isCompulsory: true, status: 'ended' },
+    { title: 'Jurong GRC - GE2020', description: 'Description for poll 1', isCompulsory: true, status: 'ongoing' },
+    { title: 'Marsiling-Yew Tee GRC - GE2020', description: 'Description for poll 1', isCompulsory: false, status: 'ongoing' },
+    { title: 'Bukit Panjang SMC - GE2020', description: 'Description for poll 2', isCompulsory: true, status: 'ended' },
     // other polls...
   ];
 
@@ -45,7 +47,7 @@ export default function AdminHomePage() {
               <Button style={pollStatus === 'ended' ? selectedButtonStyle : unselectedButtonStyle} onClick={() => setPollStatus('ended')}>Ended</Button>
             </ButtonGroup>
           </Box>
-          <PollList polls={filteredPolls} />
+          <PollList polls={filteredPolls} isAdmin={true} />
         </Box>
       </Container>
     </Box>

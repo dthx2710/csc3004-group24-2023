@@ -8,8 +8,7 @@ import PollForm from './PollForm';
 import PollVoteForm from './PollVoteForm';
 
 const App = () => {
-  //const username = 'TestUser'; // Update this based on your authentication system
-
+  
   const [username, setUsername] = useState(null);
 
   const handleLogin = (user) => {
