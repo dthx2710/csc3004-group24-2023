@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package user_service;
+
+option go_package = "csc3004-group24-2023/proto";
+
+import "google/api/annotations.proto";
+
+service User{
+    rpc LoginUser(LoginRequest) returns (LoginResponse) {
+        option (google.api.http) = {
+            post: "/login"
+            body: "*"
+        };
+    }
+    rpc GetUser(UserRequest) returns (UserResponse) {
+        option (google.api.http) = {
+            get: "/user/{id}"
+        };
+    }
+}
+
+message LoginRequest{
+    string username = 1;
+    string password = 2;
+}
+
+message LoginResponse{
+    string id = 1;
+}
+
+message UserRequest{
+    string id = 1;
+}
+
+message UserResponse{
+    string username = 1;
+    string name = 2;
+    string email = 3;
+    string address = 4;
+    string grc = 5;
+}
