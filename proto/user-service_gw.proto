@@ -4,9 +4,20 @@ package user_service;
 
 option go_package = "csc3004-group24-2023/proto";
 
+import "google/api/annotations.proto";
+
 service User{
-    rpc LoginUser(LoginRequest) returns (LoginResponse) {}
-    rpc GetUser(UserRequest) returns (UserResponse) {}
+    rpc LoginUser(LoginRequest) returns (LoginResponse) {
+        option (google.api.http) = {
+            post: "/login"
+            body: "*"
+        };
+    }
+    rpc GetUser(UserRequest) returns (UserResponse) {
+        option (google.api.http) = {
+            get: "/user/{id}"
+        };
+    }
 }
 
 message LoginRequest{
