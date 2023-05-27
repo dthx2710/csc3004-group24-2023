@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Box, Container, Typography, Button, ButtonGroup, Grid } from '@mui/material';
+import { motion } from 'framer-motion';
 import AddIcon from '@mui/icons-material/Add';
 import PollList from './PollList';
 
@@ -22,7 +23,13 @@ export default function AdminHomePage() {
   const unselectedButtonStyle = { backgroundColor: '#59515E' };
 
   return (
-    <Box sx={{backgroundColor: 'white'}}>
+    <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    transition={{ duration: 1 }}
+    style={{backgroundColor: 'white'}}
+  >
       <Container maxWidth="md">
         <Box sx={{ mt: 4, mb: 2 }}>
           <Grid container spacing={2} alignItems="center" justifyContent="space-between">
@@ -50,6 +57,6 @@ export default function AdminHomePage() {
           <PollList polls={filteredPolls} isAdmin={true} />
         </Box>
       </Container>
-    </Box>
+    </motion.div>
   );
 };
