@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/dthx2710/csc3004-group-24-2023/issues"
   },
-  "homepage": "https://github.com/dthx2710/csc3004-group-24-2023#readme"
+  "homepage": "https://github.com/dthx2710/csc3004-group-24-2023#readme",
+  "dependencies": {
+    "pg": "^8.11.0"
+  }
 }
