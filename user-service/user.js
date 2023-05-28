@@ -29,31 +29,63 @@ client.connect(function(err) {
 });
 
 function Login(username, password) {
-  console.log("Login request received");
   return new Promise((resolve, reject) => {
     client.query('SELECT * FROM accounts WHERE username = $1', [username], (err, result) => {
       if (err) {
         console.log(err.stack);
         reject(err);
       }
-
-      if (result.rows[0].password === password) {
-        console.log("Login successful");
-        resolve(result.rows[0]);
-      } else {
+      if(result.rows.length != 0) {
+        if (result.rows[0].password === password) {
+          console.log("Login successful");
+          console.log(result.rows[0]);
+          resolve(result.rows[0]);
+        } else {
+          resolve(null);
+        }
+      }
+      else {
         resolve(null);
       }
     });
   });
 }
+
 async function LoginUser(call, callback) {
-  callback(null, Login(call.request.username, call.request.password))
+  id = await Login(call.request.username, call.request.password)
+  callback(null, id);
+}
+
+function userInfo(id) {
+  if (!id) {
+    return null;
+  }
+  return new Promise((resolve, reject) => {
+    client.query('SELECT * FROM accounts WHERE id = $1', [id], (err, result) => {
+      if (err) {
+        console.log(err.stack);
+        reject(err);
+      }
+      if(result.rows.length != 0) {
+        console.log("Get user info successful");
+        resolve(result.rows[0]);
+      }
+      else {
+        resolve(null);
+      }
+    });
+  });
+}
+
+async function GetUser(call, callback) {
+  callback(null, userInfo(call.request.id));
 }
 
 function getServer() {
   const server = new grpc.Server();
   server.addService(userProto.User.service, {
     LoginUser: LoginUser,
+    GetUser: GetUser,
   });
   return server;
 }

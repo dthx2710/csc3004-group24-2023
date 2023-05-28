@@ -44,11 +44,13 @@ export default function Login({ user, setUser, setSessionPassword, onLogin }) {
             password: password,
           };
         axios
-        .post("localhost:8080/login", login)
+        .post("http://localhost:8080/login", login)    
         .then((response) => {
+            
+        console.log(response.data);
           if (response.status === 200) {
             axios
-              .get(`/api/user/${response.data.id}`)
+              .get(`http://localhost:8080/user/${response.data.id}`)
               .then((res) => {
                 setUser({ ...res.data, id: response.data.id });
                 setSessionPassword(password);
