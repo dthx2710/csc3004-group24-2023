@@ -1,4 +1,5 @@
 import * as React from 'react';
+import axios from "axios";
 import { Box } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -15,13 +16,20 @@ const LogoAvatar = styled(Avatar)(({ theme }) => ({
     margin: theme.spacing(1),
 }));
 
-export default function Login({ onLogin }) {
+export default function Login({ user, setUser, setSessionPassword, onLogin }) {
     const navigate = useNavigate();
 
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [error, setError] = React.useState({ username: false, password: false });
     const [loginError, setLoginError] = React.useState(false);
+
+    React.useEffect(() => {
+        if (user) {
+          console.log("User:", user);
+          navigate("/userhome");
+        }
+      }, [user]);
 
     const handleLogin = (event) => {
         event.preventDefault();
@@ -30,20 +38,44 @@ export default function Login({ onLogin }) {
         const hardcodedUsername1 = "admin";
         const hardcodedUsername2 = "user";
         const hardcodedPassword = "password";
-      
-        if ((username === hardcodedUsername1 || hardcodedUsername2) && password === hardcodedPassword) {
-            // store username
-            onLogin(username);
-            // navigate to HomePage
-            if (username === hardcodedUsername1) {
-                navigate("/adminhome");
-            }
-            else {
-                navigate("/userhome");
-            }
-        } else {
-            setLoginError(true);  // Set login error to true
-        }
+
+        const login = {
+            username: username,
+            password: password,
+          };
+        axios
+        .post("localhost:8080/login", login)
+        .then((response) => {
+          if (response.status === 200) {
+            axios
+              .get(`/api/user/${response.data.id}`)
+              .then((res) => {
+                setUser({ ...res.data, id: response.data.id });
+                setSessionPassword(password);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          setLoginError(true);
+        });
+
+        // if ((username === hardcodedUsername1 || hardcodedUsername2) && password === hardcodedPassword) {
+        //     // store username
+        //     onLogin(username);
+        //     // navigate to HomePage
+        //     if (username === hardcodedUsername1) {
+        //         navigate("/adminhome");
+        //     }
+        //     else {
+        //         navigate("/userhome");
+        //     }
+        // } else {
+        //     setLoginError(true);  // Set login error to true
+        // }
       };
 
     const handleChange = (event) => {

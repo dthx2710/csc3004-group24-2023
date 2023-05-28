@@ -1,4 +1,8 @@
 const { Client } = require('pg')
+const grpc = require("@grpc/grpc-js");
+const protoLoader = require("@grpc/proto-loader");
+require("dotenv").config();
+
 const client = new Client({
   user: 'postgres',
   host: 'localhost',
@@ -7,7 +11,25 @@ const client = new Client({
   port: 5432,
 })
 
+const packageDefinition = protoLoader.loadSync("proto/user-service.proto", {
+  keepCase: true,
+  longs: String,
+  enums: String,
+  defaults: true,
+  oneofs: true,
+});
+
+const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
+const userProto = protoDescriptor.user_service;
+
+// Database connection
+client.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+});
+
 function Login(username, password) {
+  console.log("Login request received");
   return new Promise((resolve, reject) => {
     client.query('SELECT * FROM accounts WHERE username = $1', [username], (err, result) => {
       if (err) {
@@ -24,45 +46,22 @@ function Login(username, password) {
     });
   });
 }
+async function LoginUser(call, callback) {
+  callback(null, Login(call.request.username, call.request.password))
+}
 
-const userLogin = async (request, response) => {
-    try {
-      loginDetails = await Login("test", "123");
-      if (loginDetails != null) {
-        response.status(200).json(loginDetails);
-      }
-    } catch (error) {
-      // Handle error here
-      response.status(500).json({ error: 'Internal Server Error' });
-    }
-  }
+function getServer() {
+  const server = new grpc.Server();
+  server.addService(userProto.User.service, {
+    LoginUser: LoginUser,
+  });
+  return server;
+}
 
-client.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");
+const port = process.env.USER_SERVICE_URL.split(":")[1] || 50051;
+const userServer = getServer();
+userServer.bindAsync(process.env.USER_SERVICE_URL, grpc.ServerCredentials.createInsecure(), () => {
+  console.log("User-service is listening on port " + port);
+  userServer.start();
 });
-
-const express = require('express')
-const bodyParser = require('body-parser');
-const { log } = require('@grpc/grpc-js/build/src/logging');
-const app = express()
-const port = 3000
-
-app.use(bodyParser.json())
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
-)
-
-app.get('/', (request, response) => {
-  response.json({ info: 'Node.js, Express, and Postgres API' })
-})
-
-app.get('/users/:id', userLogin)
-
-app.listen(port, () => {
-  console.log(`App running on port ${port}.`)
-})
-
 
