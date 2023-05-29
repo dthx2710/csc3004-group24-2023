@@ -25,9 +25,17 @@ export default function Login({ user, setUser, setSessionPassword, onLogin }) {
     const [loginError, setLoginError] = React.useState(false);
 
     React.useEffect(() => {
-        if (user) {
-          console.log("User:", user);
-          navigate("/userhome");
+        try {
+            if (user.name == "admin") {
+                console.log("User:", user);
+                navigate("/adminhome");
+            }
+            else if (user.name == "user") {
+                console.log("User:", user);
+                navigate("/userhome");
+            }
+        } catch (error) {
+            console.log(error);
         }
       }, [user]);
 
@@ -35,9 +43,9 @@ export default function Login({ user, setUser, setSessionPassword, onLogin }) {
         event.preventDefault();
         
         // hardcoded username and password
-        const hardcodedUsername1 = "admin";
-        const hardcodedUsername2 = "user";
-        const hardcodedPassword = "password";
+        // const hardcodedUsername1 = "admin";
+        // const hardcodedUsername2 = "user";
+        // const hardcodedPassword = "password";
 
         const login = {
             username: username,
@@ -47,11 +55,12 @@ export default function Login({ user, setUser, setSessionPassword, onLogin }) {
         .post("http://localhost:8080/login", login)    
         .then((response) => {
             
-        console.log(response.data);
+        console.log(response);
           if (response.status === 200) {
             axios
               .get(`http://localhost:8080/user/${response.data.id}`)
               .then((res) => {
+                console.log(res.data);
                 setUser({ ...res.data, id: response.data.id });
                 setSessionPassword(password);
               })
