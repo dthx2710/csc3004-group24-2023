@@ -4,6 +4,8 @@ package user_service;
 
 option go_package = "csc3004-group24-2023/proto";
 
+import "types.proto";
+
 service User{
     rpc LoginUser(LoginRequest) returns (LoginResponse) {}
     rpc GetUser(UserRequest) returns (UserResponse) {}
