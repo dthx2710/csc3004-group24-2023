@@ -11,7 +11,8 @@ import PollResults from './PollResults';
 
 const App = () => {
   //const username = 'TestUser'; // Update this based on your authentication system
-
+  const [user, setUser] = useState(null);
+  const [sessionPassword, setSessionPassword] = useState(null);
   const [username, setUsername] = useState(null);
 
   const handleLogin = (user) => {
@@ -22,7 +23,7 @@ const App = () => {
     <Router>
       <AnimatePresence wait>
         <Routes>
-          <Route path="/" element={<LoginPage onLogin={handleLogin} />} />
+          <Route path="/" element={<LoginPage user={user} setUser={setUser} setSessionPassword={setSessionPassword} onLogin={handleLogin} />} />
           <Route path="/userhome" element={
             <Layout username={username}><UserHomePage /></Layout>
           } />

@@ -36,8 +36,6 @@ message UserRequest{
 
 message UserResponse{
     string username = 1;
-    string name = 2;
-    string email = 3;
-    string address = 4;
-    string grc = 5;
+    string user_type = 2;
+    string grc = 3;
 }
