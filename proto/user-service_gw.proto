@@ -35,7 +35,5 @@ message UserRequest{
 }
 
 message UserResponse{
-    string username = 1;
-    string user_type = 2;
-    string grc = 3;
+    common.UserInfo user_info = 1;
 }
