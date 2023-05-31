@@ -1,0 +1,19 @@
+# Stage 1: Build stage
+FROM golang:1.20 AS builder
+WORKDIR /app
+COPY . .
+
+# Service environment variables
+ENV USER_SERVICE_URL=localhost:50051
+
+RUN CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o main.exe
+
+# Stage 2: Extraction stage
+FROM alpine
+WORKDIR /extracted
+COPY --from=builder /app/main.exe .
+CMD ["cp", "/extracted/main.exe", "/host"]
+
+# Build the image commands
+# docker build -f DockerBuildGateway -t build-gateway .
+# docker run --rm -v .:/host build-gateway

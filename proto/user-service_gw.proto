@@ -5,6 +5,7 @@ package user_service;
 option go_package = "csc3004-group24-2023/proto";
 
 import "google/api/annotations.proto";
+import "types.proto";
 
 service User{
     rpc LoginUser(LoginRequest) returns (LoginResponse) {
@@ -34,7 +35,5 @@ message UserRequest{
 }
 
 message UserResponse{
-    string username = 1;
-    string user_type = 2;
-    string grc = 3;
+    common.UserInfo user_info = 1;
 }
