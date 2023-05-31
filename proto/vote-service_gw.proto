@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package result_service;
+
+option go_package = "csc3004-group24-2023/proto";
+
+service Vote{
+    rpc SubmitVote(SubmitRequest) returns (SubmitResponse) {
+        option (google.api.http) = {
+            post: "/api/vote"
+            body: "*"
+        };
+    }
+}
+
+message SubmitRequest{
+    common.VoteInfo vote_info = 1;
+}
+
+message SubmitResponse{
+    bool success = 1;
+    string message = 2;
+}

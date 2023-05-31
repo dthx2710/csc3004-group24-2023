@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package poll_service;
+
+option go_package = "csc3004-group24-2023/proto";
+
+import "types.proto";
+
+service Poll{
+    rpc CreatePoll(CreateRequest) returns (CreateResponse) {
+        option (google.api.http) = {
+            post: "/polls"
+            body: "*"
+        };
+    }
+    rpc DeletePoll(DeleteRequest) returns (DeleteResponse) {
+        option (google.api.http) = {
+            delete: "/polls/{poll_id}"
+        };
+    }
+    rpc GetPoll(GetRequest) returns (GetResponse) {
+        option (google.api.http) = {
+            get: "/polls/{poll_id}"
+        };
+    }
+    rpc GetAllPolls(GetAllRequest) returns (GetAllResponse) {
+        option (google.api.http) = {
+            get: "/polls"
+        };
+    }
+}
+
+message CreateRequest{
+    common.PollInfo poll_info = 1;
+    repeated string options = 2;
+}
+
+message CreateResponse{
+    string poll_id = 1;
+    bool success = 2;
+}
+
+message DeleteRequest{
+    string poll_id = 1;
+}
+
+message DeleteResponse{
+    bool success = 1;
+}
+
+message GetRequest{
+    string poll_id = 1;
+}
+
+message GetResponse{
+    common.PollInfo poll_info = 1;
+    repeated string options_id = 2;
+    repeated string options = 3;
+}
+
+message GetAllRequest{
+    string poll_id = 1;
+}
+
+message GetAllResponse{
+    repeated common.PollInfo poll_list = 1;
+}
