@@ -8,15 +8,16 @@ datasource db {
 }
 
 model constituency {
-  constituency_id   String @id @db.Char(36)
-  constituency_name String @db.VarChar(100)
-  constituency_type String @db.VarChar(100)
-  key_value         String @db.VarChar(10)
+  constituency_id   String  @id @db.Char(36)
+  constituency_name String  @db.VarChar(100)
+  constituency_type String  @db.VarChar(100)
+  key_value         String? @db.VarChar(10)
 }
 
 model options {
-  option_id   String @id @db.Char(36)
-  option_name String @db.VarChar(100)
+  option_id   String  @id @db.Char(36)
+  option_name String  @db.VarChar(100)
+  poll_id     String? @db.Char(36)
 }
 
 model poll {
