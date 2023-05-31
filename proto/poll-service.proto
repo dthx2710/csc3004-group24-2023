@@ -13,50 +13,38 @@ service Poll{
     rpc GetAllPolls(GetAllRequest) returns (GetAllResponse) {}
 }
 
-message Poll{
-    string start_time = 1;
-    string end_time = 2;
-    string status = 3;
-    string constituency = 4;
-    string title = 5;
-    string description = 6;
-    string compulsory = 7;
-}
-
 message CreateRequest{
-    Poll poll_info = 1;
+    common.PollInfo poll_info = 1;
     repeated string options = 2;
 }
 
 message CreateResponse{
-    uint64 poll_id = 1;
-    string success = 2;
+    string poll_id = 1;
+    bool success = 2;
 }
 
 message DeleteRequest{
-    uint64 poll_id = 1;
+    string poll_id = 1;
 }
 
 message DeleteResponse{
-    string success = 1;
+    bool success = 1;
 }
 
 message GetRequest{
-    uint64 poll_id = 1;
-    uint64 user_id = 2;
+    string poll_id = 1;
 }
 
 message GetResponse{
-    Poll poll_info = 1;
+    common.PollInfo poll_info = 1;
     repeated string options_id = 2;
     repeated string options = 3;
 }
 
 message GetAllRequest{
-    uint64 poll_id = 1;
-    uint64 user_id = 2;
+    string poll_id = 1;
 }
 
 message GetAllResponse{
-    repeated Poll poll_list = 1;
+    repeated common.PollInfo poll_list = 1;
 }

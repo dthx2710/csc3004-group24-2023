@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package result_service;
+
+option go_package = "csc3004-group24-2023/proto";
+
+import "types.proto";
+
+service Result{
+    rpc GetResult(GetRequest) returns (GetResponse) {
+        option (google.api.http) = {
+            get: "/result/{poll_id}"
+        };
+    }
+}
+
+message GetRequest{
+    string poll_id = 1;
+}
+
+message GetResponse{
+    common.ResultInfo result_info = 1;
+}
