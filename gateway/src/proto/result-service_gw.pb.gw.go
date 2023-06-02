@@ -32,7 +32,7 @@ var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
 func request_Result_GetResult_0(ctx context.Context, marshaler runtime.Marshaler, client ResultClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetRequest
+	var protoReq GetResultRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -42,14 +42,14 @@ func request_Result_GetResult_0(ctx context.Context, marshaler runtime.Marshaler
 		_   = err
 	)
 
-	val, ok = pathParams["poll_id"]
+	val, ok = pathParams["Result_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "poll_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Result_id")
 	}
 
-	protoReq.PollId, err = runtime.String(val)
+	protoReq.ResultId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "poll_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Result_id", err)
 	}
 
 	msg, err := client.GetResult(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -58,7 +58,7 @@ func request_Result_GetResult_0(ctx context.Context, marshaler runtime.Marshaler
 }
 
 func local_request_Result_GetResult_0(ctx context.Context, marshaler runtime.Marshaler, server ResultServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetRequest
+	var protoReq GetResultRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -68,14 +68,14 @@ func local_request_Result_GetResult_0(ctx context.Context, marshaler runtime.Mar
 		_   = err
 	)
 
-	val, ok = pathParams["poll_id"]
+	val, ok = pathParams["Result_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "poll_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Result_id")
 	}
 
-	protoReq.PollId, err = runtime.String(val)
+	protoReq.ResultId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "poll_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Result_id", err)
 	}
 
 	msg, err := server.GetResult(ctx, &protoReq)
@@ -97,7 +97,7 @@ func RegisterResultHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/result_service.Result/GetResult", runtime.WithHTTPPathPattern("/result/{poll_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/result_service.Result/GetResult", runtime.WithHTTPPathPattern("/result/{Result_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -161,7 +161,7 @@ func RegisterResultHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/result_service.Result/GetResult", runtime.WithHTTPPathPattern("/result/{poll_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/result_service.Result/GetResult", runtime.WithHTTPPathPattern("/result/{Result_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -181,7 +181,7 @@ func RegisterResultHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 }
 
 var (
-	pattern_Result_GetResult_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"result", "poll_id"}, ""))
+	pattern_Result_GetResult_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"result", "Result_id"}, ""))
 )
 
 var (

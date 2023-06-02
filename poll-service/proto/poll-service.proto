@@ -7,44 +7,44 @@ option go_package = "csc3004-group24-2023/proto";
 import "types.proto";
 
 service Poll{
-    rpc CreatePoll(CreateRequest) returns (CreateResponse) {}
-    rpc DeletePoll(DeleteRequest) returns (DeleteResponse) {}
-    rpc GetPoll(GetRequest) returns (GetResponse) {}
-    rpc GetAllPolls(GetAllRequest) returns (GetAllResponse) {}
+    rpc CreatePoll(CreatePollRequest) returns (CreatePollResponse) {}
+    rpc DeletePoll(DeletePollRequest) returns (DeletePollResponse) {}
+    rpc GetPoll(GetPollRequest) returns (GetPollResponse) {}
+    rpc GetAllPolls(GetAllPollRequest) returns (GetAllPollResponse) {}
 }
 
-message CreateRequest{
+message CreatePollRequest{
     common.PollInfo poll_info = 1;
     repeated string options = 2;
 }
 
-message CreateResponse{
+message CreatePollResponse{
     string poll_id = 1;
     bool success = 2;
 }
 
-message DeleteRequest{
+message DeletePollRequest{
     string poll_id = 1;
 }
 
-message DeleteResponse{
+message DeletePollResponse{
     bool success = 1;
 }
 
-message GetRequest{
+message GetPollRequest{
     string poll_id = 1;
 }
 
-message GetResponse{
+message GetPollResponse{
     common.PollInfo poll_info = 1;
     repeated string options_id = 2;
     repeated string options = 3;
 }
 
-message GetAllRequest{
+message GetAllPollRequest{
     string poll_id = 1;
 }
 
-message GetAllResponse{
+message GetAllPollResponse{
     repeated common.PollInfo poll_list = 1;
 }

@@ -26,7 +26,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ResultClient interface {
-	GetResult(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
+	GetResult(ctx context.Context, in *GetResultRequest, opts ...grpc.CallOption) (*GetResultResponse, error)
 }
 
 type resultClient struct {
@@ -37,8 +37,8 @@ func NewResultClient(cc grpc.ClientConnInterface) ResultClient {
 	return &resultClient{cc}
 }
 
-func (c *resultClient) GetResult(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error) {
-	out := new(GetResponse)
+func (c *resultClient) GetResult(ctx context.Context, in *GetResultRequest, opts ...grpc.CallOption) (*GetResultResponse, error) {
+	out := new(GetResultResponse)
 	err := c.cc.Invoke(ctx, Result_GetResult_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -50,7 +50,7 @@ func (c *resultClient) GetResult(ctx context.Context, in *GetRequest, opts ...gr
 // All implementations must embed UnimplementedResultServer
 // for forward compatibility
 type ResultServer interface {
-	GetResult(context.Context, *GetRequest) (*GetResponse, error)
+	GetResult(context.Context, *GetResultRequest) (*GetResultResponse, error)
 	mustEmbedUnimplementedResultServer()
 }
 
@@ -58,7 +58,7 @@ type ResultServer interface {
 type UnimplementedResultServer struct {
 }
 
-func (UnimplementedResultServer) GetResult(context.Context, *GetRequest) (*GetResponse, error) {
+func (UnimplementedResultServer) GetResult(context.Context, *GetResultRequest) (*GetResultResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetResult not implemented")
 }
 func (UnimplementedResultServer) mustEmbedUnimplementedResultServer() {}
@@ -75,7 +75,7 @@ func RegisterResultServer(s grpc.ServiceRegistrar, srv ResultServer) {
 }
 
 func _Result_GetResult_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetRequest)
+	in := new(GetResultRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -87,7 +87,7 @@ func _Result_GetResult_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: Result_GetResult_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ResultServer).GetResult(ctx, req.(*GetRequest))
+		return srv.(ResultServer).GetResult(ctx, req.(*GetResultRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

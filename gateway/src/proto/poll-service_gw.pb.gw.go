@@ -32,7 +32,7 @@ var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
 func request_Poll_CreatePoll_0(ctx context.Context, marshaler runtime.Marshaler, client PollClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CreateRequest
+	var protoReq CreatePollRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -49,7 +49,7 @@ func request_Poll_CreatePoll_0(ctx context.Context, marshaler runtime.Marshaler,
 }
 
 func local_request_Poll_CreatePoll_0(ctx context.Context, marshaler runtime.Marshaler, server PollServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CreateRequest
+	var protoReq CreatePollRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -66,7 +66,7 @@ func local_request_Poll_CreatePoll_0(ctx context.Context, marshaler runtime.Mars
 }
 
 func request_Poll_DeletePoll_0(ctx context.Context, marshaler runtime.Marshaler, client PollClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq DeleteRequest
+	var protoReq DeletePollRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -92,7 +92,7 @@ func request_Poll_DeletePoll_0(ctx context.Context, marshaler runtime.Marshaler,
 }
 
 func local_request_Poll_DeletePoll_0(ctx context.Context, marshaler runtime.Marshaler, server PollServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq DeleteRequest
+	var protoReq DeletePollRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -118,7 +118,7 @@ func local_request_Poll_DeletePoll_0(ctx context.Context, marshaler runtime.Mars
 }
 
 func request_Poll_GetPoll_0(ctx context.Context, marshaler runtime.Marshaler, client PollClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetRequest
+	var protoReq GetPollRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -144,7 +144,7 @@ func request_Poll_GetPoll_0(ctx context.Context, marshaler runtime.Marshaler, cl
 }
 
 func local_request_Poll_GetPoll_0(ctx context.Context, marshaler runtime.Marshaler, server PollServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetRequest
+	var protoReq GetPollRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -174,7 +174,7 @@ var (
 )
 
 func request_Poll_GetAllPolls_0(ctx context.Context, marshaler runtime.Marshaler, client PollClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetAllRequest
+	var protoReq GetAllPollRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -190,7 +190,7 @@ func request_Poll_GetAllPolls_0(ctx context.Context, marshaler runtime.Marshaler
 }
 
 func local_request_Poll_GetAllPolls_0(ctx context.Context, marshaler runtime.Marshaler, server PollServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetAllRequest
+	var protoReq GetAllPollRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {

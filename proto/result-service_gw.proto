@@ -8,17 +8,17 @@ import "google/api/annotations.proto";
 import "types.proto";
 
 service Result{
-    rpc GetResult(GetRequest) returns (GetResponse) {
+    rpc GetResult(GetResultRequest) returns (GetResultResponse) {
         option (google.api.http) = {
-            get: "/result/{poll_id}"
+            get: "/result/{Result_id}"
         };
     }
 }
 
-message GetRequest{
-    string poll_id = 1;
+message GetResultRequest{
+    string Result_id = 1;
 }
 
-message GetResponse{
+message GetResultResponse{
     common.ResultInfo result_info = 1;
 }

@@ -29,10 +29,10 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PollClient interface {
-	CreatePoll(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
-	DeletePoll(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
-	GetPoll(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
-	GetAllPolls(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllResponse, error)
+	CreatePoll(ctx context.Context, in *CreatePollRequest, opts ...grpc.CallOption) (*CreatePollResponse, error)
+	DeletePoll(ctx context.Context, in *DeletePollRequest, opts ...grpc.CallOption) (*DeletePollResponse, error)
+	GetPoll(ctx context.Context, in *GetPollRequest, opts ...grpc.CallOption) (*GetPollResponse, error)
+	GetAllPolls(ctx context.Context, in *GetAllPollRequest, opts ...grpc.CallOption) (*GetAllPollResponse, error)
 }
 
 type pollClient struct {
@@ -43,8 +43,8 @@ func NewPollClient(cc grpc.ClientConnInterface) PollClient {
 	return &pollClient{cc}
 }
 
-func (c *pollClient) CreatePoll(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error) {
-	out := new(CreateResponse)
+func (c *pollClient) CreatePoll(ctx context.Context, in *CreatePollRequest, opts ...grpc.CallOption) (*CreatePollResponse, error) {
+	out := new(CreatePollResponse)
 	err := c.cc.Invoke(ctx, Poll_CreatePoll_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -52,8 +52,8 @@ func (c *pollClient) CreatePoll(ctx context.Context, in *CreateRequest, opts ...
 	return out, nil
 }
 
-func (c *pollClient) DeletePoll(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error) {
-	out := new(DeleteResponse)
+func (c *pollClient) DeletePoll(ctx context.Context, in *DeletePollRequest, opts ...grpc.CallOption) (*DeletePollResponse, error) {
+	out := new(DeletePollResponse)
 	err := c.cc.Invoke(ctx, Poll_DeletePoll_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -61,8 +61,8 @@ func (c *pollClient) DeletePoll(ctx context.Context, in *DeleteRequest, opts ...
 	return out, nil
 }
 
-func (c *pollClient) GetPoll(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error) {
-	out := new(GetResponse)
+func (c *pollClient) GetPoll(ctx context.Context, in *GetPollRequest, opts ...grpc.CallOption) (*GetPollResponse, error) {
+	out := new(GetPollResponse)
 	err := c.cc.Invoke(ctx, Poll_GetPoll_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -70,8 +70,8 @@ func (c *pollClient) GetPoll(ctx context.Context, in *GetRequest, opts ...grpc.C
 	return out, nil
 }
 
-func (c *pollClient) GetAllPolls(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllResponse, error) {
-	out := new(GetAllResponse)
+func (c *pollClient) GetAllPolls(ctx context.Context, in *GetAllPollRequest, opts ...grpc.CallOption) (*GetAllPollResponse, error) {
+	out := new(GetAllPollResponse)
 	err := c.cc.Invoke(ctx, Poll_GetAllPolls_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -83,10 +83,10 @@ func (c *pollClient) GetAllPolls(ctx context.Context, in *GetAllRequest, opts ..
 // All implementations must embed UnimplementedPollServer
 // for forward compatibility
 type PollServer interface {
-	CreatePoll(context.Context, *CreateRequest) (*CreateResponse, error)
-	DeletePoll(context.Context, *DeleteRequest) (*DeleteResponse, error)
-	GetPoll(context.Context, *GetRequest) (*GetResponse, error)
-	GetAllPolls(context.Context, *GetAllRequest) (*GetAllResponse, error)
+	CreatePoll(context.Context, *CreatePollRequest) (*CreatePollResponse, error)
+	DeletePoll(context.Context, *DeletePollRequest) (*DeletePollResponse, error)
+	GetPoll(context.Context, *GetPollRequest) (*GetPollResponse, error)
+	GetAllPolls(context.Context, *GetAllPollRequest) (*GetAllPollResponse, error)
 	mustEmbedUnimplementedPollServer()
 }
 
@@ -94,16 +94,16 @@ type PollServer interface {
 type UnimplementedPollServer struct {
 }
 
-func (UnimplementedPollServer) CreatePoll(context.Context, *CreateRequest) (*CreateResponse, error) {
+func (UnimplementedPollServer) CreatePoll(context.Context, *CreatePollRequest) (*CreatePollResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreatePoll not implemented")
 }
-func (UnimplementedPollServer) DeletePoll(context.Context, *DeleteRequest) (*DeleteResponse, error) {
+func (UnimplementedPollServer) DeletePoll(context.Context, *DeletePollRequest) (*DeletePollResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeletePoll not implemented")
 }
-func (UnimplementedPollServer) GetPoll(context.Context, *GetRequest) (*GetResponse, error) {
+func (UnimplementedPollServer) GetPoll(context.Context, *GetPollRequest) (*GetPollResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPoll not implemented")
 }
-func (UnimplementedPollServer) GetAllPolls(context.Context, *GetAllRequest) (*GetAllResponse, error) {
+func (UnimplementedPollServer) GetAllPolls(context.Context, *GetAllPollRequest) (*GetAllPollResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllPolls not implemented")
 }
 func (UnimplementedPollServer) mustEmbedUnimplementedPollServer() {}
@@ -120,7 +120,7 @@ func RegisterPollServer(s grpc.ServiceRegistrar, srv PollServer) {
 }
 
 func _Poll_CreatePoll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateRequest)
+	in := new(CreatePollRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -132,13 +132,13 @@ func _Poll_CreatePoll_Handler(srv interface{}, ctx context.Context, dec func(int
 		FullMethod: Poll_CreatePoll_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PollServer).CreatePoll(ctx, req.(*CreateRequest))
+		return srv.(PollServer).CreatePoll(ctx, req.(*CreatePollRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Poll_DeletePoll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteRequest)
+	in := new(DeletePollRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -150,13 +150,13 @@ func _Poll_DeletePoll_Handler(srv interface{}, ctx context.Context, dec func(int
 		FullMethod: Poll_DeletePoll_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PollServer).DeletePoll(ctx, req.(*DeleteRequest))
+		return srv.(PollServer).DeletePoll(ctx, req.(*DeletePollRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Poll_GetPoll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetRequest)
+	in := new(GetPollRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -168,13 +168,13 @@ func _Poll_GetPoll_Handler(srv interface{}, ctx context.Context, dec func(interf
 		FullMethod: Poll_GetPoll_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PollServer).GetPoll(ctx, req.(*GetRequest))
+		return srv.(PollServer).GetPoll(ctx, req.(*GetPollRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Poll_GetAllPolls_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetAllRequest)
+	in := new(GetAllPollRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -186,7 +186,7 @@ func _Poll_GetAllPolls_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: Poll_GetAllPolls_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PollServer).GetAllPolls(ctx, req.(*GetAllRequest))
+		return srv.(PollServer).GetAllPolls(ctx, req.(*GetAllPollRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

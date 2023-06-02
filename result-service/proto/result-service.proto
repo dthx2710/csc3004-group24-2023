@@ -7,13 +7,13 @@ option go_package = "csc3004-group24-2023/proto";
 import "types.proto";
 
 service Result{
-    rpc GetResult(GetRequest) returns (GetResponse) {}
+    rpc GetResult(GetResultRequest) returns (GetResultResponse) {}
 }
 
-message GetRequest{
+message GetResultRequest{
     string poll_id = 1;
 }
 
-message GetResponse{
+message GetResultResponse{
     common.ResultInfo result_info = 1;
 }
