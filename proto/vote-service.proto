@@ -4,6 +4,8 @@ package result_service;
 
 option go_package = "csc3004-group24-2023/proto";
 
+import "types.proto";
+
 service Vote{
     rpc SubmitVote(SubmitRequest) returns (SubmitResponse) {}
 }
