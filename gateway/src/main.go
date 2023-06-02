@@ -39,9 +39,19 @@ type UserServer struct {
 
 func newGateway(ctx context.Context, opts ...runtime.ServeMuxOption) (http.Handler, error) {
 	userEndpoint := flag.String("user_endpoint", os.Getenv("USER_SERVICE_URL"), "endpoint of User Service")
+	pollEndpoint := flag.String("poll_endpoint", os.Getenv("POLL_SERVICE_URL"), "endpoint of Poll Service")
+	resultEndpoint := flag.String("result_endpoint", os.Getenv("RESULT_SERVICE_URL"), "endpoint of Result Service")
 	mux := runtime.NewServeMux(opts...)
 	dialOpts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 	err := gw.RegisterUserHandlerFromEndpoint(ctx, mux, *userEndpoint, dialOpts) // register user service
+	if err != nil {
+		return nil, err
+	}
+	err = gw.RegisterPollHandlerFromEndpoint(ctx, mux, *pollEndpoint, dialOpts) // register poll service
+	if err != nil {
+		return nil, err
+	}
+	err = gw.RegisterResultHandlerFromEndpoint(ctx, mux, *resultEndpoint, dialOpts) // register result service
 	if err != nil {
 		return nil, err
 	}
