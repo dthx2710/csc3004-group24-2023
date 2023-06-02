@@ -1,10 +1,22 @@
+# Use a Node.js base image
 FROM node:bullseye
+
+# Set the working directory inside the container
+WORKDIR /app
+
 ENV NODE_ENV=production
-WORKDIR /usr/src/app
-COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
-RUN npm install --production --silent && mv node_modules ../
+
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the entire project directory to the working directory
 COPY . .
+ENV VOTE_PRODUCER_SERVICE_URL=localhost:50054
+# Expose the port on which your application listens
 EXPOSE 50054
-RUN chown -R node /usr/src/app
-USER node
+
+# Run the npm start command
 CMD ["npm", "start"]
