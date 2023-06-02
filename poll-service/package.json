@@ -1,11 +1,11 @@
 {
-    "name": "session-service",
+    "name": "poll-service",
     "version": "1.0.0",
-    "description": "Service for User session",
+    "description": "Service for Polls",
     "main": "user.js",
     "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",
-      "start": "node session.js"
+      "start": "node poll.js"
     },
     "author": "",
     "license": "ISC",
