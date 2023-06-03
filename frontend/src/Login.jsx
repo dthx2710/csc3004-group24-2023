@@ -26,12 +26,12 @@ export default function Login({ user, setUser, setSessionPassword, onLogin }) {
 
     React.useEffect(() => {
         try {
-            if (user.name == "admin") {
-                console.log("User:", user);
+            if (user.userInfo.userType == "admin") {
+                onLogin(user.userInfo.username);
                 navigate("/adminhome");
             }
-            else if (user.name == "user") {
-                console.log("User:", user);
+            else if (user.userInfo.userType == "user") {
+                onLogin(user.userInfo.username);
                 navigate("/userhome");
             }
         } catch (error) {
@@ -54,14 +54,12 @@ export default function Login({ user, setUser, setSessionPassword, onLogin }) {
         axios
         .post("http://localhost:8080/login", login)    
         .then((response) => {
-            
-        console.log(response);
           if (response.status === 200) {
             axios
               .get(`http://localhost:8080/user/${response.data.id}`)
               .then((res) => {
-                console.log(res.data);
-                setUser({ ...res.data, id: response.data.id });
+                console.log(res);
+                setUser({ ...res.data });
                 setSessionPassword(password);
               })
               .catch((err) => {
