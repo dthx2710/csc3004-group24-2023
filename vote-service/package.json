@@ -1,11 +1,13 @@
 {
-  "name": "vote-consumer-service",
+  "name": "vote-service",
   "version": "1.0.0",
-  "description": "Service for vote consumer",
+  "description": "Service for Vote",
   "main": "vote_consumer.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node vote_consumer.js"
+    "start:producer": "node producer/index.js",
+    "start:consumer": "node consumer/index.js",
+    "start": "npm run start:producer && npm run start:consumer"
   },
   "author": "",
   "license": "ISC",
@@ -14,6 +16,9 @@
     "@grpc/proto-loader": "^0.7.5",
     "@prisma/client": "^4.14.1",
     "dotenv": "^16.0.3",
-    "bcrypt": "^5.0.1"
+    "bcrypt": "^5.0.1",
+
+    "avsc": "^5.6.2",
+    "node-rdkafka": "^2.10.1"
   }
 }
