@@ -14,9 +14,9 @@ const packageDefinition = protoLoader.loadSync("proto/user-service.proto", {
 
 const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
 const userProto = protoDescriptor.user_service;
+const prisma = new PrismaClient()
 
 async function Login(username, password) {
-  const prisma = new PrismaClient()
   const userDetails = await prisma.users.findFirst({
     where: {
         username: username
@@ -40,7 +40,7 @@ async function Login(username, password) {
 
     if (result) {
       console.log("Login successful");
-      return userDetails;
+      return userDetails.user_id;
     } else {
       return null;
     }
@@ -53,7 +53,7 @@ async function Login(username, password) {
 function LoginUser(call, callback) {
   Login(call.request.username, call.request.password)
     .then(id => {
-      callback(null, id);
+      callback(null, { id: id });
     })
     .catch(error => {
       console.error(error);
@@ -61,15 +61,13 @@ function LoginUser(call, callback) {
     });
 }
 
-
-async function userInfo(id) {
-  if (!id) {
+async function userInfo(user_id) {
+  if (!user_id) {
     return null;
   }
-  const prisma = new PrismaClient()
   const userDetails = await prisma.users.findFirst({
     where: {
-        id: id
+      user_id: user_id
     },
   })
   prisma.$disconnect()
@@ -85,7 +83,7 @@ async function userInfo(id) {
 function GetUser(call, callback) {
   userInfo(call.request.id)
     .then(userDetails => {
-      callback(null, userDetails);
+      callback(null, {user_info: userDetails });
     })
     .catch(error => {
       console.error(error);
