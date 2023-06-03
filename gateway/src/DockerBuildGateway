@@ -16,4 +16,4 @@ CMD ["cp", "/extracted/main.exe", "/host"]
 
 # Build the image commands
 # docker build -f DockerBuildGateway -t build-gateway .
-# docker run --rm -v .:/host build-gateway
+# docker run --rm -v ".:/host" build-gateway
