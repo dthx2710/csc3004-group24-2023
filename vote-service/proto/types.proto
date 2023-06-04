@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package common;
+
+option go_package = "csc3004-group24-2023/proto";
+
+message UserInfo{
+    string user_id = 1;
+    string username = 2;
+    string user_type = 3;
+    string constituency_id = 4;
+}
+
+message PollInfo{
+    string start_time = 1;
+    string end_time = 2;
+    string status = 3;
+    string constituency = 4;
+    string title = 5;
+    string description = 6;
+    string compulsory = 7;
+}
+
+message ResultInfo{
+    string poll_id = 1;
+    repeated string vote_tally = 2;
+    repeated string option_names = 3;
+}
+
+message VoteInfo{
+    string poll_id = 1;
+    string user_id = 2;
+    string option_id = 3;
+}
