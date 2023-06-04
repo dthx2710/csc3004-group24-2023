@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "Service for Vote",
   "main": "vote_consumer.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:producer": "node producer/index.js",
-    "start:consumer": "node consumer/index.js",
+    "start:producer": "node vote_producer.js",
+    "start:consumer": "node vote_consumer.js",
     "start": "npm run start:producer && npm run start:consumer"
   },
   "author": "",
@@ -15,10 +16,9 @@
     "@grpc/grpc-js": "^1.8.12",
     "@grpc/proto-loader": "^0.7.5",
     "@prisma/client": "^4.14.1",
-    "dotenv": "^16.0.3",
     "bcrypt": "^5.0.1",
-
-    "avsc": "^5.6.2",
-    "node-rdkafka": "^2.10.1"
+    "dotenv": "^16.0.3",
+    "kafkajs": "^2.2.4",
+    "avsc": "^5.6.2"
   }
 }
