@@ -22,15 +22,36 @@ await consumer.run({
   eachMessage: async ({ topic, partition, message }) => {
     const event = voteType.fromBuffer(message.value);
     console.log("Received message:", message.timestamp, event);
-    // save event to database
+
+    // destructure object
     const { poll_id, option_id, user_id } = event;
+
+    // check if user has already voted in the same poll, if so  do not save vote
+    const existingVote = await prisma.votes.findFirst({
+      where: {
+        AND: [
+          { poll_id: poll_id },
+          { user_id: user_id },
+        ],
+      },
+    });
+    if (existingVote) {
+      console.log("User has already voted in this poll");
+      return;
+    }
+
+    // convert timestamp to Date object
+    const timestamp = BigInt(message.timestamp);
+    const formattedTimestamp = new Date(Number(timestamp));
+
+    // save event to database
     await prisma.votes
       .create({
         data: {
           poll_id: poll_id,
           option_id: option_id,
           user_id: user_id,
-          vote_time: message.timestamp,
+          vote_time: formattedTimestamp,
         },
       })
       .then(() => {

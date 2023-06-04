@@ -5,6 +5,9 @@ import protoLoader from "@grpc/proto-loader";
 import dotenv from "dotenv";
 dotenv.config();
 
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
+
 const packageDefinition = protoLoader.loadSync("proto/vote-service.proto", {
   keepCase: true,
   longs: String,
@@ -29,6 +32,18 @@ console.log("Connected to kafka");
 
 const SubmitVote = async (call, callback) => {
   console.log("Received grpc request:", call.request);
+  // if user has already voted in the same poll, do not save vote
+  const existingVote = await prisma.votes.findFirst({
+    where: {
+      poll_id: call.request.vote_info.poll_id,
+      user_id: call.request.vote_info.user_id,
+    },
+  });
+  if (existingVote) {
+    console.log("User has already voted in this poll");
+    callback(null, { success: false, message: "User has already voted" });
+    return;
+  }
   const success = await queueVote(call.request);
   if (success) {
     callback(null, { success: true, message: "Vote submitted" });
