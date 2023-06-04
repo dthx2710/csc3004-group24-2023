@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from './Navbar';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import UserHomePage from './UserHomePage';
 
 const theme = createTheme({
   palette: {
@@ -10,7 +11,7 @@ const theme = createTheme({
   },
 });
 
-const Layout = ({ children, username }) => {
+const Layout = ({ children, username}) => {
   return (
     <ThemeProvider theme={theme}>
       <Navbar username={username} />

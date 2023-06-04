@@ -14,9 +14,11 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [sessionPassword, setSessionPassword] = useState(null);
   const [username, setUsername] = useState(null);
+  const [constituency, setconstituency] = useState(null);
 
-  const handleLogin = (user) => {
+  const handleLogin = (user, user_constituency) => {
     setUsername(user);
+    setconstituency(user_constituency);
   };
 
   return (
@@ -25,19 +27,19 @@ const App = () => {
         <Routes>
           <Route path="/" element={<LoginPage user={user} setUser={setUser} setSessionPassword={setSessionPassword} onLogin={handleLogin} />} />
           <Route path="/userhome" element={
-            <Layout username={username}><UserHomePage /></Layout>
+            <Layout username={username}><UserHomePage constituency={constituency}/></Layout>
           } />
           <Route path="/adminhome" element={
-            <Layout username={username}><AdminHomePage /></Layout>
+            <Layout username={username}><AdminHomePage constituency={constituency} /></Layout>
           } />
           <Route path="/pollform" element={
-            <Layout username={username}><PollForm /></Layout>
+            <Layout username={username} ><PollForm constituency={constituency} /></Layout>
           } />
           <Route path="/pollvoteform/:title/:description" element={
-            <Layout username={username}><PollVoteForm /></Layout>
+            <Layout username={username} ><PollVoteForm constituency={constituency} /></Layout>
           } />
           <Route path="/pollresults/:title" element={
-            <Layout username={username}><PollResults /></Layout>
+            <Layout username={username} ><PollResults constituency={constituency} /></Layout>
           } />
         </Routes>
       </AnimatePresence>

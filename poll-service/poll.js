@@ -15,8 +15,9 @@ const packageDefinition = protoLoader.loadSync("proto/poll-service.proto", {
 const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
 const pollProto = protoDescriptor.poll_service;
 
+const prisma = new PrismaClient();
+
 async function pollCreate(pollInfo, options) {
-  const prisma = new PrismaClient();
   const poll = await prisma.poll.create({
     data: {
       ...pollInfo,
@@ -33,7 +34,6 @@ async function pollCreate(pollInfo, options) {
 }
 
 async function pollDelete(id) {
-  const prisma = new PrismaClient();
   await prisma.poll.delete({
     where: {
       id: id,
@@ -43,7 +43,6 @@ async function pollDelete(id) {
 }
 
 async function pollInfo(id) {
-  const prisma = new PrismaClient();
   const poll = await prisma.poll.findUnique({
     where: {
       id: id,
@@ -61,12 +60,7 @@ async function pollInfo(id) {
 }
 
 async function allPollInfo() {
-  const prisma = new PrismaClient();
-  const polls = await prisma.poll.findMany({
-    include: {
-      options: true,
-    },
-  });
+  const polls = await prisma.poll.findMany();
   await prisma.$disconnect();
   return polls;
 }
@@ -105,6 +99,7 @@ function GetPoll(call, callback) {
 }
 
 function GetAllPolls(call, callback) {
+  console.log(call.request.poll_id);
   allPollInfo()
     .then((pollsArray) => {
       callback(null, { poll_list: pollsArray });
@@ -126,7 +121,7 @@ function getServer() {
   return server;
 }
 
-const port = process.env.POLL_SERVICE_URL.split(":")[1] || 50051;
+const port = process.env.POLL_SERVICE_URL.split(":")[1] || 50052;
 const pollServer = getServer();
 pollServer.bindAsync(
   process.env.POLL_SERVICE_URL,

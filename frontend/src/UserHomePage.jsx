@@ -1,20 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Container, Typography, Button, ButtonGroup } from '@mui/material';
 import { motion } from 'framer-motion';
 import PollList from './PollList';
+import axios from 'axios';
 
-export default function UserHomePage() {
+
+export default function UserHomePage({ constituency }) {
   const [pollStatus, setPollStatus] = useState('ongoing');
 
-  const polls = [
-    { title: 'Ang Mo Kio GRC - GE2020', description: 'Description for poll 1', isCompulsory: false, status: 'ongoing' },
-    { title: 'Jurong GRC - GE2020', description: 'Description for poll 1', isCompulsory: true, status: 'ongoing' },
-    { title: 'Marsiling-Yew Tee GRC - GE2020', description: 'Description for poll 1', isCompulsory: false, status: 'ongoing' },
-    { title: 'Bukit Panjang SMC - GE2020', description: 'Description for poll 2', isCompulsory: true, status: 'ended' },
-    // other polls...
-  ];
+  const [polls, setPolls] = useState([]);
 
-  const filteredPolls = polls.filter(poll => poll.status === pollStatus);
+  useEffect(() => {
+    if(constituency){
+      axios.get('http://localhost:8080/polls')
+      .then(response => {
+          for (let i = 0; i < response.data.pollList.length; i++) {
+            if(constituency === response.data.pollList[i].constituency){
+              polls.push({title: response.data.pollList[i].title, description: response.data.pollList[i].description, isCompulsory: JSON.parse(response.data.pollList[i].compulsory), status: response.data.pollList[i].status, endTime: response.data.pollList[i].endTime});
+              setPolls([...polls]);
+            }
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
+  }, []);
+        
+  const sortedPolls = [...polls].sort((a, b) => {
+    return new Date(a.endTime) - new Date(b.endTime);
+  });
+
+  // const polls = [
+  //   { title: 'Ang Mo Kio GRC - GE2020', description: 'Description for poll 1', isCompulsory: false, status: 'ongoing' },
+  //   { title: 'Jurong GRC - GE2020', description: 'Description for poll 1', isCompulsory: true, status: 'ongoing' },
+  //   { title: 'Marsiling-Yew Tee GRC - GE2020', description: 'Description for poll 1', isCompulsory: false, status: 'ongoing' },
+  //   { title: 'Bukit Panjang SMC - GE2020', description: 'Description for poll 2', isCompulsory: true, status: 'ended' },
+  //   // other polls...
+  // ];
+
+  const filteredPolls = sortedPolls.filter(poll => poll.status === pollStatus);
 
   const selectedButtonStyle = { backgroundColor: '#df0023', color: 'white' };
   const unselectedButtonStyle = { backgroundColor: '#59515E' };

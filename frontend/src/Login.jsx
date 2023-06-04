@@ -18,7 +18,6 @@ const LogoAvatar = styled(Avatar)(({ theme }) => ({
 
 export default function Login({ user, setUser, setSessionPassword, onLogin }) {
     const navigate = useNavigate();
-
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [error, setError] = React.useState({ username: false, password: false });
@@ -27,11 +26,11 @@ export default function Login({ user, setUser, setSessionPassword, onLogin }) {
     React.useEffect(() => {
         try {
             if (user.userInfo.userType == "admin") {
-                onLogin(user.userInfo.username);
+                onLogin(user.userInfo.username, user.userInfo.constituencyId);
                 navigate("/adminhome");
             }
             else if (user.userInfo.userType == "user") {
-                onLogin(user.userInfo.username);
+                onLogin(user.userInfo.username, user.userInfo.constituencyId);
                 navigate("/userhome");
             }
         } catch (error) {
@@ -52,11 +51,11 @@ export default function Login({ user, setUser, setSessionPassword, onLogin }) {
             password: password,
           };
         axios
-        .post("http://localhost:8080/login", login)    
+        .post("/api/login", login)    
         .then((response) => {
           if (response.status === 200) {
             axios
-              .get(`http://localhost:8080/user/${response.data.id}`)
+              .get(`api/user/${response.data.id}`)
               .then((res) => {
                 console.log(res);
                 setUser({ ...res.data });

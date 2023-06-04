@@ -12,13 +12,13 @@ message UserInfo{
 }
 
 message PollInfo{
-    string start_time = 1;
-    string end_time = 2;
+    string poll_starttime = 1;
+    string poll_endtime = 2;
     string status = 3;
-    string constituency = 4;
-    string title = 5;
-    string description = 6;
-    string compulsory = 7;
+    string constituency_id = 4;
+    string poll_title = 5;
+    string poll_description = 6;
+    string is_compulsory = 7;
 }
 
 message ResultInfo{
