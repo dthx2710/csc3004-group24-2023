@@ -41,6 +41,7 @@ func newGateway(ctx context.Context, opts ...runtime.ServeMuxOption) (http.Handl
 	userEndpoint := flag.String("user_endpoint", os.Getenv("USER_SERVICE_URL"), "endpoint of User Service")
 	pollEndpoint := flag.String("poll_endpoint", os.Getenv("POLL_SERVICE_URL"), "endpoint of Poll Service")
 	resultEndpoint := flag.String("result_endpoint", os.Getenv("RESULT_SERVICE_URL"), "endpoint of Result Service")
+	voteEndpoint := flag.String("vote_endpoint", os.Getenv("VOTE_SERVICE_URL"), "endpoint of Vote Service")
 	mux := runtime.NewServeMux(opts...)
 	dialOpts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 	err := gw.RegisterUserHandlerFromEndpoint(ctx, mux, *userEndpoint, dialOpts) // register user service
@@ -52,6 +53,10 @@ func newGateway(ctx context.Context, opts ...runtime.ServeMuxOption) (http.Handl
 		return nil, err
 	}
 	err = gw.RegisterResultHandlerFromEndpoint(ctx, mux, *resultEndpoint, dialOpts) // register result service
+	if err != nil {
+		return nil, err
+	}
+	err = gw.RegisterVoteHandlerFromEndpoint(ctx, mux, *voteEndpoint, dialOpts) // register vote service
 	if err != nil {
 		return nil, err
 	}
