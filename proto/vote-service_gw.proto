@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package result_service;
+package vote_service;
 
 option go_package = "csc3004-group24-2023/proto";
 
@@ -8,19 +8,19 @@ import "google/api/annotations.proto";
 import "types.proto";
 
 service Vote{
-    rpc SubmitVote(SubmitRequest) returns (SubmitResponse) {
+    rpc SubmitVote(SubmitVoteRequest) returns (SubmitVoteResponse) {
         option (google.api.http) = {
-            post: "/api/vote"
+            post: "/vote"
             body: "*"
         };
     }
 }
 
-message SubmitRequest{
+message SubmitVoteRequest{
     common.VoteInfo vote_info = 1;
 }
 
-message SubmitResponse{
+message SubmitVoteResponse{
     bool success = 1;
     string message = 2;
 }

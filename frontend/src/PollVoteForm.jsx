@@ -14,6 +14,12 @@ const commonStyles = {
     paddingBottom: 5
 };
 
+const options = [
+    {option_id: 1, option_name: "People's Action Party", poll_id: 1},
+    {option_id: 2, option_name: "Workers' Party", poll_id: 1},
+    {option_id: 3, option_name: "Progress Singapore Party", poll_id: 1},
+]
+
 export default function PollVoteForm() {
     const [value, setValue] = React.useState('female');
     const { title, description } = useParams();
@@ -45,19 +51,15 @@ export default function PollVoteForm() {
                             value={value}
                             onChange={handleChange}
                         >
-                            <FormControlLabel 
-                                value="PAP"
+                            {options.map((option) => (
+                                <FormControlLabel
+                                key={option.option_id}
+                                value={option.option_name}
                                 control={<Radio sx={{ color: '#f44336', "&.Mui-checked": { color: '#f44336' } }} />}
-                                label="(PAP) People's Action Party - John Lim, Thomas Tan"
+                                label={option.option_name}
                                 sx={{ color: 'black' }}
-                            />
-
-                            <FormControlLabel 
-                                value="WP"
-                                control={<Radio sx={{ color: '#f44336', "&.Mui-checked": { color: '#f44336' } }} />}
-                                label="(WP) Worker's Party - Mary Tan, Tom Lee"
-                                sx={{ color: 'black' }}
-                            />
+                                />
+                            ))}
                         </RadioGroup>
 
                         <Stack direction="row" marginTop={10}>

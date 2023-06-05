@@ -32,7 +32,7 @@ var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
 func request_Vote_SubmitVote_0(ctx context.Context, marshaler runtime.Marshaler, client VoteClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq SubmitRequest
+	var protoReq SubmitVoteRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -49,7 +49,7 @@ func request_Vote_SubmitVote_0(ctx context.Context, marshaler runtime.Marshaler,
 }
 
 func local_request_Vote_SubmitVote_0(ctx context.Context, marshaler runtime.Marshaler, server VoteServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq SubmitRequest
+	var protoReq SubmitVoteRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -79,7 +79,7 @@ func RegisterVoteHandlerServer(ctx context.Context, mux *runtime.ServeMux, serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/result_service.Vote/SubmitVote", runtime.WithHTTPPathPattern("/api/vote"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/vote_service.Vote/SubmitVote", runtime.WithHTTPPathPattern("/vote"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -143,7 +143,7 @@ func RegisterVoteHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/result_service.Vote/SubmitVote", runtime.WithHTTPPathPattern("/api/vote"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/vote_service.Vote/SubmitVote", runtime.WithHTTPPathPattern("/vote"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -163,7 +163,7 @@ func RegisterVoteHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 }
 
 var (
-	pattern_Vote_SubmitVote_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "vote"}, ""))
+	pattern_Vote_SubmitVote_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"vote"}, ""))
 )
 
 var (
