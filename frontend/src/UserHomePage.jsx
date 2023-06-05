@@ -5,20 +5,20 @@ import PollList from './PollList';
 import axios from 'axios';
 
 
-export default function UserHomePage({ constituency }) {
+export default function UserHomePage({ constituency, handlePollClick }) {
   const [pollStatus, setPollStatus] = useState('ongoing');
 
   const [polls, setPolls] = useState([]);
-
+  
   useEffect(() => {
     if(constituency){
       axios.get('http://localhost:8080/polls')
       .then(response => {
-          for (let i = 0; i < response.data.pollList.length; i++) {
-            if(constituency === response.data.pollList[i].constituency){
-              polls.push({title: response.data.pollList[i].title, description: response.data.pollList[i].description, isCompulsory: JSON.parse(response.data.pollList[i].compulsory), status: response.data.pollList[i].status, endTime: response.data.pollList[i].endTime});
-              setPolls([...polls]);
-            }
+        for (let i = 0; i < response.data.pollItem.length; i++) {
+          if(constituency === response.data.pollItem[i].pollInfo.constituencyId){
+            polls.push({title: response.data.pollItem[i].pollInfo.pollTitle, description: response.data.pollItem[i].pollInfo.pollDescription, isCompulsory: JSON.parse(response.data.pollItem[i].pollInfo.isCompulsory), status: response.data.pollItem[i].pollInfo.status, endTime: response.data.pollItem[i].pollInfo.pollEndtime, pollId: response.data.pollItem[i].pollId});
+            setPolls([...polls]);
+          }
         }
       })
       .catch((error) => {
@@ -63,7 +63,7 @@ export default function UserHomePage({ constituency }) {
                 <Button style={pollStatus === 'ended' ? selectedButtonStyle : unselectedButtonStyle} onClick={() => setPollStatus('ended')}>Ended</Button>
               </ButtonGroup>
             </Box>
-            <PollList polls={filteredPolls} isAdmin={false} />
+            <PollList polls={filteredPolls} isAdmin={false} handlePollClick={handlePollClick}/>
           </Box>
         </Container>
     </motion.div>

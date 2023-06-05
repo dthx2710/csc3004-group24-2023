@@ -43,12 +43,9 @@ async function pollDelete(id) {
 }
 
 async function pollInfo(id) {
-  const poll = await prisma.poll.findUnique({
+  const poll = await prisma.options.findMany({
     where: {
-      id: id,
-    },
-    include: {
-      options: true,
+      poll_id: id,
     },
   });
   await prisma.$disconnect();
@@ -88,9 +85,19 @@ function DeletePoll(call, callback) {
 }
 
 function GetPoll(call, callback) {
-  pollInfo(call.request.id)
+  pollInfo(call.request.poll_id)
     .then((pollDetails) => {
-      callback(null, pollDetails);
+      const response = {
+        options_id: [],
+        options: []
+      };
+
+      pollDetails.forEach((option) => {
+        response.options_id.push(option.option_id);
+        response.options.push(option.option_name);
+      });
+
+      callback(null, response);
     })
     .catch((error) => {
       console.error(error);
@@ -99,10 +106,12 @@ function GetPoll(call, callback) {
 }
 
 function GetAllPolls(call, callback) {
-  console.log(call.request.poll_id);
   allPollInfo()
     .then((pollsArray) => {
-      callback(null, { poll_list: pollsArray });
+      const pollItems = pollsArray.map((poll) => {
+        return { poll_id: poll.poll_id, poll_info: poll };
+      });
+      callback(null, { poll_item: pollItems });
     })
     .catch((error) => {
       console.error(error);

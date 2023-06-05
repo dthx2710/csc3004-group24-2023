@@ -17,6 +17,7 @@ model constituency {
 model options {
   option_id   String @id @db.Char(36)
   option_name String @db.VarChar(100)
+  poll_id     String @db.Char(36)
 }
 
 model poll {
@@ -30,16 +31,8 @@ model poll {
   is_compulsory    Boolean?
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
-model poll_options {
-  poll_id        String? @db.Char(36)
-  option_id_list String? @db.Char(36)
-
-  @@ignore
-}
-
 model users {
-  id              String  @id @db.Char(36)
+  user_id         String  @id @db.Char(36)
   username        String  @db.VarChar(100)
   password        String  @db.VarChar(100)
   user_type       String  @db.VarChar(50)

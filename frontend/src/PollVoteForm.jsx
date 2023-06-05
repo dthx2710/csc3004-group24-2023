@@ -2,6 +2,8 @@ import React from 'react';
 import { Container, Box, Typography, Radio, RadioGroup, FormControlLabel, Stack, Button } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 const commonStyles = {
     bgcolor: '#f2f2f2',
@@ -14,19 +16,38 @@ const commonStyles = {
     paddingBottom: 5
 };
 
-const options = [
-    {option_id: 1, option_name: "People's Action Party", poll_id: 1},
-    {option_id: 2, option_name: "Workers' Party", poll_id: 1},
-    {option_id: 3, option_name: "Progress Singapore Party", poll_id: 1},
-]
+
+// const options = [
+//     {option_id: 1, option_name: "People's Action Party", poll_id: 1},
+//     {option_id: 2, option_name: "Workers' Party", poll_id: 1},
+//     {option_id: 3, option_name: "Progress Singapore Party", poll_id: 1},
+// ]
 
 export default function PollVoteForm() {
     const [value, setValue] = React.useState('female');
     const { title, description } = useParams();
+    const [options, setOptions] = React.useState([]);
     
+    const location = useLocation();
+    const state = location.state;
+    const pollId = state.data.pollId;
+
     const handleChange = (event) => {
         setValue(event.target.value);
     };
+
+    React.useEffect(() => {
+        axios.get(`http://localhost:8080/polls/${pollId}`)
+        .then(response => {
+            for(let i = 0; i < response.data.options.length; i++){
+                options.push({option_id: response.data.optionsId[i], option_name: response.data.options[i]})
+                setOptions([...options]);
+            }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+      }, []);
 
     return (
         <div style={{backgroundColor: 'white'}}>

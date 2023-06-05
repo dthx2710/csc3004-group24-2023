@@ -9,7 +9,7 @@ export default function PollList({ polls, isAdmin }) {
     <Grid container spacing={2}>
       {polls.map((poll, index) => (
         <Grid item xs={12} key={index}>
-          <Link to={`/pollvoteform/${poll.title}/${poll.description}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+          <Link to={`/pollvoteform/${poll.title}/${poll.description}`} style={{ textDecoration: 'none', color: 'inherit' }} state={{ data: { pollId: poll.pollId }}}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               {poll.isCompulsory && (
                 <Tooltip title="Compulsory poll" arrow>
