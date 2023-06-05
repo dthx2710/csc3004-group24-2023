@@ -21,6 +21,11 @@ message PollInfo{
     string is_compulsory = 7;
 }
 
+message PollItem{
+    string poll_id = 1;
+    PollInfo poll_info = 2;
+}
+
 message ResultInfo{
     string poll_id = 1;
     repeated string vote_tally = 2;

@@ -54,7 +54,7 @@ message GetPollRequest{
 }
 
 message GetPollResponse{
-    common.PollInfo poll_info = 1;
+    common.PollItem poll_item = 1;
     repeated string options_id = 2;
     repeated string options = 3;
 }
@@ -64,5 +64,5 @@ message GetAllPollRequest{
 }
 
 message GetAllPollResponse{
-    repeated common.PollInfo poll_list = 1;
+    repeated common.PollItem poll_item = 1;
 }
