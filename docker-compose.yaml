@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  gateway:
+    build:
+      context: ./gateway/src
+      dockerfile: Dockerfile
+    environment:
+      - USER_SERVICE_URL=user-service:50051
+    depends_on:
+      - user-service
+    ports:
+      - 8080:8080
+    networks:
+      - service
+
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    environment:
+      - USER_SERVICE_URL=user-service:50051
+      - DATABASE_URL=mysql://nezu80du7c7kd9j1y8q6:pscale_pw_Ba5mE3SjXYIK80b4FUcknF0LAGPBEeQ7OiglYJADYhX@aws.connect.psdb.cloud/voting-system?sslaccept=strict
+    ports:
+      - 50051:50051
+    networks:
+      - service
+
+networks:
+  service:
+    driver: bridge
