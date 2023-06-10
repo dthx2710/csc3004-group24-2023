@@ -5,6 +5,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import AddIcon from '@mui/icons-material/Add';
 import CreateIcon from '@mui/icons-material/Create';
 
 const commonStyles = {
@@ -19,9 +20,14 @@ const commonStyles = {
 };
 
 export default function PollForm() {
+    const [eventType, setEventType] = React.useState('');
     const [electoralDivision, setElectoralDivision] = React.useState('');
     const [constituency, setConstituency] = React.useState('');
-    const [candidates, setCandidates] = React.useState(['', '']);
+    const [items, setItems] = React.useState(['', '']);
+
+    const handleEventTypeChange = (event) => {
+        setEventType(event.target.value);
+    };
 
     const handleElectoralDivisionChange = (event) => {
         setElectoralDivision(event.target.value);
@@ -76,20 +82,20 @@ export default function PollForm() {
         }
     };
 
-    const handleCandidateChange = (event, index) => {
-        const newCandidates = [...candidates];
-        newCandidates[index] = event.target.value;
-        setCandidates(newCandidates);
+    const handleItemChange = (event, index) => {
+        const newItems = [...items];
+        newItems[index] = event.target.value;
+        setItems(newItems);
     };
 
-    const addCandidate = () => {
-        setCandidates([...candidates, '']);
+    const addItem = () => {
+        setItems([...items, '']);
     };
 
-    const removeCandidate = (index) => {
-        const newCandidates = [...candidates];
-        newCandidates.splice(index, 1);
-        setCandidates(newCandidates);
+    const removeItem = (index) => {
+        const newItems = [...items];
+        newItems.splice(index, 1);
+        setItems(newItems);
     };
 
     return (
@@ -118,55 +124,77 @@ export default function PollForm() {
                         />
 
                         <Typography variant="h6" component="h2" gutterBottom style={{ color: 'black'}} marginTop={3}>
-                            Electoral Division
+                            Poll Event Type
                         </Typography>
 
                         <FormControl variant="filled" sx={{ minWidth: 380 }}>
-                            <InputLabel id="electoral-division-label" required>Select Electoral Division</InputLabel>
+                            <InputLabel id="electoral-division-label" required>Select Event Type</InputLabel>
                             <Select
                                 labelId="electoral-division-label"
                                 id="electoral-division-select"
-                                value={electoralDivision}
-                                onChange={handleElectoralDivisionChange}
+                                value={eventType}
+                                onChange={handleEventTypeChange}
                             >
-                                <MenuItem value={'GRC'}>Group Representation Constituencies (GRC)</MenuItem>
-                                <MenuItem value={'SMC'}>Single Member Constituencies (SMC)</MenuItem>
+                                <MenuItem value={'GE'}>General Elections</MenuItem>
+                                <MenuItem value={'FRU'}>Facilities Renovation Upgrade</MenuItem>
+                                <MenuItem value={'CS'}>Colour Scheme</MenuItem>
                             </Select>
                         </FormControl>
 
+                        {eventType === 'GE' && (
+                            <>
+                                <Typography variant="h6" component="h2" gutterBottom style={{ color: 'black'}} marginTop={3}>
+                                    Electoral Division
+                                </Typography>
+
+                                <FormControl variant="filled" sx={{ minWidth: 380 }}>
+                                    <InputLabel id="electoral-division-label" required>Select Electoral Division</InputLabel>
+                                    <Select
+                                        labelId="electoral-division-label"
+                                        id="electoral-division-select"
+                                        value={electoralDivision}
+                                        onChange={handleElectoralDivisionChange}
+                                    >
+                                        <MenuItem value={'GRC'}>Group Representation Constituencies (GRC)</MenuItem>
+                                        <MenuItem value={'SMC'}>Single Member Constituencies (SMC)</MenuItem>
+                                    </Select>
+                                </FormControl>
+
+                                <Typography variant="h6" component="h2" gutterBottom style={{ color: 'black'}} marginTop={3}>
+                                    Constituency
+                                </Typography>
+
+                                <FormControl key={electoralDivision} variant="filled" sx={{ minWidth: 380 }}>
+                                    <InputLabel id="constituency-label" required>Select Constituency</InputLabel>
+                                    <Select
+                                        labelId="constituency-label"
+                                        id="constituency-select"
+                                        value={constituency}
+                                        onChange={handleConstituencyChange}
+                                    >
+                                        {getConstituencyOptions()}
+                                    </Select>
+                                </FormControl>
+                            </>
+                        )}
+
                         <Typography variant="h6" component="h2" gutterBottom style={{ color: 'black'}} marginTop={3}>
-                            Constituency
+                            {eventType === 'GE' ? 'Candidates' : 'Options'}
                         </Typography>
 
-                        <FormControl key={electoralDivision} variant="filled" sx={{ minWidth: 380 }}>
-                            <InputLabel id="constituency-label" required>Select Constituency</InputLabel>
-                            <Select
-                                labelId="constituency-label"
-                                id="constituency-select"
-                                value={constituency}
-                                onChange={handleConstituencyChange}
-                            >
-                                {getConstituencyOptions()}
-                            </Select>
-                        </FormControl>
-
-                        <Typography variant="h6" component="h2" gutterBottom style={{ color: 'black'}} marginTop={3}>
-                            Candidates
-                        </Typography>
-
-                        {candidates.map((candidate, index) => (
+                        {items.map((item, index) => (
                             <Box key={index} sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
                                 <TextField
                                     required
-                                    id={`candidate-${index}`}
-                                    label={`Enter candidate ${index + 1} name here`}
+                                    id={`item-${index}`}
+                                    label={eventType === 'GE' ? `Enter candidate ${index + 1} name here` : `Enter option ${index + 1} here`}
                                     variant="filled"
                                     fullWidth
-                                    value={candidate}
-                                    onChange={(event) => handleCandidateChange(event, index)}
+                                    value={item}
+                                    onChange={(event) => handleItemChange(event, index)}
                                 />
                                 {index > 1 && (
-                                    <Button variant="text" color="secondary" onClick={() => removeCandidate(index)} style={{marginLeft: '10px'}}>
+                                    <Button variant="text" color="secondary" onClick={() => removeItem(index)} style={{marginLeft: '10px'}}>
                                         Remove
                                     </Button>
                                 )}
@@ -178,9 +206,9 @@ export default function PollForm() {
                                 color="secondary"
                                 sx={{ '&:hover': { backgroundColor: '#aa2e25' }}}
                                 variant="contained" 
-                                endIcon={<PersonAddIcon />} 
-                                onClick={addCandidate}>
-                                Add Candidate
+                                endIcon={eventType === 'GE' ? <PersonAddIcon /> : <AddIcon />} 
+                                onClick={addItem}>
+                                {eventType === 'GE' ? 'Add Candidate' : 'Add Option'}
                             </Button>
                         </Stack>
 
