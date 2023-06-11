@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, Container, Typography, Button, ButtonGroup } from "@mui/material";
 import { motion } from "framer-motion";
 import PollList from "./PollList";
@@ -11,6 +12,20 @@ export default function UserHomePage({ handlePollClick }) {
   };
   const [pollStatus, setPollStatus] = useState("ongoing");
   const [polls, setPolls] = useState([]);
+
+  
+  const navigate = useNavigate();
+  useEffect(() => {
+    // check userType and login status
+    const userType = JSON.parse(sessionStorage.getItem("user")).userType;
+    const loggedIn = sessionStorage.getItem("loggedIn");
+    if (loggedIn === null || userType !== "user"){
+      // clear sessionStorage, cookie, and navigate to login page
+      sessionStorage.clear();
+      document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      navigate("/");
+    }
+  }, [navigate]);
 
   useEffect(() => {
     const constituency = JSON.parse(
@@ -43,7 +58,7 @@ export default function UserHomePage({ handlePollClick }) {
           console.log(error);
         });
     }
-  }, []);
+  }, [polls]);
 
   const sortedPolls = [...polls].sort((a, b) => {
     return new Date(a.endTime) - new Date(b.endTime);

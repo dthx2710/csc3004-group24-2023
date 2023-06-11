@@ -1,30 +1,65 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Container, Typography, Button, ButtonGroup, Grid } from '@mui/material';
-import { motion } from 'framer-motion';
-import AddIcon from '@mui/icons-material/Add';
-import PollList from './PollList';
-import axios from 'axios';
+import {
+  Box,
+  Container,
+  Typography,
+  Button,
+  ButtonGroup,
+  Grid,
+} from "@mui/material";
+import { motion } from "framer-motion";
+import AddIcon from "@mui/icons-material/Add";
+import PollList from "./PollList";
+import axios from "axios";
 
 export default function AdminHomePage() {
   const navigate = useNavigate();
-  const [pollStatus, setPollStatus] = useState('ongoing');
+  const [pollStatus, setPollStatus] = useState("ongoing");
 
   const [polls, setPolls] = useState([]);
-  
+
   useEffect(() => {
-    axios.get('/api/polls')
-    .then(response => {
-      for (let i = 0; i < response.data.pollItem.length; i++) {
-        polls.push({title: response.data.pollItem[i].pollInfo.pollTitle, description: response.data.pollItem[i].pollInfo.pollDescription, isCompulsory: JSON.parse(response.data.pollItem[i].pollInfo.isCompulsory), status: response.data.pollItem[i].pollInfo.status, endTime: response.data.pollItem[i].pollInfo.pollEndtime, pollId: response.data.pollItem[i].pollId});
+    // check userType and login status
+    const userType = JSON.parse(sessionStorage.getItem("user")).userType;
+    const loggedIn = sessionStorage.getItem("loggedIn");
+    if (loggedIn === null || userType !== "admin") {
+      // clear sessionStorage, cookie, and navigate to login page
+      sessionStorage.clear();
+      document.cookie =
+        "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      navigate("/");
+    }
+  }, [navigate]);
+
+  useEffect(() => {
+    axios
+      .get("/api/polls")
+      .then((response) => {
+        for (let i = 0; i < response.data.pollItem.length; i++) {
+          if (
+            !polls.some(
+              (poll) => poll.pollId === response.data.pollItem[i].pollId
+            )
+          )
+            polls.push({
+              title: response.data.pollItem[i].pollInfo.pollTitle,
+              description: response.data.pollItem[i].pollInfo.pollDescription,
+              isCompulsory: JSON.parse(
+                response.data.pollItem[i].pollInfo.isCompulsory
+              ),
+              status: response.data.pollItem[i].pollInfo.status,
+              endTime: response.data.pollItem[i].pollInfo.pollEndtime,
+              pollId: response.data.pollItem[i].pollId,
+            });
+        }
         setPolls([...polls]);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-  }, []);
-  
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [polls]);
+
   const sortedPolls = [...polls].sort((a, b) => {
     return new Date(a.endTime) - new Date(b.endTime);
   });
@@ -39,41 +74,75 @@ export default function AdminHomePage() {
 
   //console.log(polls);
 
-  const filteredPolls = sortedPolls.filter(poll => poll.status === pollStatus);
+  const filteredPolls = sortedPolls.filter(
+    (poll) => poll.status === pollStatus
+  );
 
-  const selectedButtonStyle = { backgroundColor: '#df0023', color: 'white' };
-  const unselectedButtonStyle = { backgroundColor: '#59515E' };
+  const selectedButtonStyle = { backgroundColor: "#df0023", color: "white" };
+  const unselectedButtonStyle = { backgroundColor: "#59515E" };
 
   return (
     <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    transition={{ duration: 1 }}
-    style={{backgroundColor: 'white'}}
-  >
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1 }}
+      style={{ backgroundColor: "white" }}
+    >
       <Container maxWidth="md">
         <Box sx={{ mt: 4, mb: 2 }}>
-          <Grid container spacing={2} alignItems="center" justifyContent="space-between">
+          <Grid
+            container
+            spacing={2}
+            alignItems="center"
+            justifyContent="space-between"
+          >
             <Grid item>
-              <Typography variant="h4" component="h1" gutterBottom style={{ color: 'black'}}>
+              <Typography
+                variant="h4"
+                component="h1"
+                gutterBottom
+                style={{ color: "black" }}
+              >
                 {pollStatus.charAt(0).toUpperCase() + pollStatus.slice(1)} Polls
               </Typography>
             </Grid>
             <Grid item>
-              <Button 
-                  color="secondary"
-                  variant="contained" 
-                  startIcon={<AddIcon />}
-                  onClick={() => navigate("/pollform")}>
-                  Add Poll Form
+              <Button
+                color="secondary"
+                variant="contained"
+                startIcon={<AddIcon />}
+                onClick={() => navigate("/pollform")}
+              >
+                Add Poll Form
               </Button>
             </Grid>
           </Grid>
           <Box sx={{ my: 2 }}>
-            <ButtonGroup variant="contained" aria-label="outlined primary button group">
-              <Button style={pollStatus === 'ongoing' ? selectedButtonStyle : unselectedButtonStyle} onClick={() => setPollStatus('ongoing')}>Ongoing</Button>
-              <Button style={pollStatus === 'ended' ? selectedButtonStyle : unselectedButtonStyle} onClick={() => setPollStatus('ended')}>Ended</Button>
+            <ButtonGroup
+              variant="contained"
+              aria-label="outlined primary button group"
+            >
+              <Button
+                style={
+                  pollStatus === "ongoing"
+                    ? selectedButtonStyle
+                    : unselectedButtonStyle
+                }
+                onClick={() => setPollStatus("ongoing")}
+              >
+                Ongoing
+              </Button>
+              <Button
+                style={
+                  pollStatus === "ended"
+                    ? selectedButtonStyle
+                    : unselectedButtonStyle
+                }
+                onClick={() => setPollStatus("ended")}
+              >
+                Ended
+              </Button>
             </ButtonGroup>
           </Box>
           <PollList polls={filteredPolls} isAdmin={true} />
@@ -81,4 +150,4 @@ export default function AdminHomePage() {
       </Container>
     </motion.div>
   );
-};
+}
