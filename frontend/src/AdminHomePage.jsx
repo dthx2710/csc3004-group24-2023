@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Box, Container, Typography, Button, ButtonGroup, Grid } from '@mui/material';
 import { motion } from 'framer-motion';
@@ -13,7 +13,7 @@ export default function AdminHomePage() {
   const [polls, setPolls] = useState([]);
   
   useEffect(() => {
-    axios.get('http://localhost:8080/polls')
+    axios.get('/api/polls')
     .then(response => {
       for (let i = 0; i < response.data.pollItem.length; i++) {
         polls.push({title: response.data.pollItem[i].pollInfo.pollTitle, description: response.data.pollItem[i].pollInfo.pollDescription, isCompulsory: JSON.parse(response.data.pollItem[i].pollInfo.isCompulsory), status: response.data.pollItem[i].pollInfo.status, endTime: response.data.pollItem[i].pollInfo.pollEndtime, pollId: response.data.pollItem[i].pollId});

@@ -1,10 +1,14 @@
-import React from 'react';
 import { Grid, Tooltip } from '@mui/material';
 import { Link } from 'react-router-dom';
 import WarningIcon from '@mui/icons-material/Warning';
 import Poll from './Poll';
+import PropTypes from 'prop-types';
 
 export default function PollList({ polls, isAdmin }) {
+  PollList.propTypes = {
+    polls: PropTypes.array.isRequired,
+    isAdmin: PropTypes.bool.isRequired,
+  };
   return (
     <Grid container spacing={2}>
       {polls.map((poll, index) => (

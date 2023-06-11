@@ -1,7 +1,5 @@
-import React from "react";
 import Navbar from "./Navbar";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import UserHomePage from "./UserHomePage";
 import PropTypes from "prop-types";
 
 const theme = createTheme({

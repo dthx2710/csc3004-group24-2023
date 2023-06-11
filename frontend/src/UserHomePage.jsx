@@ -15,14 +15,15 @@ export default function UserHomePage({ handlePollClick }) {
   useEffect(() => {
     const constituency = JSON.parse(
       sessionStorage.getItem("user")
-    ).constituency;
+    ).constituencyId;
     if (constituency) {
       axios
-        .get("http://localhost:8080/polls")
+        .get("/api/polls")
         .then((response) => {
           for (let i = 0; i < response.data.pollItem.length; i++) {
             if (
-              constituency === response.data.pollItem[i].pollInfo.constituencyId
+              constituency === response.data.pollItem[i].pollInfo.constituencyId && 
+              !polls.some(poll => poll.pollId === response.data.pollItem[i].pollId)
             ) {
               polls.push({
                 title: response.data.pollItem[i].pollInfo.pollTitle,

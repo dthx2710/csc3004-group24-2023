@@ -1,9 +1,9 @@
-import React from "react";
-import { AppBar, Toolbar, Typography, Button } from "@mui/material";
+import { AppBar, Toolbar, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import NavbarLogo from "../src/assets/singapore-lion-logo-white.png";
+import PropTypes from "prop-types";
 
 const RootDiv = styled("div")({
   flexGrow: 1,
@@ -20,8 +20,10 @@ const TitleTypography = styled(Typography)({
 });
 
 const Navbar = ({ username }) => {
+  Navbar.propTypes = {
+    username: PropTypes.string.isRequired,
+  };
   const navigate = useNavigate();
-
   return (
     <RootDiv>
       <AppBar position="static" color="secondary">
