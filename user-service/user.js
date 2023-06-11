@@ -24,6 +24,7 @@ async function Login(username, password) {
   })
   prisma.$disconnect()
   if(!userDetails) {
+    console.log("User not found");
     return null;
   }
 
@@ -42,6 +43,7 @@ async function Login(username, password) {
       console.log("Login successful");
       return userDetails.user_id;
     } else {
+      console.log("Wrong password");
       return null;
     }
   } catch (error) {

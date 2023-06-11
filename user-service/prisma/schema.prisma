@@ -8,16 +8,16 @@ datasource db {
 }
 
 model constituency {
-  constituency_id   String @id @db.Char(36)
-  constituency_name String @db.VarChar(100)
-  constituency_type String @db.VarChar(100)
-  key_value         String @db.VarChar(10)
+  constituency_id   String  @id @db.Char(36)
+  constituency_name String  @db.VarChar(100)
+  constituency_type String  @db.VarChar(100)
+  key_value         String? @db.VarChar(10)
 }
 
 model options {
-  option_id   String @id @db.Char(36)
-  option_name String @db.VarChar(100)
-  poll_id     String @db.Char(36)
+  option_id   String  @id @db.Char(36)
+  option_name String  @db.VarChar(100)
+  poll_id     String? @db.Char(36)
 }
 
 model poll {
@@ -40,8 +40,17 @@ model users {
 }
 
 model votes {
-  vote_id   String  @id @db.Char(36)
-  user_id   String? @db.Char(36)
-  poll_id   String? @db.Char(36)
-  option_id String? @db.Char(36)
+  vote_id   String   @id @db.Char(36)
+  user_id   String?  @db.Char(36)
+  poll_id   String?  @db.Char(36)
+  option_id String?  @db.Char(36)
+  vote_time DateTime @db.DateTime(0)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model poll_options {
+  poll_id        String? @db.Char(36)
+  option_id_list String? @db.Char(36)
+
+  @@ignore
 }
