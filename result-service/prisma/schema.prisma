@@ -31,6 +31,14 @@ model poll {
   is_compulsory    Boolean?
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model poll_options {
+  poll_id        String? @db.Char(36)
+  option_id_list String? @db.Char(36)
+
+  @@ignore
+}
+
 model users {
   user_id         String  @id @db.Char(36)
   username        String  @db.VarChar(100)
@@ -45,12 +53,4 @@ model votes {
   poll_id   String?  @db.Char(36)
   option_id String?  @db.Char(36)
   vote_time DateTime @db.DateTime(0)
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
-model poll_options {
-  poll_id        String? @db.Char(36)
-  option_id_list String? @db.Char(36)
-
-  @@ignore
 }
