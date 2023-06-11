@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import {
   Container,
   Box,
@@ -32,19 +32,80 @@ const commonStyles = {
 // ]
 
 export default function PollVoteForm() {
-  const [value, setValue] = React.useState("female");
+  const [values, setValues] = useState({ main: { id: "", name: "" } });
   const { title, description } = useParams();
-  const [options, setOptions] = React.useState([]);
+  const [options, setOptions] = useState([]);
 
   const location = useLocation();
   const state = location.state;
   const pollId = state.data.pollId;
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
+  const vote = () => {
+    // check if user has voted on poll before
+    if (sessionStorage.getItem("sessionVoted") !== null) {
+      const sessionVoted = JSON.parse(sessionStorage.getItem("sessionVoted"));
+      if (sessionVoted.includes(pollId)) {
+        alert("You have already voted on this poll!");
+        return;
+      }
+    }
+    // check if user has selected an option
+    if (values.main.id === "") {
+      alert("Please select an option!");
+      return;
+    }
+    // post vote to backend
+    const voteInfo = {
+      poll_id: pollId,
+      option_id: values.main.id,
+      user_id: "1",
+    };
+    axios
+      .post(`/api/vote`, {
+        vote_info: voteInfo,
+      })
+      .then((response) => {
+        console.log(
+          "Success:",
+          response.data.success,
+          " Message:",
+          response.data.message
+        );
+        if (response.data.success) {
+          // create sessionStorage entry for voted on poll if exists
+          if (sessionStorage.getItem("sessionVoted") === null) {
+            sessionStorage.setItem("sessionVoted", JSON.stringify([]));
+          }
+          const sessionVoted = JSON.parse(
+            sessionStorage.getItem("sessionVoted")
+          );
+          // add pollId to sessionVoted array
+          sessionVoted.push(pollId);
+          sessionStorage.setItem("sessionVoted", JSON.stringify(sessionVoted));
+          alert(response.data.message);
+        } else {
+          alert(response.data.message);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
-  React.useEffect(() => {
+  const handleChange = (prop) => (event) => {
+    const optionName = event.target.value;
+    // find option id from options array
+    const optionId = options.find(
+      (option) => option.option_name === optionName
+    ).option_id;
+
+    setValues({
+      ...values,
+      [prop]: { id: optionId, name: optionName },
+    });
+  };
+
+  useEffect(() => {
     axios
       .get(`/api/polls/${pollId}`)
       .then((response) => {
@@ -106,8 +167,8 @@ export default function PollVoteForm() {
             <RadioGroup
               aria-labelledby="demo-controlled-radio-buttons-group"
               name="controlled-radio-buttons-group"
-              value={value}
-              onChange={handleChange}
+              value={values.main.name}
+              onChange={handleChange("main")}
             >
               {options.map((option) => (
                 <FormControlLabel
@@ -129,6 +190,7 @@ export default function PollVoteForm() {
 
             <Stack direction="row" marginTop={10}>
               <Button
+                onClick={vote}
                 color="secondary"
                 sx={{ "&:hover": { backgroundColor: "#aa2e25" } }}
                 variant="contained"
