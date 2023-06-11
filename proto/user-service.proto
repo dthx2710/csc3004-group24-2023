@@ -17,11 +17,10 @@ message LoginRequest{
 }
 
 message LoginResponse{
-    string id = 1;
+    string token = 1;
 }
 
 message UserRequest{
-    string id = 1;
 }
 
 message UserResponse{

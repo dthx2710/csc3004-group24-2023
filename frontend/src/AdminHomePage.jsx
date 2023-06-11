@@ -20,14 +20,22 @@ export default function AdminHomePage() {
   const [polls, setPolls] = useState([]);
 
   useEffect(() => {
-    // check userType and login status
-    const userType = JSON.parse(sessionStorage.getItem("user")).userType;
-    const loggedIn = sessionStorage.getItem("loggedIn");
-    if (loggedIn === null || userType !== "admin") {
-      // clear sessionStorage, cookie, and navigate to login page
+    try {
+      const user = sessionStorage.getItem("user")
+      const loggedIn = sessionStorage.getItem("loggedIn");
+      if (loggedIn === null || user === null) {
+        // clear sessionStorage and navigate to login page
+        sessionStorage.clear();
+        navigate("/");
+      }
+      else {
+        const userType = JSON.parse(user).userType;
+        if (userType === "user") {
+          navigate("/userhome");
+        }
+      }
+    } catch (err) {
       sessionStorage.clear();
-      document.cookie =
-        "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       navigate("/");
     }
   }, [navigate]);

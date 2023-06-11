@@ -33,10 +33,6 @@ func main() {
 	}
 }
 
-type UserServer struct {
-	gw.UnimplementedUserServer
-}
-
 func newGateway(ctx context.Context, opts ...runtime.ServeMuxOption) (http.Handler, error) {
 	userEndpoint := flag.String("user_endpoint", os.Getenv("USER_SERVICE_URL"), "endpoint of User Service")
 	pollEndpoint := flag.String("poll_endpoint", os.Getenv("POLL_SERVICE_URL"), "endpoint of Poll Service")

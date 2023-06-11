@@ -13,50 +13,66 @@ export default function UserHomePage({ handlePollClick }) {
   const [pollStatus, setPollStatus] = useState("ongoing");
   const [polls, setPolls] = useState([]);
 
-  
   const navigate = useNavigate();
   useEffect(() => {
-    // check userType and login status
-    const userType = JSON.parse(sessionStorage.getItem("user")).userType;
-    const loggedIn = sessionStorage.getItem("loggedIn");
-    if (loggedIn === null || userType !== "user"){
-      // clear sessionStorage, cookie, and navigate to login page
+    try {
+      const user = sessionStorage.getItem("user");
+      const loggedIn = sessionStorage.getItem("loggedIn");
+      if (loggedIn === null || user === null) {
+        // clear sessionStorage and navigate to login page
+        sessionStorage.clear();
+        navigate("/");
+      } else {
+        const userType = JSON.parse(user).userType;
+        if (userType === "admin") {
+          navigate("/adminhome");
+        }
+      }
+    } catch (err) {
       sessionStorage.clear();
-      document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       navigate("/");
     }
   }, [navigate]);
 
   useEffect(() => {
-    const constituency = JSON.parse(
-      sessionStorage.getItem("user")
-    ).constituencyId;
-    if (constituency) {
-      axios
-        .get("/api/polls")
-        .then((response) => {
-          for (let i = 0; i < response.data.pollItem.length; i++) {
-            if (
-              constituency === response.data.pollItem[i].pollInfo.constituencyId && 
-              !polls.some(poll => poll.pollId === response.data.pollItem[i].pollId)
-            ) {
-              polls.push({
-                title: response.data.pollItem[i].pollInfo.pollTitle,
-                description: response.data.pollItem[i].pollInfo.pollDescription,
-                isCompulsory: JSON.parse(
-                  response.data.pollItem[i].pollInfo.isCompulsory
-                ),
-                status: response.data.pollItem[i].pollInfo.status,
-                endTime: response.data.pollItem[i].pollInfo.pollEndtime,
-                pollId: response.data.pollItem[i].pollId,
-              });
-              setPolls([...polls]);
+    try {
+      const constituency = JSON.parse(
+        sessionStorage.getItem("user")
+      ).constituencyId;
+      if (constituency) {
+        axios
+          .get("/api/polls")
+          .then((response) => {
+            for (let i = 0; i < response.data.pollItem.length; i++) {
+              if (
+                constituency ===
+                  response.data.pollItem[i].pollInfo.constituencyId &&
+                !polls.some(
+                  (poll) => poll.pollId === response.data.pollItem[i].pollId
+                )
+              ) {
+                polls.push({
+                  title: response.data.pollItem[i].pollInfo.pollTitle,
+                  description:
+                    response.data.pollItem[i].pollInfo.pollDescription,
+                  isCompulsory: JSON.parse(
+                    response.data.pollItem[i].pollInfo.isCompulsory
+                  ),
+                  status: response.data.pollItem[i].pollInfo.status,
+                  endTime: response.data.pollItem[i].pollInfo.pollEndtime,
+                  pollId: response.data.pollItem[i].pollId,
+                });
+                setPolls([...polls]);
+              }
             }
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    } catch (err) {
+      sessionStorage.clear();
+      navigate("/");
     }
   }, [polls]);
 

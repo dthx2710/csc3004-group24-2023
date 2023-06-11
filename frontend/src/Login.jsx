@@ -57,8 +57,15 @@ export default function Login() {
       .post("/api/login", login)
       .then((response) => {
         if (response.status === 200) {
+          // set response.data jwt to session storage
+            sessionStorage.setItem("jwt", response.data.token);
+          // get user info
           axios
-            .get(`api/user/${response.data.id}`)
+            .get(`api/user`, {
+              headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
+              },
+            })
             .then((res) => {
               // destructure user info
               const { username, userType, constituencyId } = res.data.userInfo;

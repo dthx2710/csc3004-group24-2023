@@ -53,16 +53,8 @@ const Navbar = ({ username }) => {
           <TitleTypography variant="h6">{username}</TitleTypography>
           <TitleTypography
             onClick={() => {
-              // clear sessionStorage and cookies
+              // clear sessionStorage
               sessionStorage.clear();
-              document.cookie.split(";").forEach(function (c) {
-                document.cookie = c
-                  .replace(/^ +/, "")
-                  .replace(
-                    /=.*/,
-                    "=;expires=" + new Date().toUTCString() + ";path=/"
-                  );
-              });
               navigate("/");
             }}
             color="inherit"
