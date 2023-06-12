@@ -7,6 +7,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import AddIcon from '@mui/icons-material/Add';
 import CreateIcon from '@mui/icons-material/Create';
+import axios from "axios";
 
 const commonStyles = {
     bgcolor: '#f2f2f2',
@@ -25,7 +26,27 @@ export default function PollForm() {
     const [eventType, setEventType] = React.useState('');
     const [electoralDivision, setElectoralDivision] = React.useState('');
     const [constituency, setConstituency] = React.useState('');
+    const [isCompulsory, setCompulsory] = React.useState('');
+    const [startTime, setStartTime] = React.useState('');
+    const [endTime, setEndTime] = React.useState('');
     const [items, setItems] = React.useState(['', '']);
+
+    React.useEffect(() => {
+        setCompulsory(true);
+    } , []);
+
+    const formatDate = (date) => {
+        const options = {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        };
+      
+        const formattedDate = date.toLocaleDateString('en-GB', options);
+        const formattedTime = date.toLocaleTimeString('en-US', { hour12: false });
+      
+        return `${formattedDate} ${formattedTime}`;
+      };
 
     const handleTitleChange = (event) => {  // add a function to handle the title change
         setTitle(event.target.value);
@@ -37,6 +58,18 @@ export default function PollForm() {
 
     const handleEventTypeChange = (event) => {
         setEventType(event.target.value);
+    };
+
+    const handleStartTimeChange = (event) => {
+        setStartTime(formatDate(event.$d));
+    };
+
+    const handleEndTimeChange = (event) => {
+        setEndTime(formatDate(event.$d));
+    };
+
+    const handleCompulsoryTypeChange = (event) => {
+        setCompulsory(event.target.checked);
     };
 
     const handleElectoralDivisionChange = (event) => {
@@ -107,6 +140,69 @@ export default function PollForm() {
         newItems.splice(index, 1);
         setItems(newItems);
     };
+
+    function handleCreateClick() {
+        console.log("\nevent type: " + eventType);
+        console.log("electoral division: " + electoralDivision);
+        console.log("constituency: " + constituency);
+        console.log("title: " + title);
+        console.log("description: " + description);
+        console.log("items: " + items);
+        console.log("is compulsory: " + isCompulsory);
+        console.log("poll start time: " + startTime);
+        console.log("poll end time: " + endTime);
+        if(eventType === 'GE') {
+            const pollInfo = {
+                poll_starttime: startTime.toString(),
+                poll_endtime: endTime.toString(),
+                status: "ongoing",
+                constituency_id: constituency,
+                poll_title: title,
+                poll_description: description,
+                is_compulsory: isCompulsory.toString(),
+            };
+            const postItem = {
+                poll_info: pollInfo,
+                options: items,
+              };
+              axios
+              .post("/api/polls", postItem)
+              .then((response) => {
+                  if (response.status === 200) {
+                      console.log(response);
+                  }
+                  })
+                  .catch((error) => {
+                  console.log(error);
+                  }); 
+        }
+        else{
+            const pollInfo = {
+                poll_starttime: startTime.toString(),
+                poll_endtime: endTime.toString(),
+                status: "ongoing",
+                constituency_id: constituency,
+                poll_title: title,
+                poll_description: description,
+                is_compulsory: isCompulsory.toString(),
+            };
+            const postItem = {
+                poll_info: pollInfo,
+                options: items,
+              };
+            axios
+                .post("/api/polls", postItem)
+                .then((response) => {
+                    if (response.status === 200) {
+                        console.log(response);
+                    }
+                    })
+                    .catch((error) => {
+                    console.log(error);
+                    }); 
+            }
+        console.log('Button clicked!');
+      }
 
     return (
         <div style={{backgroundColor: 'white'}}>
@@ -244,7 +340,9 @@ export default function PollForm() {
 
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DemoContainer components={['DateTimePicker']}>
-                            <DateTimePicker label="Basic date time picker" />
+                            <DateTimePicker 
+                            label="Basic date time picker"
+                            onChange={handleStartTimeChange} />
                         </DemoContainer>
                         </LocalizationProvider>
 
@@ -254,7 +352,9 @@ export default function PollForm() {
 
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DemoContainer components={['DateTimePicker']}>
-                            <DateTimePicker label="Basic date time picker" />
+                            <DateTimePicker 
+                            label="Basic date time picker"
+                            onChange={handleEndTimeChange} />
                         </DemoContainer>
                         </LocalizationProvider>
 
@@ -265,6 +365,7 @@ export default function PollForm() {
                                     <Switch defaultChecked color="secondary" />
                                 }
                                 label="Compulsory"
+                                onChange={handleCompulsoryTypeChange}
                                 sx={{ 
                                     color: 'black',
                                     mt: 3
@@ -276,6 +377,7 @@ export default function PollForm() {
                                 color="secondary"
                                 sx={{ '&:hover': { backgroundColor: '#aa2e25' }}}
                                 variant="contained" 
+                                onClick={handleCreateClick}
                                 startIcon={<CreateIcon />}>
                                 Create Poll Form
                             </Button>
