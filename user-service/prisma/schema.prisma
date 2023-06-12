@@ -15,9 +15,9 @@ model constituency {
 }
 
 model options {
-  option_id   String  @id @default(dbgenerated("(uuid())")) @db.Char(36)
-  option_name String  @db.VarChar(100)
-  poll_id     String? @db.Char(36)
+  option_id   String @id @default(dbgenerated("(uuid())")) @db.Char(36)
+  option_name String @db.VarChar(100)
+  poll_id     String
 }
 
 model poll {
@@ -37,21 +37,13 @@ model users {
   password        String  @db.VarChar(100)
   user_type       String  @db.VarChar(50)
   constituency_id String? @db.Char(36)
+  hash_id         String? @db.VarChar(100)
 }
 
 model votes {
   vote_id   String   @id @default(dbgenerated("(uuid())")) @db.Char(36)
-  user_id   String?  @db.Char(36)
   poll_id   String?  @db.Char(36)
   option_id String?  @db.Char(36)
   vote_time DateTime @db.DateTime(0)
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
-model poll_options {
-  poll_id        String? @db.Char(36)
-  option_id_list String? @db.Char(36)
-  poll_option_id String  @id @default(dbgenerated("(uuid())")) @db.Char(36)
-
-  @@ignore
+  voter_id  String?  @db.VarChar(100)
 }
