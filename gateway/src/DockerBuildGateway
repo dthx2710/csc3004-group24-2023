@@ -5,8 +5,11 @@ COPY . .
 
 # Service environment variables
 ENV USER_SERVICE_URL=localhost:50051
+ENV POLL_SERVICE_URL=localhost:50052
+ENV RESULT_SERVICE_URL=localhost:50053
+ENV VOTE_SERVICE_URL=localhost:50054
 
-RUN CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o main.exe
+RUN CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o /app/main.exe
 
 # Stage 2: Extraction stage
 FROM alpine
@@ -16,4 +19,4 @@ CMD ["cp", "/extracted/main.exe", "/host"]
 
 # Build the image commands
 # docker build -f DockerBuildGateway -t build-gateway .
-# docker run --rm -v ".:/host" build-gateway
+# docker run --rm -v "$(pwd):/host" build-gateway
