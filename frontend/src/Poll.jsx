@@ -19,6 +19,7 @@ export default function Poll({ poll, isAdmin, state }) {
     if (window.confirm("Do you really want to delete this poll?")) {
       deletePoll();
       console.log("Poll deleted");
+      window.location.reload();
     }
   };
 
