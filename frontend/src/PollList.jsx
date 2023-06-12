@@ -13,16 +13,15 @@ export default function PollList({ polls, isAdmin }) {
     <Grid container spacing={2}>
       {polls.map((poll, index) => (
         <Grid item xs={12} key={index}>
-          <Link to={`/pollvoteform/${poll.title}/${poll.description}`} style={{ textDecoration: 'none', color: 'inherit' }} state={{ data: { pollId: poll.pollId }}}>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              {poll.isCompulsory && (
-                <Tooltip title="Compulsory poll" arrow>
-                  <WarningIcon color="error" style={{ marginRight: '10px' }} />
-                </Tooltip>
-              )}
-              <Poll poll={poll} isAdmin={isAdmin} state={{ data: { pollId: poll.pollId }}} />
-            </div>
-          </Link>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            {poll.isCompulsory && (
+              <Tooltip title="Compulsory poll" arrow>
+                <WarningIcon color="error" style={{ marginRight: '10px' }} />
+              </Tooltip>
+            )}
+            
+            <Poll poll={poll} isAdmin={isAdmin} state={{ data: { pollId: poll.pollId }}} />
+          </div>
         </Grid>
       ))}
     </Grid>

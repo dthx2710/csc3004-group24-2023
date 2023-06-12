@@ -38,7 +38,7 @@ export default function Poll({ poll, isAdmin, state }) {
   return (
     <Paper style={{ padding: '16px', backgroundColor: '#f5f5f5', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
       <div>
-        <Link to={`/pollvoteform/${poll.title}/${poll.description}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+        <Link to={`/pollvoteform/${poll.title}/${poll.description}`} style={{ textDecoration: 'none', color: 'inherit' }} state={{ data: { pollId: poll.pollId }}}>
           <Typography variant="h5">{poll.title}</Typography>
           <Typography variant="body1">{poll.description}</Typography>
         </Link>
