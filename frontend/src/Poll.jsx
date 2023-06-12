@@ -48,7 +48,7 @@ export default function Poll({ poll, isAdmin, state }) {
       </div>
       {isAdmin && (
         <div>
-          <IconButton component={Link} to={`/pollresults/${poll.title}`}>
+          <IconButton component={Link} to={`/pollresults/${poll.title}`} state={{ data: { pollId: poll.pollId }}}>
             <BarChartIcon />
           </IconButton>
           <IconButton onClick={handleDeleteClick}>

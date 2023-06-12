@@ -93,23 +93,27 @@ async function userInfo(user_id) {
 
 function GetUser(call, callback) {
   const token = call.metadata.get("authorization")[0].split(" ")[1];
+  const userId = decodeToken(token);
+  userInfo(userId)
+    .then((userDetails) => {
+      callback(null, { user_info: userDetails });
+    })
+    .catch((error) => {
+      console.error(error);
+      callback(error);
+    });
+}
+
+function decodeToken(token) {
   try {
     const decoded = jwt.verify(
       token,
-      process.env.JWT_SECRET || "csc3004-g24-testsecret"
+      jwtSecret
     );
-    const userId = decoded.sub;
-    userInfo(userId)
-      .then((userDetails) => {
-        callback(null, { user_info: userDetails });
-      })
-      .catch((error) => {
-        console.error(error);
-        callback(error);
-      });
+    return decoded.sub;
   } catch (error) {
     console.error("JWT verification failed:", error);
-    callback(error);
+    return null;
   }
 }
 
