@@ -20,10 +20,20 @@ const commonStyles = {
 };
 
 export default function PollForm() {
+    const [title, setTitle] = React.useState(''); 
+    const [description, setDescription] = React.useState('');  
     const [eventType, setEventType] = React.useState('');
     const [electoralDivision, setElectoralDivision] = React.useState('');
     const [constituency, setConstituency] = React.useState('');
     const [items, setItems] = React.useState(['', '']);
+
+    const handleTitleChange = (event) => {  // add a function to handle the title change
+        setTitle(event.target.value);
+    };
+
+    const handleDescriptionChange = (event) => {  // add a function to handle the description change
+        setDescription(event.target.value);
+    };
 
     const handleEventTypeChange = (event) => {
         setEventType(event.target.value);
@@ -121,6 +131,22 @@ export default function PollForm() {
                             label="Enter form title here"
                             variant="filled"
                             fullWidth
+                            value={title}  // bind the title state variable
+                            onChange={handleTitleChange}  // handle the title change
+                        />
+
+                        <Typography variant="h6" component="h2" gutterBottom style={{ color: 'black'}} marginTop={3}>
+                            Description
+                        </Typography>
+
+                        <TextField
+                            required
+                            id="filled-required"
+                            label="Enter form description here"
+                            variant="filled"
+                            fullWidth
+                            value={description}  // bind the description state variable
+                            onChange={handleDescriptionChange}  // handle the description change
                         />
 
                         <Typography variant="h6" component="h2" gutterBottom style={{ color: 'black'}} marginTop={3}>
