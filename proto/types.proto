@@ -5,10 +5,9 @@ package common;
 option go_package = "csc3004-group24-2023/proto";
 
 message UserInfo{
-    string user_id = 1;
-    string username = 2;
-    string user_type = 3;
-    string constituency_id = 4;
+    string username = 1;
+    string user_type = 2;
+    string constituency_id = 3;
 }
 
 message PollInfo{
@@ -34,6 +33,5 @@ message ResultInfo{
 
 message VoteInfo{
     string poll_id = 1;
-    string user_id = 2;
-    string option_id = 3;
+    string option_id = 2;
 }
