@@ -167,7 +167,7 @@ export default function PollForm() {
                             </Select>
                         </FormControl>
 
-                        {eventType === 'GE' && (
+                        {['GE', 'FRU', 'CS'].includes(eventType) && (
                             <>
                                 <Typography variant="h6" component="h2" gutterBottom style={{ color: 'black'}} marginTop={3}>
                                     Electoral Division
