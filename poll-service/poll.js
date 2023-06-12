@@ -71,12 +71,19 @@ async function pollCreate(pollInfo, options) {
   return poll.poll_id;
 }
 
-async function pollDelete(id) {
+async function pollDelete(poll_id) {
   await prisma.poll.delete({
     where: {
-      id: id,
+      poll_id: poll_id,
     },
   });
+
+  await prisma.options.deleteMany({
+    where: {
+      poll_id: poll_id,
+    },
+  });
+
   await prisma.$disconnect();
 }
 
@@ -112,7 +119,8 @@ function CreatePoll(call, callback) {
 }
 
 function DeletePoll(call, callback) {
-  pollDelete(call.request.id)
+  console.log(call.request.poll_id);
+  pollDelete(call.request.poll_id)
     .then(() => {
       callback(null, { success: true });
     })
