@@ -17,20 +17,58 @@ const pollProto = protoDescriptor.poll_service;
 
 const prisma = new PrismaClient();
 
+function createDateObject(dateString) {
+    // Split the string into date and time components
+  const [datePart, timePart] = dateString.split(' ');
+
+  // Split the date part into day, month, and year components
+  const [day, month, year] = datePart.split('/');
+
+  // Split the time part into hour, minute, and second components
+  const [hour, minute, second] = timePart.split(':');
+
+  // Create a new Date object using the parsed values
+  const dateObject = new Date(year, month - 1, day, hour, minute, second);
+
+  return dateObject;
+}
+
 async function pollCreate(pollInfo, options) {
+  const startTime = createDateObject(pollInfo.poll_starttime);
+  const endTime = createDateObject(pollInfo.poll_endtime);
+  isCompulsory = pollInfo.is_compulsory === 'true' ? true : false;
+  const constituencyId = await prisma.constituency.findFirst({
+    where: {
+      key_value: pollInfo.constituency_id,
+    },
+    select: {
+      constituency_id: true
+    }
+  });
+  console.log(constituencyId.constituency_id);
   const poll = await prisma.poll.create({
     data: {
-      ...pollInfo,
-      options: {
-        create: options,
-      },
-    },
-    include: {
-      options: true,
-    },
-  });
+      poll_starttime: startTime,
+      poll_endtime: endTime,
+      status: pollInfo.status,
+      constituency_id: constituencyId.constituency_id,
+      poll_title: pollInfo.poll_title,
+      poll_description: pollInfo.poll_description,
+      is_compulsory: isCompulsory,
+    }
+  })
+
+  for (let i = 0; i < options.length; i++) {
+    await prisma.options.create({
+      data: {
+        poll_id: poll.poll_id,
+        option_name: options[i],
+      }
+    })
+  }
+
   await prisma.$disconnect();
-  return poll.id;
+  return poll.poll_id;
 }
 
 async function pollDelete(id) {

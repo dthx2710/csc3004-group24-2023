@@ -9,6 +9,22 @@ export default function Poll({ poll, isAdmin }) {
     poll: PropTypes.object.isRequired,
     isAdmin: PropTypes.bool.isRequired,
   };
+
+  function handleDeleteClick() {
+      // axios
+      // .delete(`/api/polls/${2}`)
+      // .then((response) => {
+      //     if (response.status === 200) {
+      //         console.log(response);
+      //     }
+      //     })
+      //     .catch((error) => {
+      //     console.log(error);
+      //     }); 
+
+    console.log('Button clicked!');
+  }
+
   return (
     <Paper style={{ padding: '16px', backgroundColor: '#f5f5f5', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
       <div>
@@ -21,10 +37,7 @@ export default function Poll({ poll, isAdmin }) {
             <BarChartIcon />
           </IconButton>
           <IconButton
-            onClick={() => {
-              // Implement the delete function here
-              console.log("Delete button clicked");
-            }}
+            onClick={handleDeleteClick}
           >
             <DeleteIcon />
           </IconButton>

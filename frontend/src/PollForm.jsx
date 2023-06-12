@@ -4,6 +4,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { useNavigate } from "react-router-dom";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import AddIcon from '@mui/icons-material/Add';
 import CreateIcon from '@mui/icons-material/Create';
@@ -21,6 +22,7 @@ const commonStyles = {
 };
 
 export default function PollForm() {
+    const navigate = useNavigate();
     const [title, setTitle] = React.useState(''); 
     const [description, setDescription] = React.useState('');  
     const [eventType, setEventType] = React.useState('');
@@ -142,15 +144,15 @@ export default function PollForm() {
     };
 
     function handleCreateClick() {
-        console.log("\nevent type: " + eventType);
-        console.log("electoral division: " + electoralDivision);
-        console.log("constituency: " + constituency);
-        console.log("title: " + title);
-        console.log("description: " + description);
-        console.log("items: " + items);
-        console.log("is compulsory: " + isCompulsory);
-        console.log("poll start time: " + startTime);
-        console.log("poll end time: " + endTime);
+        // console.log("\nevent type: " + eventType);
+        // console.log("electoral division: " + electoralDivision);
+        // console.log("constituency: " + constituency);
+        // console.log("title: " + title);
+        // console.log("description: " + description);
+        // console.log("items: " + items);
+        // console.log("is compulsory: " + isCompulsory);
+        // console.log("poll start time: " + startTime);
+        // console.log("poll end time: " + endTime);
         if(eventType === 'GE') {
             const pollInfo = {
                 poll_starttime: startTime.toString(),
@@ -194,7 +196,13 @@ export default function PollForm() {
                 .post("/api/polls", postItem)
                 .then((response) => {
                     if (response.status === 200) {
-                        console.log(response);
+                        if(response.data.success){
+                            alert("Poll created successfully!");
+                            navigate("/adminhome");
+                        }
+                        else{
+                            alert("Poll creation failed. Please try again.");
+                        }
                     }
                     })
                     .catch((error) => {
