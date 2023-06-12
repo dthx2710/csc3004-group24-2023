@@ -58,12 +58,19 @@ export default function PollVoteForm() {
     const voteInfo = {
       poll_id: pollId,
       option_id: values.main.id,
-      user_id: "1",
     };
     axios
-      .post(`/api/vote`, {
-        vote_info: voteInfo,
-      })
+      .post(
+        `/api/vote`,
+        {
+          vote_info: voteInfo,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
+          },
+        }
+      )
       .then((response) => {
         console.log(
           "Success:",

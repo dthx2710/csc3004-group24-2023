@@ -26,15 +26,22 @@ await consumer.run({
     // destructure object
     const { poll_id, option_id, user_id } = event;
 
-    // check if user has already voted in the same poll, if so  do not save vote
-    const existingVote = await prisma.votes.findFirst({
-      where: {
-        AND: [
-          { poll_id: poll_id },
-          { user_id: user_id },
-        ],
-      },
-    });
+    // user == hash_id from user table == voter_id from vote table
+  // if user has already voted in the same poll, do not save vote
+  const user = await prisma.users.findFirst({
+    where: {
+      user_id: user_id,
+    },
+    select : {
+      hash_id: true,
+    }
+  });
+  const existingVote = await prisma.votes.findFirst({
+    where: {
+      poll_id: poll_id,
+      voter_id: user.hash_id,
+    },
+  });
     if (existingVote) {
       console.log("User has already voted in this poll");
       return;
@@ -50,7 +57,7 @@ await consumer.run({
         data: {
           poll_id: poll_id,
           option_id: option_id,
-          user_id: user_id,
+          voter_id: user.hash_id,
           vote_time: formattedTimestamp,
         },
       })
