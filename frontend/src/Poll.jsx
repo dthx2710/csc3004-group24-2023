@@ -1,5 +1,6 @@
 import { Paper, Typography, IconButton } from '@mui/material';
 import BarChartIcon from '@mui/icons-material/BarChart';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -15,9 +16,20 @@ export default function Poll({ poll, isAdmin }) {
         <Typography variant="body1">{poll.description}</Typography>
       </div>
       {isAdmin && (
-        <IconButton component={Link} to={`/pollresults/${poll.title}`}>
-          <BarChartIcon />
-        </IconButton>
+        <div>
+          <IconButton component={Link} to={`/pollresults/${poll.title}`}>
+            <BarChartIcon />
+          </IconButton>
+          <IconButton
+            onClick={() => {
+              // Implement the delete function here
+              console.log("Delete button clicked");
+            }}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </div>
+        
       )}
     </Paper>
   );
