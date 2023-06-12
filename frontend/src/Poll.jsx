@@ -3,6 +3,7 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import axios from "axios";
 
 export default function Poll({ poll, isAdmin, state }) {
   Poll.propTypes = {
@@ -10,30 +11,31 @@ export default function Poll({ poll, isAdmin, state }) {
     isAdmin: PropTypes.bool.isRequired,
   };
 
+  const { data } = state;
+  const { pollId } = data;
+
   const handleDeleteClick = (e) => {
     e.stopPropagation();
     if (window.confirm("Do you really want to delete this poll?")) {
+      deletePoll();
       console.log("Poll deleted");
     }
   };
-  
-  // const { data } = state;
-  // const { pollId } = data;
 
-  // function handleDeleteClick() {
-  //     axios
-  //     .delete(`/api/polls/${pollId}`)
-  //     .then((response) => {
-  //         if (response.status === 200) {
-  //             console.log(response);
-  //         }
-  //         })
-  //         .catch((error) => {
-  //         console.log(error);
-  //         }); 
+  function deletePoll() {
+      axios
+      .delete(`/api/polls/${pollId}`)
+      .then((response) => {
+          if (response.status === 200) {
+              console.log(response);
+          }
+          })
+          .catch((error) => {
+          console.log(error);
+          }); 
 
-  //   console.log('Button clicked!');
-  // }
+    console.log('Button clicked!');
+  }
 
   return (
     <Paper style={{ padding: '16px', backgroundColor: '#f5f5f5', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
