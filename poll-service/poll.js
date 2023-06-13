@@ -3,6 +3,8 @@ const protoLoader = require("@grpc/proto-loader");
 require("dotenv").config();
 const { PrismaClient } = require("@prisma/client");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const jwtSecret = process.env.JWT_SECRET || "csc3004-g24-testsecret";
 
 const packageDefinition = protoLoader.loadSync("proto/poll-service.proto", {
   keepCase: true,
@@ -18,14 +20,14 @@ const pollProto = protoDescriptor.poll_service;
 const prisma = new PrismaClient();
 
 function createDateObject(dateString) {
-    // Split the string into date and time components
-  const [datePart, timePart] = dateString.split(' ');
+  // Split the string into date and time components
+  const [datePart, timePart] = dateString.split(" ");
 
   // Split the date part into day, month, and year components
-  const [day, month, year] = datePart.split('/');
+  const [day, month, year] = datePart.split("/");
 
   // Split the time part into hour, minute, and second components
-  const [hour, minute, second] = timePart.split(':');
+  const [hour, minute, second] = timePart.split(":");
 
   // Create a new Date object using the parsed values
   const dateObject = new Date(year, month - 1, day, hour, minute, second);
@@ -33,19 +35,31 @@ function createDateObject(dateString) {
   return dateObject;
 }
 
-async function pollCreate(pollInfo, options) {
+async function pollCreate(user_id, pollInfo, options) {
+  // check if user is admin
+  const user = await prisma.users.findFirst({
+    where: {
+      user_id: user_id,
+    },
+    select: {
+      user_type: true,
+    },
+  });
+  if (!user.user_type === "admin") {
+    console.log("Invalid permissions to create poll");
+    return null;
+  }
   const startTime = createDateObject(pollInfo.poll_starttime);
   const endTime = createDateObject(pollInfo.poll_endtime);
-  isCompulsory = pollInfo.is_compulsory === 'true' ? true : false;
+  isCompulsory = pollInfo.is_compulsory === "true" ? true : false;
   const constituencyId = await prisma.constituency.findFirst({
     where: {
       key_value: pollInfo.constituency_id,
     },
     select: {
-      constituency_id: true
-    }
+      constituency_id: true,
+    },
   });
-  console.log(constituencyId.constituency_id);
   const poll = await prisma.poll.create({
     data: {
       poll_starttime: startTime,
@@ -55,23 +69,36 @@ async function pollCreate(pollInfo, options) {
       poll_title: pollInfo.poll_title,
       poll_description: pollInfo.poll_description,
       is_compulsory: isCompulsory,
-    }
-  })
+    },
+  });
 
   for (let i = 0; i < options.length; i++) {
     await prisma.options.create({
       data: {
         poll_id: poll.poll_id,
         option_name: options[i],
-      }
-    })
+      },
+    });
   }
 
   await prisma.$disconnect();
   return poll.poll_id;
 }
 
-async function pollDelete(poll_id) {
+async function pollDelete(user_id, poll_id) {
+  // check if user is admin
+  const user = await prisma.users.findFirst({
+    where: {
+      user_id: user_id,
+    },
+    select: {
+      user_type: true,
+    },
+  });
+  if (!user.user_type === "admin") {
+    console.log("Invalid permissions to delete poll");
+    return null;
+  }
   await prisma.poll.delete({
     where: {
       poll_id: poll_id,
@@ -83,32 +110,77 @@ async function pollDelete(poll_id) {
       poll_id: poll_id,
     },
   });
-
   await prisma.$disconnect();
 }
 
-async function pollInfo(id) {
-  const poll = await prisma.options.findMany({
+async function pollInfo(user_id, poll_id) {
+  // check if user is admin
+  const user = await prisma.users.findFirst({
     where: {
-      poll_id: id,
+      user_id: user_id,
+    },
+    select: {
+      user_type: true,
+      constituency_id: true,
     },
   });
+  const poll = await prisma.poll.findFirst({
+    where: {
+      poll_id: poll_id,
+    },
+  });
+  if (!user.user_type === "admin") {
+    // check if constituency matches
+    if (poll.constituency_id !== user.constituency_id) {
+      console.log("Invalid permissions to view poll");
+      return null;
+    }
+  }
+  // load options
+  const options = await prisma.options.findMany({
+    where: {
+      poll_id: poll_id,
+    },
+  });
+  const pollInfo = {
+    poll_item: poll,
+    options_id: options.map((option) => option.option_id),
+    options: options.map((option) => option.option_name),
+  };
   await prisma.$disconnect();
-
-  // destructure poll object to get options array and poll info
-  // based on proto file
-        
-  return poll;
+  return pollInfo;
 }
 
-async function allPollInfo() {
-  const polls = await prisma.poll.findMany();
-  await prisma.$disconnect();
-  return polls;
+async function allPollInfo(user_id) {
+  // check if user is admin
+  const user = await prisma.users.findFirst({
+    where: {
+      user_id: user_id,
+    },
+    select: {
+      user_type: true,
+      constituency_id: true,
+    },
+  });
+  if (user.user_type === "admin") {
+    const polls = await prisma.poll.findMany();
+    await prisma.$disconnect();
+    return polls;
+  } else {
+    const polls = await prisma.poll.findMany({
+      where: {
+        constituency_id: user.constituency_id,
+      },
+    });
+    await prisma.$disconnect();
+    return polls;
+  }
 }
 
 function CreatePoll(call, callback) {
-  pollCreate(call.request.poll_info, call.request.options)
+  const token = call.metadata.get("authorization")[0].split(" ")[1];
+  const userId = decodeToken(token);
+  pollCreate(userId, call.request.poll_info, call.request.options)
     .then((id) => {
       callback(null, { poll_id: id, success: true });
     })
@@ -119,8 +191,9 @@ function CreatePoll(call, callback) {
 }
 
 function DeletePoll(call, callback) {
-  console.log(call.request.poll_id);
-  pollDelete(call.request.poll_id)
+  const token = call.metadata.get("authorization")[0].split(" ")[1];
+  const userId = decodeToken(token);
+  pollDelete(userId, call.request.poll_id)
     .then(() => {
       callback(null, { success: true });
     })
@@ -131,19 +204,11 @@ function DeletePoll(call, callback) {
 }
 
 function GetPoll(call, callback) {
-  pollInfo(call.request.poll_id)
-    .then((pollDetails) => {
-      const response = {
-        options_id: [],
-        options: []
-      };
-
-      pollDetails.forEach((option) => {
-        response.options_id.push(option.option_id);
-        response.options.push(option.option_name);
-      });
-
-      callback(null, response);
+  const token = call.metadata.get("authorization")[0].split(" ")[1];
+  const userId = decodeToken(token);
+  pollInfo(userId, call.request.poll_id)
+    .then((pollResponse) => {
+      callback(null, pollResponse);
     })
     .catch((error) => {
       console.error(error);
@@ -152,7 +217,9 @@ function GetPoll(call, callback) {
 }
 
 function GetAllPolls(call, callback) {
-  allPollInfo()
+  const token = call.metadata.get("authorization")[0].split(" ")[1];
+  const userId = decodeToken(token);
+  allPollInfo(userId)
     .then((pollsArray) => {
       const pollItems = pollsArray.map((poll) => {
         return { poll_id: poll.poll_id, poll_info: poll };
@@ -163,6 +230,16 @@ function GetAllPolls(call, callback) {
       console.error(error);
       callback(error);
     });
+}
+
+function decodeToken(token) {
+  try {
+    const decoded = jwt.verify(token, jwtSecret);
+    return decoded.sub;
+  } catch (error) {
+    console.error("JWT verification failed:", error);
+    return null;
+  }
 }
 
 function getServer() {

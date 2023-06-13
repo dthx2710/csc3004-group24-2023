@@ -114,7 +114,11 @@ export default function PollVoteForm() {
 
   useEffect(() => {
     axios
-      .get(`/api/polls/${pollId}`)
+      .get(`/api/polls/${pollId}`, {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
+        },
+      })
       .then((response) => {
         for (let i = 0; i < response.data.options.length; i++) {
           // if option not already in options array

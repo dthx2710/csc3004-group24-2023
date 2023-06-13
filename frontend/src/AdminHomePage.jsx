@@ -21,14 +21,13 @@ export default function AdminHomePage() {
 
   useEffect(() => {
     try {
-      const user = sessionStorage.getItem("user")
+      const user = sessionStorage.getItem("user");
       const loggedIn = sessionStorage.getItem("loggedIn");
       if (loggedIn === null || user === null) {
         // clear sessionStorage and navigate to login page
         sessionStorage.clear();
         navigate("/");
-      }
-      else {
+      } else {
         const userType = JSON.parse(user).userType;
         if (userType === "user") {
           navigate("/userhome");
@@ -42,7 +41,11 @@ export default function AdminHomePage() {
 
   useEffect(() => {
     axios
-      .get("/api/polls")
+      .get("/api/polls", {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
+        },
+      })
       .then((response) => {
         for (let i = 0; i < response.data.pollItem.length; i++) {
           if (
@@ -61,12 +64,12 @@ export default function AdminHomePage() {
               pollId: response.data.pollItem[i].pollId,
             });
         }
-        setPolls([...polls]);
+        setPolls(() => [...polls]);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [polls]);
+  }, []);
 
   const sortedPolls = [...polls].sort((a, b) => {
     return new Date(a.endTime) - new Date(b.endTime);

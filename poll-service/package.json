@@ -4,17 +4,17 @@
     "description": "Service for Polls",
     "main": "user.js",
     "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1",
-      "start": "node poll.js"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node poll.js"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
-      "@grpc/grpc-js": "^1.8.12",
-      "@grpc/proto-loader": "^0.7.5",
-      "@prisma/client": "^4.14.1",
-      "dotenv": "^16.0.3",
-      "bcrypt": "^5.0.1"
+        "@grpc/grpc-js": "^1.8.12",
+        "@grpc/proto-loader": "^0.7.5",
+        "@prisma/client": "^4.14.1",
+        "bcrypt": "^5.0.1",
+        "dotenv": "^16.0.3",
+        "jsonwebtoken": "^9.0.0"
     }
-  }
-  
+}

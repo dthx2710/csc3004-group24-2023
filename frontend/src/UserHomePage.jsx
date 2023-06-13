@@ -41,7 +41,11 @@ export default function UserHomePage({ handlePollClick }) {
       ).constituencyId;
       if (constituency) {
         axios
-          .get("/api/polls")
+          .get("/api/polls", {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
+            },
+          })
           .then((response) => {
             for (let i = 0; i < response.data.pollItem.length; i++) {
               if (
@@ -74,7 +78,7 @@ export default function UserHomePage({ handlePollClick }) {
       sessionStorage.clear();
       navigate("/");
     }
-  }, [polls]);
+  }, []);
 
   const sortedPolls = [...polls].sort((a, b) => {
     return new Date(a.endTime) - new Date(b.endTime);
