@@ -49,8 +49,8 @@ const SubmitVote = async (call, callback) => {
   const messagePayload = {
     poll_id: call.request.vote_info.poll_id,
     option_id: call.request.vote_info.option_id,
-    user_id: user_id
-  }
+    user_id: user_id,
+  };
 
   const success = await queueVote(messagePayload);
   if (success) {
@@ -97,7 +97,7 @@ const getServer = () => {
 
 const kafka = new Kafka({
   clientId: "kafka",
-  brokers: ["localhost:9092"],
+  brokers: ["kafka:9092"],
 });
 
 const producer = kafka.producer();
@@ -105,10 +105,11 @@ await producer
   .connect()
   .then(() => {
     console.log("Connected to kafka");
-    const port = process.env.VOTE_SERVICE_URL.split(":")[1] || 50054;
+    const host = "0.0.0.0";
+    const port = ":50054";
     const voteServer = getServer();
     voteServer.bindAsync(
-      process.env.VOTE_SERVICE_URL,
+      host + port,
       grpc.ServerCredentials.createInsecure(),
       () => {
         console.log("Vote-service is listening on port " + port);

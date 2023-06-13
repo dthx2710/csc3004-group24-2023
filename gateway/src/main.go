@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"strings"
 
 	"github.com/golang/glog"
@@ -34,10 +33,10 @@ func main() {
 }
 
 func newGateway(ctx context.Context, opts ...runtime.ServeMuxOption) (http.Handler, error) {
-	userEndpoint := flag.String("user_endpoint", os.Getenv("USER_SERVICE_URL"), "endpoint of User Service")
-	pollEndpoint := flag.String("poll_endpoint", os.Getenv("POLL_SERVICE_URL"), "endpoint of Poll Service")
-	resultEndpoint := flag.String("result_endpoint", os.Getenv("RESULT_SERVICE_URL"), "endpoint of Result Service")
-	voteEndpoint := flag.String("vote_endpoint", os.Getenv("VOTE_SERVICE_URL"), "endpoint of Vote Service")
+	userEndpoint := flag.String("user_endpoint", ":50051", "endpoint of User Service")
+	pollEndpoint := flag.String("poll_endpoint", ":50052", "endpoint of Poll Service")
+	resultEndpoint := flag.String("result_endpoint", ":50053", "endpoint of Result Service")
+	voteEndpoint := flag.String("vote_endpoint", ":50054", "endpoint of Vote Service")
 	mux := runtime.NewServeMux(opts...)
 	dialOpts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 	err := gw.RegisterUserHandlerFromEndpoint(ctx, mux, *userEndpoint, dialOpts) // register user service

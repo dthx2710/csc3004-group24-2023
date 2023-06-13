@@ -100,10 +100,11 @@ function getServer() {
   return server;
 }
 
-const port = process.env.RESULT_SERVICE_URL.split(":")[1] || 50051;
+const host = "0.0.0.0";
+const port = ":50053";
 const resultServer = getServer();
 resultServer.bindAsync(
-  process.env.RESULT_SERVICE_URL,
+  host + port,
   grpc.ServerCredentials.createInsecure(),
   () => {
     console.log("Result-service is listening on port " + port);

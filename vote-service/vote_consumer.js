@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 
 const kafka = new Kafka({
   clientId: "kafka",
-  brokers: ["localhost:9092"],
+  brokers: ["kafka:9092"],
 });
 
 const consumer = kafka.consumer({ groupId: "vote-group" });
@@ -69,5 +69,3 @@ await consumer.run({
       });
   },
 });
-
-// await consumer.disconnect();

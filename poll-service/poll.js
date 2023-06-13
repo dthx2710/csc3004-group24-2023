@@ -253,10 +253,11 @@ function getServer() {
   return server;
 }
 
-const port = process.env.POLL_SERVICE_URL.split(":")[1] || 50052;
+const host = "0.0.0.0";
+const port = ":50052";
 const pollServer = getServer();
 pollServer.bindAsync(
-  process.env.POLL_SERVICE_URL,
+  host + port,
   grpc.ServerCredentials.createInsecure(),
   () => {
     console.log("Poll-service is listening on port " + port);
