@@ -7,12 +7,13 @@ import Layout from "./Layout";
 import PollForm from "./PollForm";
 import PollVoteForm from "./PollVoteForm";
 import PollResults from "./PollResults";
+import NotFound from "./NotFound";
 
 const App = () => {
   return (
     <Router>
       <AnimatePresence wait>
-        <Routes>
+        <Routes fallback={<NotFound />}>
           <Route path="/" element={<LoginPage />} />
           <Route
             path="/userhome"
@@ -54,6 +55,7 @@ const App = () => {
               </Layout>
             }
           />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </AnimatePresence>
     </Router>
