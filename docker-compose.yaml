@@ -1,31 +1,95 @@
 version: '3'
 
 services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    depends_on:
+      - gateway
+    environment:
+      - VITE_GATEWAY_URL=gateway:8080
+    env_file:
+      - .env
+
   gateway:
     build:
       context: ./gateway/src
       dockerfile: Dockerfile
-    environment:
-      - USER_SERVICE_URL=user-service:50051
-    depends_on:
-      - user-service
     ports:
       - 8080:8080
-    networks:
-      - service
+    depends_on:
+      - user-service
+      - poll-service
+      - result-service
+      - vote-service
+    env_file:
+      - .env
 
   user-service:
     build:
       context: ./user-service
       dockerfile: Dockerfile
-    environment:
-      - USER_SERVICE_URL=user-service:50051
-      - DATABASE_URL=mysql://nezu80du7c7kd9j1y8q6:pscale_pw_Ba5mE3SjXYIK80b4FUcknF0LAGPBEeQ7OiglYJADYhX@aws.connect.psdb.cloud/voting-system?sslaccept=strict
     ports:
       - 50051:50051
-    networks:
-      - service
+    env_file:
+      - .env
+  
+  poll-service:
+    build:
+      context: ./poll-service
+      dockerfile: Dockerfile
+    ports:
+      - 50052:50052
+    env_file:
+      - .env
 
-networks:
-  service:
-    driver: bridge
+  result-service:
+    build:
+      context: ./result-service
+      dockerfile: Dockerfile
+    ports:
+      - 50053:50053
+    env_file:
+      - .env
+
+  vote-service:
+    build:
+      context: ./vote-service
+      dockerfile: Dockerfile
+    ports:
+      - 50054:50054
+    depends_on:
+      - kafka
+    env_file:
+      - .env
+
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    ports:
+      - '2181:2181'
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  kafka:
+    image: 'bitnami/kafka:latest'
+    container_name: 'kafka'
+    ports:
+      - '9092:9092'
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ENABLE_KRAFT=no
+      - KAFKA_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CREATE_TOPICS=votes:5:2
+      - KAFKAJS_NO_PARTITIONER_WARNING=1
+    depends_on:
+      - zookeeper
+
+# networks:
+#   service:
+#     driver: bridge
