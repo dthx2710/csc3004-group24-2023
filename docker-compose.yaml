@@ -6,25 +6,24 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - 80:80
+      - 8081:80
+    container_name: 'frontend'
     depends_on:
       - gateway
-    environment:
-      - VITE_GATEWAY_URL=gateway:8080
-    env_file:
-      - .env
 
   gateway:
     build:
       context: ./gateway/src
       dockerfile: Dockerfile
+    container_name: 'gateway'
     ports:
       - 8080:8080
     depends_on:
       - user-service
       - poll-service
       - result-service
-      - vote-service
+      - vote-producer
+      - vote-consumer
     env_file:
       - .env
 
@@ -32,15 +31,17 @@ services:
     build:
       context: ./user-service
       dockerfile: Dockerfile
+    container_name: 'user-service'
     ports:
       - 50051:50051
     env_file:
       - .env
-  
+
   poll-service:
     build:
       context: ./poll-service
       dockerfile: Dockerfile
+    container_name: 'poll-service'
     ports:
       - 50052:50052
     env_file:
@@ -50,15 +51,17 @@ services:
     build:
       context: ./result-service
       dockerfile: Dockerfile
+    container_name: 'result-service'
     ports:
       - 50053:50053
     env_file:
       - .env
 
-  vote-service:
+  vote-producer:
     build:
-      context: ./vote-service
+      context: ./vote-service/producer
       dockerfile: Dockerfile
+    container_name: 'vote-producer'
     ports:
       - 50054:50054
     depends_on:
@@ -66,10 +69,22 @@ services:
     env_file:
       - .env
 
+  vote-consumer:
+    build:
+      context: ./vote-service/consumer
+      dockerfile: Dockerfile
+    container_name: 'vote-consumer'
+    depends_on:
+      - kafka
+      - vote-producer
+    env_file:
+      - .env
+
   zookeeper:
     image: 'bitnami/zookeeper:latest'
     ports:
       - '2181:2181'
+    container_name: 'zookeeper'
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
 
@@ -86,10 +101,18 @@ services:
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
       - KAFKA_CREATE_TOPICS=votes:5:2
-      - KAFKAJS_NO_PARTITIONER_WARNING=1
     depends_on:
       - zookeeper
 
-# networks:
-#   service:
-#     driver: bridge
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: 'nginx'
+    ports:
+      - 80:8081
+    volumes:
+    - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
+    depends_on:
+      - frontend
+      - gateway

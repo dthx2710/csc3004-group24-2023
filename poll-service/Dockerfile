@@ -1,22 +1,23 @@
-# Use a Node.js base image
+# Use Node.js base image
 FROM node:bullseye
 
 # Set the working directory inside the container
 WORKDIR /app
 
-ENV NODE_ENV=production
-
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm ci
 
 # Copy the entire project directory to the working directory
 COPY . .
-ENV SESSION_SERVICE_URL=localhost:50052
+
+# Generate Prisma client
+RUN npx prisma generate
+
 # Expose the port on which your application listens
 EXPOSE 50052
 
-# Run the npm start command
-CMD ["npm", "start"]
+# Run the application
+CMD ["node", "poll.js"]

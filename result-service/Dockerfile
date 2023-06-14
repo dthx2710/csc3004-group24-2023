@@ -1,10 +1,23 @@
+# Use Node.js base image
 FROM node:bullseye
-ENV NODE_ENV=production
-WORKDIR /usr/src/app
-COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
-RUN npm install --production --silent && mv node_modules ../
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci
+
+# Copy the entire project directory to the working directory
 COPY . .
-EXPOSE 50055
-RUN chown -R node /usr/src/app
-USER node
-CMD ["npm", "start"]
+
+# Generate Prisma client
+RUN npx prisma generate
+
+# Expose the port on which your application listens
+EXPOSE 50053
+
+# Run the application
+CMD ["node", "result.js"]

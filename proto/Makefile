@@ -32,5 +32,5 @@ protoc-all:
 	cp types.proto ../poll-service/proto/
 
 	# vote-service
-	cp vote-service.proto ../vote-service/proto/
-	cp types.proto ../vote-service/proto/
+	cp vote-service.proto ../vote-service/producer/proto/
+	cp types.proto ../vote-service/producer/proto/

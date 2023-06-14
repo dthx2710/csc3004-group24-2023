@@ -1,5 +1,5 @@
 # Use the official Golang image as the base image
-FROM golang:1.20
+FROM golang:bullseye
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -15,5 +15,5 @@ RUN go mod download
 # Build the Go application
 RUN go build -o gateway
 
-# Build and run the Go application
-CMD ["go", "run", "main.go"]
+# Set the command to run when the container starts
+CMD ["./gateway"]
