@@ -1,3 +1,4 @@
+import { styled } from '@mui/system';
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Container, Typography, Button, ButtonGroup } from "@mui/material";
@@ -10,6 +11,12 @@ export default function UserHomePage({ handlePollClick }) {
   UserHomePage.propTypes = {
     handlePollClick: PropTypes.func,
   };
+
+  const HeaderTypography = styled(Typography)({
+    fontFamily: 'Century Gothic',
+    fontWeight: 'bold'
+  });
+
   const [pollStatus, setPollStatus] = useState("ongoing");
   const [polls, setPolls] = useState([]);
 
@@ -109,14 +116,14 @@ export default function UserHomePage({ handlePollClick }) {
     >
       <Container maxWidth="md">
         <Box sx={{ mt: 4, mb: 2 }}>
-          <Typography
+          <HeaderTypography
             variant="h4"
             component="h1"
             gutterBottom
             style={{ color: "black" }}
           >
             {pollStatus.charAt(0).toUpperCase() + pollStatus.slice(1)} Polls
-          </Typography>
+          </HeaderTypography>
           <Box sx={{ my: 2 }}>
             <ButtonGroup
               variant="contained"

@@ -15,7 +15,7 @@ export default function PollList({ polls, isAdmin }) {
         <Grid item xs={12} key={index}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             {poll.isCompulsory && (
-              <Tooltip title="Compulsory poll" arrow>
+              <Tooltip title={<span style={{ fontFamily: 'Century Gothic' }}>Compulsory poll</span>}>
                 <WarningIcon color="error" style={{ marginRight: '10px' }} />
               </Tooltip>
             )}

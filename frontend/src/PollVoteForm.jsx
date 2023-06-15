@@ -1,3 +1,4 @@
+import { styled } from '@mui/system';
 import { useState, useEffect } from "react";
 import {
   Container,
@@ -32,6 +33,15 @@ const commonStyles = {
 // ]
 
 export default function PollVoteForm() {
+  const HeaderTypography = styled(Typography)({
+    fontFamily: 'Century Gothic',
+    fontWeight: 'bold'
+  });
+
+  const TitleTypography = styled(Typography)({
+    fontFamily: 'Century Gothic'
+  });
+
   const [values, setValues] = useState({ main: { id: "", name: "" } });
   const { title, description } = useParams();
   const [options, setOptions] = useState([]);
@@ -144,7 +154,7 @@ export default function PollVoteForm() {
     <div style={{ backgroundColor: "white" }}>
       <Container maxWidth="md">
         <Box sx={{ mt: 4, mb: 2 }}>
-          <Typography
+          <HeaderTypography
             variant="h4"
             component="h1"
             gutterBottom
@@ -153,9 +163,9 @@ export default function PollVoteForm() {
             fontWeight={600}
           >
             {title}
-          </Typography>
+          </HeaderTypography>
 
-          <Typography
+          <TitleTypography
             component="h1"
             gutterBottom
             style={{ color: "black" }}
@@ -163,17 +173,17 @@ export default function PollVoteForm() {
             fontSize={18}
           >
             {description}
-          </Typography>
+          </TitleTypography>
 
           <Box sx={{ ...commonStyles, borderColor: "#f44336" }}>
-            <Typography
+            <TitleTypography
               variant="h6"
               component="h2"
               gutterBottom
               style={{ color: "black" }}
             >
               Select your choice:
-            </Typography>
+            </TitleTypography>
 
             <RadioGroup
               aria-labelledby="demo-controlled-radio-buttons-group"
@@ -193,7 +203,16 @@ export default function PollVoteForm() {
                       }}
                     />
                   }
-                  label={option.option_name}
+                  label={
+                    <TitleTypography
+                      sx={{
+                        fontFamily: 'Century Gothic',
+                        fontSize: '1.1rem'
+                      }}
+                    >
+                      {option.option_name}
+                    </TitleTypography>
+                  }
                   sx={{ color: "black" }}
                 />
               ))}

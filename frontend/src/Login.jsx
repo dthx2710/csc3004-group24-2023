@@ -17,6 +17,11 @@ const LogoAvatar = styled(Avatar)(({ theme }) => ({
 }));
 
 export default function Login() {
+  const HeaderTypography = styled(Typography)({
+    fontFamily: 'Century Gothic',
+    fontWeight: 'bold'
+  });
+
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -137,9 +142,9 @@ export default function Login() {
               src={LoginLogo}
               sx={{ width: 200, height: 200 }}
             />
-            <Typography component="h1" variant="h1" color="#df0023">
+            <HeaderTypography component="h1" variant="h1" color="#df0023">
               SingPoll
-            </Typography>
+            </HeaderTypography>
             <Box
               component="form"
               noValidate

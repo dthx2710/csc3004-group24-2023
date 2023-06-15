@@ -1,3 +1,4 @@
+import { styled } from '@mui/system';
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -14,6 +15,11 @@ import PollList from "./PollList";
 import axios from "axios";
 
 export default function AdminHomePage() {
+  const HeaderTypography = styled(Typography)({
+    fontFamily: 'Century Gothic',
+    fontWeight: 'bold'
+  });
+
   const navigate = useNavigate();
   const [pollStatus, setPollStatus] = useState("ongoing");
 
@@ -109,14 +115,14 @@ export default function AdminHomePage() {
             justifyContent="space-between"
           >
             <Grid item>
-              <Typography
+              <HeaderTypography
                 variant="h4"
                 component="h1"
                 gutterBottom
                 style={{ color: "black" }}
               >
                 {pollStatus.charAt(0).toUpperCase() + pollStatus.slice(1)} Polls
-              </Typography>
+              </HeaderTypography>
             </Grid>
             <Grid item>
               <Button

@@ -22,6 +22,15 @@ const RedLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 const PollResults = () => {
+  const HeaderTypography = styled(Typography)({
+    fontFamily: 'Century Gothic',
+    fontWeight: 'bold'
+  });
+
+  const TitleTypography = styled(Typography)({
+    fontFamily: 'Century Gothic'
+  });
+
   const { title } = useParams();
   const location = useLocation();
   const state = location.state;
@@ -93,9 +102,9 @@ const PollResults = () => {
     <Container>
       <Box mt={4} mb={2}>
         <Paper elevation={3} sx={{ padding: "20px" }}>
-          <Typography variant="h4" component="h1" align="center">
+          <HeaderTypography variant="h4" component="h1" align="center">
             Poll Results for {title}
-          </Typography>
+          </HeaderTypography>
           <Grid
             container
             spacing={2}
@@ -110,24 +119,24 @@ const PollResults = () => {
                 <Grid item xs={12} key={index}>
                   <Card sx={{ mt: 1, p: 1, backgroundColor: "grey.100" }}>
                     <CardContent>
-                      <Typography variant="h6" gutterBottom>
+                      <TitleTypography variant="h6" gutterBottom>
                         {result.name}
-                      </Typography>
-                      <Typography
+                      </TitleTypography>
+                      <TitleTypography
                         variant="body2"
                         color="textSecondary"
                         gutterBottom
                       >
                         {result.votes} votes
-                      </Typography>
+                      </TitleTypography>
                       <RedLinearProgress
                         variant="determinate"
                         value={progress[index] || 0}
                         sx={{ mt: 1, height: "10px", borderRadius: "5px" }}
                       />
-                      <Typography variant="h6" align="right">
+                      <TitleTypography variant="h6" align="right">
                         {votePercentage}%
-                      </Typography>
+                      </TitleTypography>
                     </CardContent>
                   </Card>
                 </Grid>

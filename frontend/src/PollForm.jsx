@@ -1,4 +1,5 @@
 import React from "react";
+import { styled } from '@mui/system';
 import {
   Box,
   Container,
@@ -36,6 +37,15 @@ const commonStyles = {
 };
 
 export default function PollForm() {
+  const HeaderTypography = styled(Typography)({
+    fontFamily: 'Century Gothic',
+    fontWeight: 'bold'
+  });
+
+  const TitleTypography = styled(Typography)({
+      fontFamily: 'Century Gothic'
+  });
+
   const navigate = useNavigate();
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
@@ -103,100 +113,100 @@ export default function PollForm() {
     switch (electoralDivision) {
       case "GRC":
         return [
-          <MenuItem key={"ALJ-GRC"} value={"ALJ-GRC"}>
+          <MenuItem key={"ALJ-GRC"} value={"ALJ-GRC"} style={{ fontFamily: 'Century Gothic' }}>
             Aljunied GRC
           </MenuItem>,
-          <MenuItem key={"AMK-GRC"} value={"AMK-GRC"}>
+          <MenuItem key={"AMK-GRC"} value={"AMK-GRC"} style={{ fontFamily: 'Century Gothic' }}>
             Ang Mo Kio GRC
           </MenuItem>,
-          <MenuItem key={"BTP-GRC"} value={"BTP-GRC"}>
+          <MenuItem key={"BTP-GRC"} value={"BTP-GRC"} style={{ fontFamily: 'Century Gothic' }}>
             Bishan-Toa Payoh GRC
           </MenuItem>,
-          <MenuItem key={"CCK-GRC"} value={"CCK-GRC"}>
+          <MenuItem key={"CCK-GRC"} value={"CCK-GRC"} style={{ fontFamily: 'Century Gothic' }}>
             Chua Chu Kang GRC
           </MenuItem>,
-          <MenuItem key={"EAS-GRC"} value={"EAS-GRC"}>
+          <MenuItem key={"EAS-GRC"} value={"EAS-GRC"} style={{ fontFamily: 'Century Gothic' }}>
             East Coast GRC
           </MenuItem>,
-          <MenuItem key={"HBT-GRC"} value={"HBT-GRC"}>
+          <MenuItem key={"HBT-GRC"} value={"HBT-GRC"} style={{ fontFamily: 'Century Gothic' }}>
             Holland-Bukit Timah GRC
           </MenuItem>,
-          <MenuItem key={"JAL-GRC"} value={"JAL-GRC"}>
+          <MenuItem key={"JAL-GRC"} value={"JAL-GRC"} style={{ fontFamily: 'Century Gothic' }}>
             Jalan Besar GRC
           </MenuItem>,
-          <MenuItem key={"JUR-GRC"} value={"JUR-GRC"}>
+          <MenuItem key={"JUR-GRC"} value={"JUR-GRC"} style={{ fontFamily: 'Century Gothic' }}>
             Jurong GRC
           </MenuItem>,
-          <MenuItem key={"MAP-GRC"} value={"MAP-GRC"}>
+          <MenuItem key={"MAP-GRC"} value={"MAP-GRC"} style={{ fontFamily: 'Century Gothic' }}>
             Marine Parade GRC
           </MenuItem>,
-          <MenuItem key={"MYT-GRC"} value={"MYT-GRC"}>
+          <MenuItem key={"MYT-GRC"} value={"MYT-GRC"} style={{ fontFamily: 'Century Gothic' }}>
             Marsiling-Yew Tee GRC
           </MenuItem>,
-          <MenuItem key={"NEE-GRC"} value={"NEE-GRC"}>
+          <MenuItem key={"NEE-GRC"} value={"NEE-GRC"} style={{ fontFamily: 'Century Gothic' }}>
             Nee Soon GRC
           </MenuItem>,
-          <MenuItem key={"PRP-GRC"} value={"PRP-GRC"}>
+          <MenuItem key={"PRP-GRC"} value={"PRP-GRC"} style={{ fontFamily: 'Century Gothic' }}>
             Pasir Ris-Punggol GRC
           </MenuItem>,
-          <MenuItem key={"SEM-GRC"} value={"SEM-GRC"}>
+          <MenuItem key={"SEM-GRC"} value={"SEM-GRC"} style={{ fontFamily: 'Century Gothic' }}>
             Sembawang GRC
           </MenuItem>,
-          <MenuItem key={"SEN-GRC"} value={"SEN-GRC"}>
+          <MenuItem key={"SEN-GRC"} value={"SEN-GRC"} style={{ fontFamily: 'Century Gothic' }}>
             Sengkang GRC
           </MenuItem>,
-          <MenuItem key={"TAM-GRC"} value={"TAM-GRC"}>
+          <MenuItem key={"TAM-GRC"} value={"TAM-GRC"} style={{ fontFamily: 'Century Gothic' }}>
             Tampines GRC
           </MenuItem>,
-          <MenuItem key={"TAN-GRC"} value={"TAN-GRC"}>
+          <MenuItem key={"TAN-GRC"} value={"TAN-GRC"} style={{ fontFamily: 'Century Gothic' }}>
             Tanjong Pagar GRC
           </MenuItem>,
-          <MenuItem key={"WES-GRC"} value={"WES-GRC"}>
+          <MenuItem key={"WES-GRC"} value={"WES-GRC"} style={{ fontFamily: 'Century Gothic' }}>
             West Coast GRC
           </MenuItem>,
         ];
       case "SMC":
         return [
-          <MenuItem key={"BKB-SMC"} value={"BKB-SMC"}>
+          <MenuItem key={"BKB-SMC"} value={"BKB-SMC"} style={{ fontFamily: 'Century Gothic' }}>
             Bukit Batok SMC
           </MenuItem>,
-          <MenuItem key={"BKP-SMC"} value={"BKP-SMC"}>
+          <MenuItem key={"BKP-SMC"} value={"BKP-SMC"} style={{ fontFamily: 'Century Gothic' }}>
             Bukit Panjang SMC
           </MenuItem>,
-          <MenuItem key={"HKN-SMC"} value={"HKN-SMC"}>
+          <MenuItem key={"HKN-SMC"} value={"HKN-SMC"} style={{ fontFamily: 'Century Gothic' }}>
             Hong Kah North SMC
           </MenuItem>,
-          <MenuItem key={"HOU-SMC"} value={"HOU-SMC"}>
+          <MenuItem key={"HOU-SMC"} value={"HOU-SMC"} style={{ fontFamily: 'Century Gothic' }}>
             Hougang SMC
           </MenuItem>,
-          <MenuItem key={"KEB-SMC"} value={"KEB-SMC"}>
+          <MenuItem key={"KEB-SMC"} value={"KEB-SMC"} style={{ fontFamily: 'Century Gothic' }}>
             Kebun Baru SMC
           </MenuItem>,
-          <MenuItem key={"MAC-SMC"} value={"MAC-SMC"}>
+          <MenuItem key={"MAC-SMC"} value={"MAC-SMC"} style={{ fontFamily: 'Century Gothic' }}>
             MacPherson SMC
           </MenuItem>,
-          <MenuItem key={"MAR-SMC"} value={"MAR-SMC"}>
+          <MenuItem key={"MAR-SMC"} value={"MAR-SMC"} style={{ fontFamily: 'Century Gothic' }}>
             Marymount SMC
           </MenuItem>,
-          <MenuItem key={"MOU-SMC"} value={"MOU-SMC"}>
+          <MenuItem key={"MOU-SMC"} value={"MOU-SMC"} style={{ fontFamily: 'Century Gothic' }}>
             Mountbatten SMC
           </MenuItem>,
-          <MenuItem key={"PIO-SMC"} value={"PIO-SMC"}>
+          <MenuItem key={"PIO-SMC"} value={"PIO-SMC"} style={{ fontFamily: 'Century Gothic' }}>
             Pioneer SMC
           </MenuItem>,
-          <MenuItem key={"POT-SMC"} value={"POT-SMC"}>
+          <MenuItem key={"POT-SMC"} value={"POT-SMC"} style={{ fontFamily: 'Century Gothic' }}>
             Potong Pasir SMC
           </MenuItem>,
-          <MenuItem key={"PUN-SMC"} value={"PUN-SMC"}>
+          <MenuItem key={"PUN-SMC"} value={"PUN-SMC"} style={{ fontFamily: 'Century Gothic' }}>
             Punggol West SMC
           </MenuItem>,
-          <MenuItem key={"RAD-SMC"} value={"RAD-SMC"}>
+          <MenuItem key={"RAD-SMC"} value={"RAD-SMC"} style={{ fontFamily: 'Century Gothic' }}>
             Radin Mas SMC
           </MenuItem>,
-          <MenuItem key={"YCK-SMC"} value={"YCK-SMC"}>
+          <MenuItem key={"YCK-SMC"} value={"YCK-SMC"} style={{ fontFamily: 'Century Gothic' }}>
             Yio Chu Kang SMC
           </MenuItem>,
-          <MenuItem key={"YUH-SMC"} value={"YUH-SMC"}>
+          <MenuItem key={"YUH-SMC"} value={"YUH-SMC"} style={{ fontFamily: 'Century Gothic' }}>
             Yuhua SMC
           </MenuItem>,
         ];
@@ -303,7 +313,7 @@ export default function PollForm() {
     <div style={{ backgroundColor: "white" }}>
       <Container maxWidth="md">
         <Box sx={{ mt: 4, mb: 2 }}>
-          <Typography
+          <HeaderTypography
             variant="h4"
             component="h1"
             gutterBottom
@@ -312,9 +322,9 @@ export default function PollForm() {
             fontWeight={600}
           >
             Create A Poll
-          </Typography>
+          </HeaderTypography>
 
-          <Typography
+          <TitleTypography
             component="h1"
             gutterBottom
             style={{ color: "black" }}
@@ -322,17 +332,17 @@ export default function PollForm() {
             fontSize={18}
           >
             Complete the below fields to create your poll.
-          </Typography>
+          </TitleTypography>
 
           <Box sx={{ ...commonStyles, borderColor: "#f44336" }}>
-            <Typography
+            <TitleTypography
               variant="h6"
               component="h2"
               gutterBottom
               style={{ color: "black" }}
             >
               Title
-            </Typography>
+            </TitleTypography>
 
             <TextField
               required
@@ -342,9 +352,12 @@ export default function PollForm() {
               fullWidth
               value={title} // bind the title state variable
               onChange={handleTitleChange} // handle the title change
+              InputLabelProps={{
+                style: { fontFamily: 'Century Gothic' },
+              }}
             />
 
-            <Typography
+            <TitleTypography
               variant="h6"
               component="h2"
               gutterBottom
@@ -352,7 +365,7 @@ export default function PollForm() {
               marginTop={3}
             >
               Description
-            </Typography>
+            </TitleTypography>
 
             <TextField
               required
@@ -362,9 +375,12 @@ export default function PollForm() {
               fullWidth
               value={description} // bind the description state variable
               onChange={handleDescriptionChange} // handle the description change
+              InputLabelProps={{
+                style: { fontFamily: 'Century Gothic' },
+              }}
             />
 
-            <Typography
+            <TitleTypography
               variant="h6"
               component="h2"
               gutterBottom
@@ -372,10 +388,10 @@ export default function PollForm() {
               marginTop={3}
             >
               Poll Event Type
-            </Typography>
+            </TitleTypography>
 
             <FormControl variant="filled" sx={{ minWidth: 380 }}>
-              <InputLabel id="electoral-division-label" required>
+              <InputLabel id="electoral-division-label" style={{ fontFamily: 'Century Gothic' }} required>
                 Select Event Type
               </InputLabel>
               <Select
@@ -383,16 +399,17 @@ export default function PollForm() {
                 id="electoral-division-select"
                 value={eventType}
                 onChange={handleEventTypeChange}
+                style={{ fontFamily: 'Century Gothic' }}
               >
-                <MenuItem value={"GE"}>General Elections</MenuItem>
-                <MenuItem value={"FRU"}>Facilities Renovation Upgrade</MenuItem>
-                <MenuItem value={"CS"}>Colour Scheme</MenuItem>
+                <MenuItem value={"GE"} style={{ fontFamily: 'Century Gothic' }}>General Elections</MenuItem>
+                <MenuItem value={"FRU"} style={{ fontFamily: 'Century Gothic' }}>Facilities Renovation Upgrade</MenuItem>
+                <MenuItem value={"CS"} style={{ fontFamily: 'Century Gothic' }}>Colour Scheme</MenuItem>
               </Select>
             </FormControl>
 
             {["GE", "FRU", "CS"].includes(eventType) && (
               <>
-                <Typography
+                <TitleTypography
                   variant="h6"
                   component="h2"
                   gutterBottom
@@ -400,10 +417,10 @@ export default function PollForm() {
                   marginTop={3}
                 >
                   Electoral Division
-                </Typography>
+                </TitleTypography>
 
                 <FormControl variant="filled" sx={{ minWidth: 380 }}>
-                  <InputLabel id="electoral-division-label" required>
+                  <InputLabel id="electoral-division-label" style={{ fontFamily: 'Century Gothic' }} required>
                     Select Electoral Division
                   </InputLabel>
                   <Select
@@ -411,17 +428,18 @@ export default function PollForm() {
                     id="electoral-division-select"
                     value={electoralDivision}
                     onChange={handleElectoralDivisionChange}
+                    style={{ fontFamily: 'Century Gothic' }}
                   >
-                    <MenuItem value={"GRC"}>
+                    <MenuItem value={"GRC"} style={{ fontFamily: 'Century Gothic' }}>
                       Group Representation Constituencies (GRC)
                     </MenuItem>
-                    <MenuItem value={"SMC"}>
+                    <MenuItem value={"SMC"} style={{ fontFamily: 'Century Gothic' }}>
                       Single Member Constituencies (SMC)
                     </MenuItem>
                   </Select>
                 </FormControl>
 
-                <Typography
+                <TitleTypography
                   variant="h6"
                   component="h2"
                   gutterBottom
@@ -429,14 +447,14 @@ export default function PollForm() {
                   marginTop={3}
                 >
                   Constituency
-                </Typography>
+                </TitleTypography>
 
                 <FormControl
                   key={electoralDivision}
                   variant="filled"
                   sx={{ minWidth: 380 }}
                 >
-                  <InputLabel id="constituency-label" required>
+                  <InputLabel id="constituency-label" style={{ fontFamily: 'Century Gothic' }} required>
                     Select Constituency
                   </InputLabel>
                   <Select
@@ -444,6 +462,7 @@ export default function PollForm() {
                     id="constituency-select"
                     value={constituency}
                     onChange={handleConstituencyChange}
+                    style={{ fontFamily: 'Century Gothic' }}
                   >
                     {getConstituencyOptions()}
                   </Select>
@@ -451,7 +470,7 @@ export default function PollForm() {
               </>
             )}
 
-            <Typography
+            <TitleTypography
               variant="h6"
               component="h2"
               gutterBottom
@@ -459,7 +478,7 @@ export default function PollForm() {
               marginTop={3}
             >
               {eventType === "GE" ? "Candidates" : "Options"}
-            </Typography>
+            </TitleTypography>
 
             {items.map((item, index) => (
               <Box
@@ -478,6 +497,9 @@ export default function PollForm() {
                   fullWidth
                   value={item}
                   onChange={(event) => handleItemChange(event, index)}
+                  InputLabelProps={{
+                    style: { fontFamily: 'Century Gothic' },
+                  }}
                 />
                 {index > 1 && (
                   <Button
@@ -504,7 +526,7 @@ export default function PollForm() {
               </Button>
             </Stack>
 
-            <Typography
+            <TitleTypography
               variant="h6"
               component="h2"
               gutterBottom
@@ -512,18 +534,17 @@ export default function PollForm() {
               marginTop={3}
             >
               Start Poll
-            </Typography>
+            </TitleTypography>
 
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={["DateTimePicker"]}>
                 <DateTimePicker
-                  label="Basic date time picker"
                   onChange={handleStartTimeChange}
                 />
               </DemoContainer>
             </LocalizationProvider>
 
-            <Typography
+            <TitleTypography
               variant="h6"
               component="h2"
               gutterBottom
@@ -531,12 +552,11 @@ export default function PollForm() {
               marginTop={3}
             >
               End Poll
-            </Typography>
+            </TitleTypography>
 
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={["DateTimePicker"]}>
                 <DateTimePicker
-                  label="Basic date time picker"
                   onChange={handleEndTimeChange}
                 />
               </DemoContainer>
@@ -546,7 +566,16 @@ export default function PollForm() {
               <FormControlLabel
                 required
                 control={<Switch defaultChecked color="secondary" />}
-                label="Compulsory"
+                label={
+                  <TitleTypography
+                    sx={{ 
+                      fontFamily: 'Century Gothic',
+                      fontSize: '1.2rem'
+                   }}
+                  >
+                    Compulsory
+                  </TitleTypography>
+                }
                 onChange={handleCompulsoryTypeChange}
                 sx={{
                   color: "black",

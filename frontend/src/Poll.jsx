@@ -1,3 +1,4 @@
+import { styled } from '@mui/system';
 import { Paper, Typography, IconButton } from "@mui/material";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -11,6 +12,10 @@ export default function Poll({ poll, isAdmin, state }) {
     isAdmin: PropTypes.bool.isRequired,
     state: PropTypes.object,
   };
+
+  const TitleTypography = styled(Typography)({
+    fontFamily: 'Century Gothic'
+  });
 
   const { data } = state;
   const { pollId } = data;
@@ -61,8 +66,8 @@ export default function Poll({ poll, isAdmin, state }) {
           style={{ textDecoration: "none", color: "inherit" }}
           state={{ data: { pollId: poll.pollId } }}
         >
-          <Typography variant="h5">{poll.title}</Typography>
-          <Typography variant="body1">{poll.description}</Typography>
+          <TitleTypography variant="h5">{poll.title}</TitleTypography>
+          <TitleTypography variant="body1">{poll.description}</TitleTypography>
         </Link>
       </div>
       {isAdmin && (

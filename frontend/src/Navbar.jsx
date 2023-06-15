@@ -13,10 +13,13 @@ const MenuButtonTypography = styled(Typography)({
   marginRight: "auto",
   display: "flex",
   alignItems: "center",
+  fontFamily: "Century Gothic",
 });
 
 const TitleTypography = styled(Typography)({
   marginLeft: "auto",
+  fontFamily: 'Century Gothic',
+  fontWeight: 'bold',
 });
 
 const Navbar = ({ username }) => {
@@ -37,14 +40,14 @@ const Navbar = ({ username }) => {
             {username === "admin" ? (
               <Link
                 to="/adminhome"
-                style={{ textDecoration: "none", color: "inherit" }}
+                style={{ textDecoration: "none", color: "inherit", fontWeight: "bold" }}
               >
                 SingPoll
               </Link>
             ) : (
               <Link
                 to="/userhome"
-                style={{ textDecoration: "none", color: "inherit" }}
+                style={{ textDecoration: "none", color: "inherit", fontWeight: "bold" }}
               >
                 SingPoll
               </Link>
