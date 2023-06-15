@@ -61,14 +61,21 @@ export default function Poll({ poll, isAdmin, state }) {
       }}
     >
       <div>
-        <Link
-          to={`/pollvoteform/${poll.title}/${poll.description}`}
-          style={{ textDecoration: "none", color: "inherit" }}
-          state={{ data: { pollId: poll.pollId } }}
-        >
-          <TitleTypography variant="h5">{poll.title}</TitleTypography>
-          <TitleTypography variant="body1">{poll.description}</TitleTypography>
-        </Link>
+        {isAdmin ? (
+          <>
+            <TitleTypography variant="h5">{poll.title}</TitleTypography>
+            <TitleTypography variant="body1">{poll.description}</TitleTypography>
+          </>
+        ) : (
+          <Link
+            to={`/pollvoteform/${poll.title}/${poll.description}`}
+            style={{ textDecoration: "none", color: "inherit" }}
+            state={{ data: { pollId: poll.pollId } }}
+          >
+            <TitleTypography variant="h5">{poll.title}</TitleTypography>
+            <TitleTypography variant="body1">{poll.description}</TitleTypography>
+          </Link>
+        )}
       </div>
       {isAdmin && (
         <div>
