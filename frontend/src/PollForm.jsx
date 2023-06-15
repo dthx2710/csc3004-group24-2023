@@ -407,68 +407,64 @@ export default function PollForm() {
               </Select>
             </FormControl>
 
-            {["GE", "FRU", "CS"].includes(eventType) && (
-              <>
-                <TitleTypography
-                  variant="h6"
-                  component="h2"
-                  gutterBottom
-                  style={{ color: "black" }}
-                  marginTop={3}
-                >
-                  Electoral Division
-                </TitleTypography>
+            <TitleTypography
+              variant="h6"
+              component="h2"
+              gutterBottom
+              style={{ color: "black" }}
+              marginTop={3}
+            >
+              Electoral Division
+            </TitleTypography>
 
-                <FormControl variant="filled" sx={{ minWidth: 380 }}>
-                  <InputLabel id="electoral-division-label" style={{ fontFamily: 'Century Gothic' }} required>
-                    Select Electoral Division
-                  </InputLabel>
-                  <Select
-                    labelId="electoral-division-label"
-                    id="electoral-division-select"
-                    value={electoralDivision}
-                    onChange={handleElectoralDivisionChange}
-                    style={{ fontFamily: 'Century Gothic' }}
-                  >
-                    <MenuItem value={"GRC"} style={{ fontFamily: 'Century Gothic' }}>
-                      Group Representation Constituencies (GRC)
-                    </MenuItem>
-                    <MenuItem value={"SMC"} style={{ fontFamily: 'Century Gothic' }}>
-                      Single Member Constituencies (SMC)
-                    </MenuItem>
-                  </Select>
-                </FormControl>
+            <FormControl variant="filled" sx={{ minWidth: 380 }}>
+              <InputLabel id="electoral-division-label" style={{ fontFamily: 'Century Gothic' }} required>
+                Select Electoral Division
+              </InputLabel>
+              <Select
+                labelId="electoral-division-label"
+                id="electoral-division-select"
+                value={electoralDivision}
+                onChange={handleElectoralDivisionChange}
+                style={{ fontFamily: 'Century Gothic' }}
+              >
+                <MenuItem value={"GRC"} style={{ fontFamily: 'Century Gothic' }}>
+                  Group Representation Constituencies (GRC)
+                </MenuItem>
+                <MenuItem value={"SMC"} style={{ fontFamily: 'Century Gothic' }}>
+                  Single Member Constituencies (SMC)
+                </MenuItem>
+              </Select>
+            </FormControl>
 
-                <TitleTypography
-                  variant="h6"
-                  component="h2"
-                  gutterBottom
-                  style={{ color: "black" }}
-                  marginTop={3}
-                >
-                  Constituency
-                </TitleTypography>
+            <TitleTypography
+              variant="h6"
+              component="h2"
+              gutterBottom
+              style={{ color: "black" }}
+              marginTop={3}
+            >
+              Constituency
+            </TitleTypography>
 
-                <FormControl
-                  key={electoralDivision}
-                  variant="filled"
-                  sx={{ minWidth: 380 }}
-                >
-                  <InputLabel id="constituency-label" style={{ fontFamily: 'Century Gothic' }} required>
-                    Select Constituency
-                  </InputLabel>
-                  <Select
-                    labelId="constituency-label"
-                    id="constituency-select"
-                    value={constituency}
-                    onChange={handleConstituencyChange}
-                    style={{ fontFamily: 'Century Gothic' }}
-                  >
-                    {getConstituencyOptions()}
-                  </Select>
-                </FormControl>
-              </>
-            )}
+            <FormControl
+              key={electoralDivision}
+              variant="filled"
+              sx={{ minWidth: 380 }}
+            >
+              <InputLabel id="constituency-label" style={{ fontFamily: 'Century Gothic' }} required>
+                Select Constituency
+              </InputLabel>
+              <Select
+                labelId="constituency-label"
+                id="constituency-select"
+                value={constituency}
+                onChange={handleConstituencyChange}
+                style={{ fontFamily: 'Century Gothic' }}
+              >
+                {getConstituencyOptions()}
+              </Select>
+            </FormControl>
 
             <TitleTypography
               variant="h6"
