@@ -36,20 +36,7 @@ const PollResults = () => {
   const state = location.state;
   const pollId = state.data.pollId;
 
-  // Here, results would ideally come from your server
-  const [results, setResults] = useState([
-    {
-      name: `(PAP) People's Action Party - John Lim, Thomas Tan`,
-      votes: 22340,
-    },
-    { name: `(WP) Worker's Party - Mary Tan, Tom Lee`, votes: 3532 },
-  ]);
-
-  // Initialize progress array with zeros
-  const [progress, setProgress] = useState(results.map(() => 0));
-
-  // Calculate the total votes
-  const totalVotes = results.reduce((sum, result) => sum + result.votes, 0);
+  const [results, setResults] = useState([]);
 
   useEffect(() => {
     // Get the poll results from the server
@@ -60,13 +47,26 @@ const PollResults = () => {
       .then((response) => {
         const { resultInfo } = response.data;
         const { voteTally, optionNames } = resultInfo;
-        const results = [];
+        let results = [];
+        let totalVotes = 0;
         for (let i = 0; i < voteTally.length; i++) {
+          // Convert voteTally[i] to an integer
+          const vote = parseInt(voteTally[i], 10);
+          // Calculate total number of votes
+          totalVotes += vote;
           results.push({
             name: optionNames[i],
-            votes: voteTally[i],
+            votes: vote,
           });
         }
+
+        results = results.map(result => {
+          return {
+            ...result,
+            percentage: ((result.votes / totalVotes) * 100).toFixed(0)
+          };
+        });
+
         console.log(results);
         setResults(results);
       })
@@ -74,29 +74,6 @@ const PollResults = () => {
         console.log(error);
       });
   }, [pollId]);
-
-  useEffect(() => {
-    // Create a timer that increments the progress
-    const timer = setInterval(() => {
-      setProgress((oldProgress) => {
-        const newProgress = [...oldProgress];
-        for (let i = 0; i < results.length; i++) {
-          const votePercentage = (
-            (results[i].votes / totalVotes) *
-            100
-          ).toFixed(2);
-          if (newProgress[i] < votePercentage) {
-            newProgress[i] += 1;
-          }
-        }
-        return newProgress;
-      });
-    }, 10);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, [results, totalVotes]);
 
   return (
     <Container>
@@ -110,38 +87,32 @@ const PollResults = () => {
             spacing={2}
             sx={{ marginTop: "10px", marginBottom: "10px" }}
           >
-            {results.map((result, index) => {
-              const votePercentage = (
-                (result.votes / totalVotes) *
-                100
-              ).toFixed(0);
-              return (
-                <Grid item xs={12} key={index}>
-                  <Card sx={{ mt: 1, p: 1, backgroundColor: "grey.100" }}>
-                    <CardContent>
-                      <TitleTypography variant="h6" gutterBottom>
-                        {result.name}
-                      </TitleTypography>
-                      <TitleTypography
-                        variant="body2"
-                        color="textSecondary"
-                        gutterBottom
-                      >
-                        {result.votes} votes
-                      </TitleTypography>
-                      <RedLinearProgress
-                        variant="determinate"
-                        value={progress[index] || 0}
-                        sx={{ mt: 1, height: "10px", borderRadius: "5px" }}
-                      />
-                      <TitleTypography variant="h6" align="right">
-                        {votePercentage}%
-                      </TitleTypography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              );
-            })}
+            {results.map((result, index) => (
+              <Grid item xs={12} key={index}>
+                <Card sx={{ mt: 1, p: 1, backgroundColor: "grey.100" }}>
+                  <CardContent>
+                    <TitleTypography variant="h6" gutterBottom>
+                      {result.name}
+                    </TitleTypography>
+                    <TitleTypography
+                      variant="body2"
+                      color="textSecondary"
+                      gutterBottom
+                    >
+                      {result.votes} votes
+                    </TitleTypography>
+                    <RedLinearProgress
+                      variant="determinate"
+                      value={Number(result.percentage)}
+                      sx={{ mt: 1, height: "10px", borderRadius: "5px" }}
+                    />
+                    <TitleTypography variant="h6" align="right">
+                      {result.percentage}%
+                    </TitleTypography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
           </Grid>
         </Paper>
       </Box>
