@@ -37,6 +37,7 @@ const PollResults = () => {
   const pollId = state.data.pollId;
 
   const [results, setResults] = useState([]);
+  const [progresses, setProgresses] = useState([]);
 
   useEffect(() => {
     // Get the poll results from the server
@@ -69,11 +70,31 @@ const PollResults = () => {
 
         console.log(results);
         setResults(results);
+
+        // Initialize progress for each result
+        const initialProgresses = results.map(() => 0);
+        setProgresses(initialProgresses);
       })
       .catch((error) => {
         console.log(error);
       });
   }, [pollId]);
+
+  useEffect(() => {
+    const timers = progresses.map((progress, index) => {
+      if (progress < Number(results[index]?.percentage)) {
+        return setTimeout(() => {
+          setProgresses(prev => {
+            const copy = [...prev];
+            copy[index]++;
+            return copy;
+          });
+        }, 10);
+      }
+    });
+
+    return () => timers.forEach(clearTimeout); // Cleanup timers on unmount or when progresses changes
+  }, [progresses, results]);
 
   return (
     <Container>
@@ -103,7 +124,7 @@ const PollResults = () => {
                     </TitleTypography>
                     <RedLinearProgress
                       variant="determinate"
-                      value={Number(result.percentage)}
+                      value={progresses[index] || 0}
                       sx={{ mt: 1, height: "10px", borderRadius: "5px" }}
                     />
                     <TitleTypography variant="h6" align="right">
