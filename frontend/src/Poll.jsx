@@ -49,6 +49,14 @@ export default function Poll({ poll, isAdmin, state }) {
     console.log("Button clicked!");
   }
 
+  const endTime = new Date(poll.endTime).toLocaleString(undefined, {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  });
+
   return (
     <Paper
       style={{
@@ -65,6 +73,7 @@ export default function Poll({ poll, isAdmin, state }) {
           <>
             <TitleTypography variant="h5">{poll.title}</TitleTypography>
             <TitleTypography variant="body1">{poll.description}</TitleTypography>
+            <TitleTypography variant="body2" style={{ color: "darkred", fontStyle: "italic", marginTop: "5px" }}>Ends at {endTime}</TitleTypography>
           </>
         ) : (
           <Link
@@ -74,6 +83,7 @@ export default function Poll({ poll, isAdmin, state }) {
           >
             <TitleTypography variant="h5">{poll.title}</TitleTypography>
             <TitleTypography variant="body1">{poll.description}</TitleTypography>
+            <TitleTypography variant="body2" style={{ color: "darkred", fontStyle: "italic", marginTop: "5px" }}>Ends at {endTime}</TitleTypography>
           </Link>
         )}
       </div>
