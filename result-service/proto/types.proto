@@ -18,6 +18,7 @@ message PollInfo{
     string poll_title = 5;
     string poll_description = 6;
     string is_compulsory = 7;
+    bool has_voted = 8;
 }
 
 message PollItem{

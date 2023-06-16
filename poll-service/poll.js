@@ -135,6 +135,20 @@ async function pollInfo(user_id, poll_id) {
       console.log("Invalid permissions to view poll");
       return null;
     }
+    // check if user has already voted on this poll: whether poll_id and hash_id exists in votes table
+    const voted = await prisma.votes.findFirst({
+      where: {
+        poll_id: polls[i].poll_id,
+        voter_id: user.hash_id,
+      },
+    });
+    if (voted) {
+      poll.has_voted = true;
+    } else {
+      poll.has_voted = false;
+    }
+  } else {
+    poll.has_voted = false;
   }
   // load options
   const options = await prisma.options.findMany({
@@ -142,6 +156,7 @@ async function pollInfo(user_id, poll_id) {
       poll_id: poll_id,
     },
   });
+
   const pollInfo = {
     poll_item: poll,
     options_id: options.map((option) => option.option_id),
@@ -160,10 +175,14 @@ async function allPollInfo(user_id) {
     select: {
       user_type: true,
       constituency_id: true,
+      hash_id: true,
     },
   });
   if (user.user_type === "admin") {
     const polls = await prisma.poll.findMany();
+    for (let i = 0; i < polls.length; i++) {
+      polls[i].has_voted = false;
+    }
     await prisma.$disconnect();
     return polls;
   } else {
@@ -172,6 +191,20 @@ async function allPollInfo(user_id) {
         constituency_id: user.constituency_id,
       },
     });
+    // check if user has already voted on this poll: whether poll_id and hash_id exists in votes table
+    for (let i = 0; i < polls.length; i++) {
+      const voted = await prisma.votes.findFirst({
+        where: {
+          poll_id: polls[i].poll_id,
+          voter_id: user.hash_id,
+        },
+      });
+      if (voted) {
+        polls[i].has_voted = true;
+      } else {
+        polls[i].has_voted = false;
+      }
+    }
     await prisma.$disconnect();
     return polls;
   }
