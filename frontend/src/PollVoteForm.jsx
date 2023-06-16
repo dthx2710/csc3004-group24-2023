@@ -45,20 +45,13 @@ export default function PollVoteForm() {
   const [values, setValues] = useState({ main: { id: "", name: "" } });
   const { title, description } = useParams();
   const [options, setOptions] = useState([]);
+  const [hasVoted, setHasVoted] = useState(false);
 
   const location = useLocation();
   const state = location.state;
   const pollId = state.data.pollId;
 
   const vote = () => {
-    // check if user has voted on poll before
-    if (sessionStorage.getItem("sessionVoted") !== null) {
-      const sessionVoted = JSON.parse(sessionStorage.getItem("sessionVoted"));
-      if (sessionVoted.includes(pollId)) {
-        alert("You have already voted on this poll!");
-        return;
-      }
-    }
     // check if user has selected an option
     if (values.main.id === "") {
       alert("Please select an option!");
@@ -100,8 +93,13 @@ export default function PollVoteForm() {
           sessionVoted.push(pollId);
           sessionStorage.setItem("sessionVoted", JSON.stringify(sessionVoted));
           alert(response.data.message);
+          
+          // set hasVoted state to true
+          setHasVoted(true);
+          console.log("setHasVoted = true");
         } else {
           alert(response.data.message);
+          console.log("setHasVoted = false");
         }
       })
       .catch((error) => {
@@ -123,6 +121,15 @@ export default function PollVoteForm() {
   };
 
   useEffect(() => {
+    // check sessionStorage here
+    if (sessionStorage.getItem("sessionVoted") !== null) {
+      const sessionVoted = JSON.parse(sessionStorage.getItem("sessionVoted"));
+      if (sessionVoted.includes(pollId)) {
+        setHasVoted(true);
+        console.log("UseEffect here: HasVoted set to true");
+      }
+    }
+    
     axios
       .get(`/api/polls/${pollId}`, {
         headers: {
@@ -222,11 +229,12 @@ export default function PollVoteForm() {
               <Button
                 onClick={vote}
                 color="secondary"
+                disabled={hasVoted}
                 sx={{ "&:hover": { backgroundColor: "#aa2e25" } }}
                 variant="contained"
                 startIcon={<HowToRegIcon />}
               >
-                Vote
+                {hasVoted ? 'Voted' : 'Vote'}
               </Button>
             </Stack>
           </Box>
