@@ -5,10 +5,12 @@ dotenv.config();
 
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
-
+const kafkaHost = process.env.KAFKA_HOST || "kafka";
+const kafkaPort = process.env.KAFKA_PORT || "9092";
+const kafkaBroker = kafkaHost + ":" + kafkaPort;
 const kafka = new Kafka({
   clientId: "kafka",
-  brokers: ["kafka:9092"],
+  brokers: [kafkaBroker],
 });
 
 const consumer = kafka.consumer({ groupId: "vote-group" });

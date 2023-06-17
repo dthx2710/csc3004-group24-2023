@@ -25,18 +25,48 @@ func main() {
 	flag.Parse()
 	defer glog.Flush()
 
-	fmt.Printf("Starting HTTP/1.1 gateway on port 8080")
+	// Use environment variables to retrieve the hostname and port
+	host, ok := os.LookupEnv("GATEWAY_HOST")
+	if !ok {
+		host = "0.0.0.0" // Default value if GATEWAY_HOST environment variable is not set
+	}
+
+	port, ok := os.LookupEnv("GATEWAY_PORT")
+	if !ok {
+		port = "8080" // Default value if GATEWAY_PORT environment variable is not set
+	}
+
+	addr := host + ":" + port
+
+	fmt.Printf("Starting HTTP/1.1 gateway on port " + port)
 	// Start HTTP server (and proxy calls to gRPC server endpoint)
-	if err := Run(":8080"); err != nil {
+	if err := Run(addr); err != nil {
 		glog.Fatal(err)
 	}
 }
 
 func newGateway(ctx context.Context, opts ...runtime.ServeMuxOption) (http.Handler, error) {
-	userEndpoint := flag.String("user_endpoint", os.Getenv("USER_SERVICE_URL"), "endpoint of User Service")
-	pollEndpoint := flag.String("poll_endpoint", os.Getenv("POLL_SERVICE_URL"), "endpoint of Poll Service")
-	resultEndpoint := flag.String("result_endpoint", os.Getenv("RESULT_SERVICE_URL"), "endpoint of Result Service")
-	voteEndpoint := flag.String("vote_endpoint", os.Getenv("VOTE_SERVICE_URL"), "endpoint of Vote Service")
+	user_service_url, ok := os.LookupEnv("USER_SERVICE_URL")
+	if !ok {
+		user_service_url = "localhost:50051"
+	}
+	poll_service_url, ok := os.LookupEnv("POLL_SERVICE_URL")
+	if !ok {
+		poll_service_url = "localhost:50052"
+	}
+	result_service_url, ok := os.LookupEnv("RESULT_SERVICE_URL")
+	if !ok {
+		result_service_url = "localhost:50053"
+	}
+	vote_service_url, ok := os.LookupEnv("VOTE_SERVICE_URL")
+	if !ok {
+		vote_service_url = "localhost:50054"
+	}
+
+	userEndpoint := flag.String("user_endpoint", user_service_url, "endpoint of User Service")
+	pollEndpoint := flag.String("poll_endpoint", poll_service_url, "endpoint of Poll Service")
+	resultEndpoint := flag.String("result_endpoint", result_service_url, "endpoint of Result Service")
+	voteEndpoint := flag.String("vote_endpoint", vote_service_url, "endpoint of Vote Service")
 	mux := runtime.NewServeMux(opts...)
 	dialOpts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 	err := gw.RegisterUserHandlerFromEndpoint(ctx, mux, *userEndpoint, dialOpts) // register user service

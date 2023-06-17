@@ -94,10 +94,12 @@ const getServer = () => {
   });
   return server;
 };
-
+const kafkaHost = process.env.KAFKA_HOST || "kafka";
+const kafkaPort = process.env.KAFKA_PORT || "9092";
+const kafkaBroker = kafkaHost + ":" + kafkaPort;
 const kafka = new Kafka({
   clientId: "kafka",
-  brokers: ["kafka:9092"],
+  brokers: [kafkaBroker],
 });
 
 const producer = kafka.producer();
@@ -105,11 +107,11 @@ await producer
   .connect()
   .then(() => {
     console.log("Connected to kafka");
-    const host = "0.0.0.0";
-    const port = ":50054";
+    const host = process.env.VOTE_HOST || "0.0.0.0";
+    const port = process.env.VOTE_PORT || "50054";
     const voteServer = getServer();
     voteServer.bindAsync(
-      host + port,
+      `${host}:${port}`,
       grpc.ServerCredentials.createInsecure(),
       () => {
         console.log("Vote-service is listening on port " + port);

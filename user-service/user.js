@@ -106,10 +106,7 @@ function GetUser(call, callback) {
 
 function decodeToken(token) {
   try {
-    const decoded = jwt.verify(
-      token,
-      jwtSecret
-    );
+    const decoded = jwt.verify(token, jwtSecret);
     return decoded.sub;
   } catch (error) {
     console.error("JWT verification failed:", error);
@@ -126,11 +123,11 @@ function getServer() {
   return server;
 }
 
-const host = "0.0.0.0";
-const port = ":50051";
+const host = process.env.USER_HOST || "0.0.0.0";
+const port = process.env.USER_PORT || "50051";
 const userServer = getServer();
 userServer.bindAsync(
-  host+ port,
+  `${host}:${port}`,
   grpc.ServerCredentials.createInsecure(),
   () => {
     console.log("User-service is listening on port " + port);
