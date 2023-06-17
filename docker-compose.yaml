@@ -10,6 +10,8 @@ services:
     container_name: 'frontend'
     depends_on:
       - gateway
+    networks:
+      - voting-system
 
   gateway:
     build:
@@ -18,14 +20,10 @@ services:
     container_name: 'gateway'
     ports:
       - 8080:8080
-    depends_on:
-      - user-service
-      - poll-service
-      - result-service
-      - vote-producer
-      - vote-consumer
     env_file:
       - .env
+    networks:
+      - voting-system
 
   user-service:
     build:
@@ -36,6 +34,8 @@ services:
       - 50051:50051
     env_file:
       - .env
+    networks:
+      - voting-system
 
   poll-service:
     build:
@@ -46,6 +46,8 @@ services:
       - 50052:50052
     env_file:
       - .env
+    networks:
+      - voting-system
 
   result-service:
     build:
@@ -56,6 +58,8 @@ services:
       - 50053:50053
     env_file:
       - .env
+    networks:
+      - voting-system
 
   vote-producer:
     build:
@@ -68,6 +72,8 @@ services:
       - kafka
     env_file:
       - .env
+    networks:
+      - voting-system
 
   vote-consumer:
     build:
@@ -79,6 +85,8 @@ services:
       - vote-producer
     env_file:
       - .env
+    networks:
+      - voting-system
 
   zookeeper:
     image: 'bitnami/zookeeper:latest'
@@ -87,6 +95,8 @@ services:
     container_name: 'zookeeper'
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
+    networks:
+      - voting-system
 
   kafka:
     image: 'bitnami/kafka:latest'
@@ -103,6 +113,8 @@ services:
       - KAFKA_CREATE_TOPICS=votes:5:2
     depends_on:
       - zookeeper
+    networks:
+      - voting-system
 
   nginx:
     build:
@@ -116,3 +128,9 @@ services:
     depends_on:
       - frontend
       - gateway
+    networks:
+      - voting-system
+
+networks:
+  voting-system:
+    driver: bridge
