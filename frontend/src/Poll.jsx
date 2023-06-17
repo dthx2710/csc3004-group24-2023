@@ -1,5 +1,5 @@
 import { styled } from '@mui/system';
-import { Paper, Typography, IconButton } from "@mui/material";
+import { Paper, Typography, IconButton, Box } from "@mui/material";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Link } from "react-router-dom";
@@ -57,6 +57,14 @@ export default function Poll({ poll, isAdmin, state }) {
     minute: "numeric",
   });
 
+  const votedStyles = poll.hasVoted 
+  ? {
+      backgroundColor: '#bfbfbf',
+      pointerEvents: 'none',
+      position: 'relative'
+    }
+  : {};
+
   return (
     <Paper
       style={{
@@ -66,8 +74,22 @@ export default function Poll({ poll, isAdmin, state }) {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
+        ...votedStyles
       }}
     >
+      {poll.hasVoted && 
+        <Box style={{ 
+          position: 'absolute', 
+          top: 0, 
+          right: 0, 
+          padding: '16px', 
+          color: '#004d1a',
+          fontSize: '1.2rem',
+          fontFamily: 'Century Gothic'
+        }}>
+          VOTED!
+        </Box>
+      }
       <div>
         {isAdmin ? (
           <>

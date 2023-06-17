@@ -72,6 +72,7 @@ export default function UserHomePage({ handlePollClick }) {
                   status: response.data.pollItem[i].pollInfo.status,
                   endTime: response.data.pollItem[i].pollInfo.pollEndtime,
                   pollId: response.data.pollItem[i].pollId,
+                  hasVoted: response.data.pollItem[i].pollInfo.hasVoted,
                 });
                 setPolls([...polls]);
               }
