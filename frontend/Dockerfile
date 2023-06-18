@@ -1,5 +1,5 @@
 # Use an official Node.js image as the base
-FROM node:bullseye as builder
+FROM node:alpine as builder
 
 # Set the working directory in the container
 WORKDIR /app
@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Create a new stage with a lightweight Node.js image
-FROM node:bullseye-slim
+FROM node:alpine
 
 # Set the working directory in the container
 WORKDIR /app
