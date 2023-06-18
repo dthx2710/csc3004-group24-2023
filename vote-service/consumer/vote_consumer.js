@@ -7,7 +7,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 const kafkaHost = process.env.KAFKA_HOST || "kafka";
 const kafkaPort = process.env.KAFKA_PORT || "9092";
-const kafkaBroker = kafkaHost + ":" + kafkaPort;
+const kafkaBroker = kafkaHost + ":" + kafkaPort.toString();
 const kafka = new Kafka({
   clientId: "kafka",
   brokers: [kafkaBroker],
