@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    cloud.google.com/neg: '{"ingress":true}'
+  creationTimestamp: "2023-06-18T08:53:19Z"
+  labels:
+    app: vote-producer
+  name: vote-producer
+  namespace: default
+  resourceVersion: "217211"
+  uid: 65e5d595-ff22-4bf0-a14b-f622ae510021
+spec:
+  clusterIP: 10.46.3.47
+  clusterIPs:
+  - 10.46.3.47
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - port: 50054
+    protocol: TCP
+    targetPort: 50054
+  selector:
+    app: vote-producer
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

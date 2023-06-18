@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  DATABASE_URL: mysql://nezu80du7c7kd9j1y8q6:pscale_pw_Ba5mE3SjXYIK80b4FUcknF0LAGPBEeQ7OiglYJADYhX@aws.connect.psdb.cloud/voting-system?sslaccept=strict
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2023-06-18T04:23:39Z"
+  labels:
+    app: user-service
+  name: user-service-config-rj9f
+  namespace: default
+  resourceVersion: "13488"
+  uid: 65287926-cc5c-4d2c-8b8e-ae9bbac66521

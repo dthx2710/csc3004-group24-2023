@@ -1,0 +1,17 @@
+apiVersion: v1
+data:
+  GATEWAY_HOST: 0.0.0.0
+  GATEWAY_PORT: "8080"
+  POLL_SERVICE_URL: poll-service:50052
+  RESULT_SERVICE_URL: result-service:50053
+  USER_SERVICE_URL: user-service:50051
+  VOTE_SERVICE_URL: vote-producer:50054
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2023-06-18T09:26:05Z"
+  labels:
+    app: gateway
+  name: gateway-config-glp7
+  namespace: default
+  resourceVersion: "315566"
+  uid: dba93ce2-b148-4bfb-b447-076a9783e33a

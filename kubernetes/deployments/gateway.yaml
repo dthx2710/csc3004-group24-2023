@@ -1,0 +1,113 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    autopilot.gke.io/resource-adjustment: '{"input":{"containers":[{"name":"gateway-sha256-1"}]},"output":{"containers":[{"limits":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"requests":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"name":"gateway-sha256-1"}]},"modified":true}'
+    deployment.kubernetes.io/revision: "2"
+  creationTimestamp: "2023-06-18T09:26:05Z"
+  generation: 3
+  labels:
+    app: gateway
+  name: gateway
+  namespace: default
+  resourceVersion: "315923"
+  uid: d418440b-0bf4-4ab3-b105-b495c9514115
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: gateway
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: gateway
+    spec:
+      containers:
+      - env:
+        - name: USER_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              key: USER_SERVICE_URL
+              name: gateway-config-glp7
+        - name: POLL_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              key: POLL_SERVICE_URL
+              name: gateway-config-glp7
+        - name: RESULT_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              key: RESULT_SERVICE_URL
+              name: gateway-config-glp7
+        - name: VOTE_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              key: VOTE_SERVICE_URL
+              name: gateway-config-glp7
+        - name: GATEWAY_HOST
+          valueFrom:
+            configMapKeyRef:
+              key: GATEWAY_HOST
+              name: gateway-config-glp7
+        - name: GATEWAY_PORT
+          valueFrom:
+            configMapKeyRef:
+              key: GATEWAY_PORT
+              name: gateway-config-glp7
+        image: asia-southeast1-docker.pkg.dev/csc3004-group24-voting-system/voting-system-repo/gateway@sha256:47da0eb27c6166fcde4e00a86dde5b141b361d9ae20eb7d5749363a8c8e07091
+        imagePullPolicy: Always
+        name: gateway-sha256-1
+        resources:
+          limits:
+            cpu: 500m
+            ephemeral-storage: 1Gi
+            memory: 2Gi
+          requests:
+            cpu: 500m
+            ephemeral-storage: 1Gi
+            memory: 2Gi
+        securityContext:
+          capabilities:
+            drop:
+            - NET_RAW
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      terminationGracePeriodSeconds: 30
+      tolerations:
+      - effect: NoSchedule
+        key: kubernetes.io/arch
+        operator: Equal
+        value: amd64
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2023-06-18T09:26:09Z"
+    lastUpdateTime: "2023-06-18T09:26:09Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2023-06-18T09:26:05Z"
+    lastUpdateTime: "2023-06-18T11:07:08Z"
+    message: ReplicaSet "gateway-69b7667766" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 3
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1

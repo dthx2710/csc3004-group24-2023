@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    autopilot.gke.io/resource-adjustment: '{"input":{"containers":[{"name":"poll-service-sha256-1"}]},"output":{"containers":[{"limits":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"requests":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"name":"poll-service-sha256-1"}]},"modified":true}'
+    deployment.kubernetes.io/revision: "1"
+  creationTimestamp: "2023-06-18T04:24:08Z"
+  generation: 3
+  labels:
+    app: poll-service
+  name: poll-service
+  namespace: default
+  resourceVersion: "21321"
+  uid: 8a4369f0-857d-4ebd-b371-2ffb7086fba8
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: poll-service
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: poll-service
+    spec:
+      containers:
+      - env:
+        - name: DATABASE_URL
+          valueFrom:
+            configMapKeyRef:
+              key: DATABASE_URL
+              name: poll-service-config-hkvp
+        image: asia-southeast1-docker.pkg.dev/csc3004-group24-voting-system/voting-system-repo/poll-service@sha256:7853b53aade6c1320e654f29c9286eb10e6416cfd96f4e15b9e8f026dd8018b9
+        imagePullPolicy: IfNotPresent
+        name: poll-service-sha256-1
+        resources:
+          limits:
+            cpu: 500m
+            ephemeral-storage: 1Gi
+            memory: 2Gi
+          requests:
+            cpu: 500m
+            ephemeral-storage: 1Gi
+            memory: 2Gi
+        securityContext:
+          capabilities:
+            drop:
+            - NET_RAW
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      terminationGracePeriodSeconds: 30
+      tolerations:
+      - effect: NoSchedule
+        key: kubernetes.io/arch
+        operator: Equal
+        value: amd64
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2023-06-18T04:25:28Z"
+    lastUpdateTime: "2023-06-18T04:25:28Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2023-06-18T04:24:08Z"
+    lastUpdateTime: "2023-06-18T04:25:28Z"
+    message: ReplicaSet "poll-service-7c7777687d" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 3
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1

@@ -1,0 +1,14 @@
+apiVersion: v1
+data:
+  DATABASE_URL: mysql://nezu80du7c7kd9j1y8q6:pscale_pw_Ba5mE3SjXYIK80b4FUcknF0LAGPBEeQ7OiglYJADYhX@aws.connect.psdb.cloud/voting-system?sslaccept=strict
+  KAFKA_HOST: kafka
+  KAFKA_PORT: "9092"
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2023-06-18T04:25:55Z"
+  labels:
+    app: vote-producer
+  name: vote-producer-config-aqr7
+  namespace: default
+  resourceVersion: "15712"
+  uid: 5ed9488b-c7bc-42a0-a225-0ac84f68ecd5

@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  ALLOW_ANONYMOUS_LOGIN: "yes"
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2023-06-18T04:21:24Z"
+  labels:
+    app: zookeeper
+  name: zookeeper-config-xffn
+  namespace: default
+  resourceVersion: "11519"
+  uid: 0e570201-7b91-405f-9aac-b21f4b0a3119

@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    cloud.google.com/neg: '{"ingress":true}'
+  creationTimestamp: "2023-06-18T08:52:40Z"
+  labels:
+    app: kafka
+  name: kafka
+  namespace: default
+  resourceVersion: "216629"
+  uid: 60238c37-5631-40d6-b548-908db23d5987
+spec:
+  clusterIP: 10.46.1.130
+  clusterIPs:
+  - 10.46.1.130
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - port: 9092
+    protocol: TCP
+    targetPort: 9092
+  selector:
+    app: kafka
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

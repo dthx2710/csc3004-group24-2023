@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    autopilot.gke.io/resource-adjustment: '{"input":{"containers":[{"name":"nginx-sha256-1"}]},"output":{"containers":[{"limits":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"requests":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"name":"nginx-sha256-1"}]},"modified":true}'
+    deployment.kubernetes.io/revision: "5"
+  creationTimestamp: "2023-06-18T09:57:46Z"
+  generation: 6
+  labels:
+    app: nginx
+  name: nginx
+  namespace: default
+  resourceVersion: "323152"
+  uid: adf3eb1a-52f9-429c-89ad-cff60c0e4871
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: nginx
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/restartedAt: "2023-06-18T11:16:50Z"
+      creationTimestamp: null
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: asia-southeast1-docker.pkg.dev/csc3004-group24-voting-system/voting-system-repo/nginx@sha256:d617740860ed4ec613efbb48f3da5edbca238f7ffc96571c83c2ccd4a3ef40d9
+        imagePullPolicy: Always
+        name: nginx-sha256-1
+        resources:
+          limits:
+            cpu: 500m
+            ephemeral-storage: 1Gi
+            memory: 2Gi
+          requests:
+            cpu: 500m
+            ephemeral-storage: 1Gi
+            memory: 2Gi
+        securityContext:
+          capabilities:
+            drop:
+            - NET_RAW
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /etc/nginx/conf.d/nginx.conf
+          name: nginx-config
+          subPath: nginx.conf
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      terminationGracePeriodSeconds: 30
+      tolerations:
+      - effect: NoSchedule
+        key: kubernetes.io/arch
+        operator: Equal
+        value: amd64
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: nginx-configmap
+        name: nginx-config
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2023-06-18T11:16:54Z"
+    lastUpdateTime: "2023-06-18T11:16:54Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2023-06-18T10:53:13Z"
+    lastUpdateTime: "2023-06-18T11:16:54Z"
+    message: ReplicaSet "nginx-55f85f7758" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 6
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1

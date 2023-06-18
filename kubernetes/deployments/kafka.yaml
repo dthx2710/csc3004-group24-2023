@@ -1,0 +1,118 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    autopilot.gke.io/resource-adjustment: '{"input":{"containers":[{"name":"kafka-sha256-1"}]},"output":{"containers":[{"limits":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"requests":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"name":"kafka-sha256-1"}]},"modified":true}'
+    deployment.kubernetes.io/revision: "1"
+  creationTimestamp: "2023-06-18T04:22:39Z"
+  generation: 3
+  labels:
+    app: kafka
+  name: kafka
+  namespace: default
+  resourceVersion: "25431"
+  uid: 087e8e45-46fa-44bc-966f-bbcb535c6b68
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: kafka
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: kafka
+    spec:
+      containers:
+      - env:
+        - name: KAFKA_BROKER_ID
+          valueFrom:
+            configMapKeyRef:
+              key: KAFKA_BROKER_ID
+              name: kafka-config-tfdl
+        - name: KAFKA_ENABLE_KRAFT
+          valueFrom:
+            configMapKeyRef:
+              key: KAFKA_ENABLE_KRAFT
+              name: kafka-config-tfdl
+        - name: KAFKA_LISTENERS
+          valueFrom:
+            configMapKeyRef:
+              key: KAFKA_LISTENERS
+              name: kafka-config-tfdl
+        - name: KAFKA_ADVERTISED_LISTENERS
+          valueFrom:
+            configMapKeyRef:
+              key: KAFKA_ADVERTISED_LISTENERS
+              name: kafka-config-tfdl
+        - name: KAFKA_ZOOKEEPER_CONNECT
+          valueFrom:
+            configMapKeyRef:
+              key: KAFKA_ZOOKEEPER_CONNECT
+              name: kafka-config-tfdl
+        - name: ALLOW_PLAINTEXT_LISTENER
+          valueFrom:
+            configMapKeyRef:
+              key: ALLOW_PLAINTEXT_LISTENER
+              name: kafka-config-tfdl
+        - name: KAFKA_CREATE_TOPICS
+          valueFrom:
+            configMapKeyRef:
+              key: KAFKA_CREATE_TOPICS
+              name: kafka-config-tfdl
+        image: asia-southeast1-docker.pkg.dev/csc3004-group24-voting-system/voting-system-repo/kafka@sha256:49ed37cad2ec380bb1b8db18554435e2e59eae34b549783879a3622314ba7d86
+        imagePullPolicy: IfNotPresent
+        name: kafka-sha256-1
+        resources:
+          limits:
+            cpu: 500m
+            ephemeral-storage: 1Gi
+            memory: 2Gi
+          requests:
+            cpu: 500m
+            ephemeral-storage: 1Gi
+            memory: 2Gi
+        securityContext:
+          capabilities:
+            drop:
+            - NET_RAW
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      terminationGracePeriodSeconds: 30
+      tolerations:
+      - effect: NoSchedule
+        key: kubernetes.io/arch
+        operator: Equal
+        value: amd64
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2023-06-18T04:22:39Z"
+    lastUpdateTime: "2023-06-18T04:25:31Z"
+    message: ReplicaSet "kafka-5b6cbfdf87" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  - lastTransitionTime: "2023-06-18T04:29:25Z"
+    lastUpdateTime: "2023-06-18T04:29:25Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  observedGeneration: 3
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1
