@@ -1,6 +1,6 @@
 # CSC3004 Group 24 Project
 ## Distributed Voting System using Cloud Native Technology utilizing gRPC and Kafka
-
+GitHub Repository can be found [here](https://github.com/dthx2710/csc3004-group24-2023), and Releases are found [here](https://github.com/dthx2710/csc3004-group24-2023/releases)
 ## Group24 Members
 | Name                   | Student ID | Role                        | Github                                               |
 | ---------------------- | ---------- | --------------------------- | ---------------------------------------------------- |
