@@ -48,7 +48,7 @@ In summary, the Distributed Voting System combines cloud-native technologies, gR
 - `./docker-compose.yml` - Contains the docker-compose configuration for the services
 
 ## Quickstart Steps
-1. Clone the repository
+1. Clone the repository or download release from [here](https://github.com/dthx2710/csc3004-group24-2023/releases)
 2. Configure the environment variables in the `.env` file:
    - You can use the `.env.sample` file as a template (copy and rename as `.env`)
 4. Start Docker
