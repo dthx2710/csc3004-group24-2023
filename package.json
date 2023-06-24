@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "init": "cd image-service && npm run init",
-    "up": "docker-compose up -d && cd image-service && npm run activate && npm run start",
+    "up": "docker-compose up -d",
     "build": "docker-compose build --no-cache"
   },
   "repository": {
