@@ -12,18 +12,16 @@ GitHub Repository can be found [here](https://github.com/dthx2710/csc3004-group2
 | **Samantha Lee**       | 2102066    | Frontend and Testing        | [@slqy](https://github.com/slqy)                     |
 
 ## Introduction
-This project is a cloud-native solution that leverages gRPC and Kafka to create a scalable and decentralized voting platform.
+This project is a cloud-native solution that leverages gRPC and Kafka to create a scalable and distributed voting platform; with a efficient and reliable voting processes across multiple nodes.
 
-This system addresses the need for efficient and reliable voting processes across multiple nodes.
-
-In this prototype, users are able to log into the system as an user or a system admin to view the polls of their GRC (Group representation constituency) location. Users will also be able to vote on these polls. Admins will be able to view the results of these polls, and also create and delete them.
+In this prototype, users are able to log into the system as an user or a system admin to view the polls of their GRC (Group representation constituency) location. Users will also be able to vote on these polls. Admins will be able to view the results of these polls, while also being able create and delete them.
 
 ## Implementation
 The system is designed as a microservices architecture, with distinct services for our business logic.
 
 By utilizing gRPC, a high-performance RPC framework, the system ensures secure and seamless communication between client applications and voting servers, enabling users to cast their votes efficiently.
 
-To enable real-time data streaming and event-driven architecture, the system incorporates Kafka, a distributed streaming platform. Kafka facilitates the smooth transmission of vote-related events across distributed nodes, enabling real-time updates and result aggregation.
+To enable data-queuing and event-driven architecture, the system incorporates Kafka, a distributed streaming platform. Kafka facilitates the smooth transmission of vote-related events across distributed nodes, enabling real-time updates and result aggregation. Kafka also helps with fault tolerance and data integrity of the payload.
 
 Security and anonymity has been enhanced with the use of JSON Web Tokens (JWT) for authorization and authentication, hashing and salting for passwords and voters so identities cannot be tracked back.
 
