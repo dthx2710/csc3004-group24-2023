@@ -51,12 +51,14 @@ In summary, the Distributed Voting System combines cloud-native technologies, gR
 1. Clone the repository or download release from [here](https://github.com/dthx2710/csc3004-group24-2023/releases)
 2. Configure the environment variables in the `.env` file:
    - You can use the `.env.sample` file as a template (copy and rename as `.env`)
-4. Start Docker
-5. Build the container (optional)
+   - !IMPORTANT! Add Database Credentials to the `.env` file, based on the details provided in the submission email/pdf:
+     - `DATABASE_URL={provided string}`
+3. Start Docker
+4. Build the container (optional)
    `npm run build`
-6. Run the container
+5. Run the container
    `npm run up`
-7. With this, the Docker-Compose Stack will be up and running
+6. With this, the Docker-Compose Stack will be up and running
    - The frontend will be available at `localhost` or wherever you are hosting/deploying this on (HTTP - port 80)
    - The gateway will be available at `localhost:8080`, and acts as a internal proxy for the other api services on ports (e.g. `50051`-`50054`)
    - We have an NGINX reverse proxy running on port `80` to route the traffic to the frontend and gateway
