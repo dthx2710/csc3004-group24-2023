@@ -65,21 +65,22 @@ In summary, the Distributed Voting System combines cloud-native technologies, gR
 
 ## Software Architecture and Diagrams
 <p align="center">
-   <img src="https://github.com/dthx2710/csc3004-group24-2023/assets/37941268/09c10cdd-b4cf-499c-af32-bd081c94bcee" alt="System Architecture" />
-   <img src="https://github.com/dthx2710/csc3004-group24-2023/assets/37941268/d8d2bdb4-2786-4ab4-b157-e77dd5062ef6" alt="gRPC Flow" />
-   <img src="https://github.com/dthx2710/csc3004-group24-2023/assets/37941268/db38ca8f-95ac-49b8-b9ea-f5b214934c02" alt="JWT Exchange" />
-   <img src="https://github.com/dthx2710/csc3004-group24-2023/assets/37941268/18ccde7d-ed0c-4d59-8f82-35edc46affc7" alt="Kafka" />
+   <img src="https://github.com/dthx2710/csc3004-group24-2023/assets/37941268/7db24d8d-ef03-434a-865c-b63bb36a6a8c" alt="System Architecture" />
+   <img src="https://github.com/dthx2710/csc3004-group24-2023/assets/37941268/99217d92-96ef-4b97-aeca-8f8f49b6d76c" alt="gRPC Flow" />
+   <img src="https://github.com/dthx2710/csc3004-group24-2023/assets/37941268/f7f0339a-57d9-4d09-9c9d-df645874cde6" alt="JWT Exchange" />
+   <img src="https://github.com/dthx2710/csc3004-group24-2023/assets/37941268/4e6f6956-8af0-483a-8b28-572ddc6f2b01" alt="Kafka" />
 </p>
 
 ## Application & Other Screenshots
 <p align="center">
-   <img src="https://github.com/dthx2710/csc3004-group24-2023/assets/37941268/2bcb083c-2c16-4801-9dd3-81263055cd80" alt="Login Page" />
-   <img src="https://github.com/dthx2710/csc3004-group24-2023/assets/37941268/1e3fce53-6c7e-4311-afd6-4987f7c0073d" alt="User Polls" />
-   <img src="https://github.com/dthx2710/csc3004-group24-2023/assets/37941268/02b43043-09f7-4df5-b667-89e7a9413260" alt="Vote" />
-   <img src="https://github.com/dthx2710/csc3004-group24-2023/assets/37941268/01b3da2f-1c9d-4c99-9dd6-4555dee94047" alt="Admin Polls" />
-   <img src="https://github.com/dthx2710/csc3004-group24-2023/assets/37941268/c3dd319d-fc53-448a-95a6-9656e9c78969" alt="Results" />
-   <img src="https://github.com/dthx2710/csc3004-group24-2023/assets/37941268/2d5a5ac6-5273-4af0-8e2a-f1a2126df153" alt="Kubernetes Services" />
-   <img src="https://github.com/dthx2710/csc3004-group24-2023/assets/37941268/ca091e9d-3500-4fad-bb76-4c0d2011bd4a" alt="Load Testing Utilization" />
+   <img src="https://github.com/dthx2710/csc3004-group24-2023/assets/37941268/eac5b161-2d52-4912-9863-da41d15dc57d" alt="Login Page" />
+   <img src="https://github.com/dthx2710/csc3004-group24-2023/assets/37941268/bd0b7f90-4d7c-4f76-9f79-51f7b5699480" alt="User Polls" />
+   <img src="https://github.com/dthx2710/csc3004-group24-2023/assets/37941268/ad1430ed-04fa-4ef6-ad93-d337b548635b" alt="Vote" />
+   <img src="https://github.com/dthx2710/csc3004-group24-2023/assets/37941268/fba8f708-f8f7-4985-bf64-57b5c846c14d" alt="Admin Polls" />
+   <img src="https://github.com/dthx2710/csc3004-group24-2023/assets/37941268/b3f28510-d0b4-41b8-9b7f-fff2c45980c9" alt="Results" />
+   <img src="https://github.com/dthx2710/csc3004-group24-2023/assets/37941268/c3dd28ef-31dc-4301-97cb-b67167ccd8f7" alt="Kubernetes Services" />
+   <img src="https://github.com/dthx2710/csc3004-group24-2023/assets/37941268/d88a4685-f043-4763-b60f-311c3d6cbee7" alt="Load Testing Utilization" />
+   <img src="https://github.com/dthx2710/csc3004-group24-2023/assets/37941268/813b86fd-506a-49cb-a2fc-89ab5a5034d0" alt="Anonymity and Privacy" />
 </p>
 
 ## Developer Additions
