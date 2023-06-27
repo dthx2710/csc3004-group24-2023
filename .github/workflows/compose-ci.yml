@@ -2,9 +2,9 @@ name: Microservice Build
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "staging" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "staging" ]
 
 jobs:
   build:
@@ -15,29 +15,3 @@ jobs:
       run: cp .env.sample .env
     - name: Build microservice Docker Compose
       run: docker-compose build
-
-    - name: Get latest release tag
-      id: get_latest_release
-      uses: actions/github-script@v4
-      with:
-        script: |
-          const response = await github.repos.listReleases({ owner: context.repo.owner, repo: context.repo.repo });
-          if (response.data.length === 0) {
-            console.log("::set-output name=tag::v1.0.0");
-          } else {
-            const latestRelease = response.data[0];
-            const latestTag = latestRelease.tag_name;
-            const tagParts = latestTag.split('.');
-            const incrementedTag = `${tagParts[0]}.${tagParts[1]}.${Number(tagParts[2]) + 1}`;
-            console.log(`::set-output name=tag::${incrementedTag}`);
-          }
-
-    - name: Publish release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
-      with:
-        tag_name: ${{ steps.get_latest_release.outputs.tag }}
-        release_name: Release ${{ steps.get_latest_release.outputs.tag }}
-        draft: false
-        prerelease: false
