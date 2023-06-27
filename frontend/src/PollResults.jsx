@@ -23,12 +23,12 @@ const RedLinearProgress = styled(LinearProgress)(({ theme }) => ({
 
 const PollResults = () => {
   const HeaderTypography = styled(Typography)({
-    fontFamily: 'Century Gothic',
-    fontWeight: 'bold'
+    fontFamily: "Century Gothic",
+    fontWeight: "bold",
   });
 
   const TitleTypography = styled(Typography)({
-    fontFamily: 'Century Gothic'
+    fontFamily: "Century Gothic",
   });
 
   const { title } = useParams();
@@ -40,51 +40,65 @@ const PollResults = () => {
   const [progresses, setProgresses] = useState([]);
 
   useEffect(() => {
-    // Get the poll results from the server
-    axios
-      .get(`/api/result/${pollId}`, {
-        headers: { Authorization: `Bearer ${sessionStorage.getItem("jwt")}` },
-      })
-      .then((response) => {
-        const { resultInfo } = response.data;
-        const { voteTally, optionNames } = resultInfo;
-        let results = [];
-        let totalVotes = 0;
-        for (let i = 0; i < voteTally.length; i++) {
-          // Convert voteTally[i] to an integer
-          const vote = parseInt(voteTally[i], 10);
-          // Calculate total number of votes
-          totalVotes += vote;
-          results.push({
-            name: optionNames[i],
-            votes: vote,
+    const pollResult = () => {
+      axios
+        .get(`/api/result/${pollId}`, {
+          headers: { Authorization: `Bearer ${sessionStorage.getItem("jwt")}` },
+        })
+        .then((response) => {
+          const { resultInfo } = response.data;
+          const { voteTally, optionNames } = resultInfo;
+          let results = [];
+          let totalVotes = 0;
+          for (let i = 0; i < voteTally.length; i++) {
+            // Convert voteTally[i] to an integer
+            const vote = parseInt(voteTally[i], 10);
+            // Calculate total number of votes
+            totalVotes += vote;
+            results.push({
+              name: optionNames[i],
+              votes: vote,
+            });
+          }
+
+          results = results.map((result) => {
+            // if zero round to zero
+            const dividedVotes = totalVotes === 0 ? 0 : result.votes / totalVotes;
+            return {
+              ...result,
+              percentage: ((dividedVotes) * 100).toFixed(0),
+            };
           });
-        }
 
-        results = results.map(result => {
-          return {
-            ...result,
-            percentage: ((result.votes / totalVotes) * 100).toFixed(0)
-          };
+          // set result only when there is a change
+          setResults((prevResult) => {
+            if (JSON.stringify(prevResult) !== JSON.stringify(results)) {
+              // Initialize progress for each result
+              const initialProgresses = results.map(() => 0);
+              setProgresses(initialProgresses);
+              return results;
+            }
+            return prevResult;
+          });
+        })
+        .catch((error) => {
+          console.log(error);
         });
-
-        console.log(results);
-        setResults(results);
-
-        // Initialize progress for each result
-        const initialProgresses = results.map(() => 0);
-        setProgresses(initialProgresses);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    };
+    pollResult();
+    // Get the poll results from the server every 5 seconds
+    const interval = setInterval(() => {
+      pollResult();
+    }, 5000);
+    // Cleanup interval on unmount
+    return () => clearInterval(interval);
   }, [pollId]);
 
   useEffect(() => {
     const timers = progresses.map((progress, index) => {
       if (progress < Number(results[index]?.percentage)) {
         return setTimeout(() => {
-          setProgresses(prev => {
+          setProgresses((prev) => {
             const copy = [...prev];
             copy[index]++;
             return copy;
@@ -128,7 +142,7 @@ const PollResults = () => {
                       sx={{ mt: 1, height: "10px", borderRadius: "5px" }}
                     />
                     <TitleTypography variant="h6" align="right">
-                      {result.percentage}%
+                      {result.percentage || 0}%
                     </TitleTypography>
                   </CardContent>
                 </Card>
